@@ -3,135 +3,458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>★ LISF Agent ★ ~ Consultor Regulatorio ~ ★</title>
+<title>LISF Agent v1.0 - #lisf</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
+  * { box-sizing: border-box; }
+
   body {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 16px;
-    color: #000000;
-    background-color: #c0c0c0;
-    background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='8' height='8' fill='%23c0c0c0'/%3E%3Crect x='0' y='0' width='4' height='4' fill='%23b8b8b8' opacity='0.3'/%3E%3Crect x='4' y='4' width='4' height='4' fill='%23b8b8b8' opacity='0.3'/%3E%3C/svg%3E");
-    margin: 0;
-    padding: 8px;
-  }
-
-  .bevel-out {
-    border: 2px outset #ffffff;
-    background: #c0c0c0;
-  }
-  .bevel-in {
-    border: 2px inset #ffffff;
-    background: #ffffff;
-  }
-
-  .main-table {
-    width: 100%;
-    margin: 0 auto;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .header-banner {
-    background: linear-gradient(to right, #000080, #0000cd, #000080);
-    padding: 12px 16px;
-    border: 3px outset #4444aa;
-    text-align: center;
-  }
-
-  .header-banner h1 {
-    font-family: 'Comic Sans MS', 'Arial Black', Arial, sans-serif;
-    color: #ffff00;
-    font-size: 28px;
-    margin: 0;
-    text-shadow: 2px 2px 0px #000000;
-    letter-spacing: 2px;
-  }
-
-  .header-banner .subtitle {
-    color: #00ffff;
-    font-size: 14px;
     font-family: 'Arial', sans-serif;
-    margin-top: 4px;
-  }
-
-  .star-divider {
-    color: #ffff00;
-    font-size: 12px;
-    letter-spacing: 4px;
-    margin: 6px 0;
-  }
-
-  .marquee-bar {
-    background: #000080;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
     font-size: 13px;
-    font-weight: bold;
-    padding: 4px 0;
-    border: 2px inset #4444aa;
+    color: #000;
+    background: #008080;
+    margin: 0;
+    padding: 6px;
+    height: 100vh;
     overflow: hidden;
-    white-space: nowrap;
   }
 
-  .marquee-content {
-    display: inline-block;
-    animation: marquee 22s linear infinite;
-  }
-
-  @keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-
-  .nav-bar {
+  /* === WINDOW CHROME === */
+  .mirc-window {
     background: #c0c0c0;
-    padding: 6px 8px;
     border: 2px outset #ffffff;
     display: flex;
-    gap: 4px;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    height: calc(100vh - 12px);
   }
 
-  .nav-btn {
-    font-family: 'Arial', sans-serif;
+  .titlebar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    padding: 3px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 22px;
+    user-select: none;
+  }
+  .titlebar-text {
+    color: #fff;
+    font-weight: bold;
     font-size: 12px;
+    padding-left: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .titlebar-buttons {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .titlebar-btn {
+    width: 16px;
+    height: 14px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    font-size: 9px;
+    font-weight: bold;
+    line-height: 10px;
+    text-align: center;
+    cursor: default;
+    color: #000;
+    padding: 0;
+    font-family: 'Courier New', monospace;
+  }
+  .titlebar-btn:active { border-style: inset; }
+
+  /* === MENU BAR === */
+  .menubar {
+    background: #c0c0c0;
+    padding: 1px 2px;
+    border-bottom: 1px solid #808080;
+    display: flex;
+    gap: 0;
+  }
+  .menu-item {
+    font-size: 12px;
+    padding: 2px 8px;
+    cursor: default;
+    background: none;
+    border: none;
+    font-family: 'Arial', sans-serif;
+    color: #000;
+  }
+  .menu-item:hover { background: #000080; color: #fff; }
+  .menu-item .underline { text-decoration: underline; }
+
+  /* === TOOLBAR === */
+  .toolbar {
+    background: #c0c0c0;
+    padding: 2px 4px;
+    border-bottom: 1px solid #808080;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+  .tool-btn {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    color: #000;
+    white-space: nowrap;
+  }
+  .tool-btn:active { border-style: inset; }
+  .tool-btn.active { border-style: inset; background: #a0a0a0; }
+  .toolbar-sep {
+    width: 2px;
+    height: 18px;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #ffffff;
+    margin: 0 2px;
+  }
+
+  /* === MAIN BODY (sidebar + chat) === */
+  .main-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    width: 200px;
+    min-width: 160px;
+    background: #c0c0c0;
+    border-right: 2px outset #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-section {
+    border-bottom: 1px solid #808080;
+  }
+  .sidebar-header {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 6px;
+    user-select: none;
+  }
+  .sidebar-body {
+    padding: 4px;
+    background: #fff;
+    border: 2px inset #ffffff;
+    margin: 2px;
+  }
+
+  /* channel/section list */
+  .channel-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+  }
+  .channel-list li {
+    padding: 2px 4px;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .channel-list li:hover { background: #000080; color: #fff; }
+  .channel-list li.active { background: #000080; color: #fff; font-weight: bold; }
+  .channel-list .section-head {
+    color: #808080;
+    font-size: 11px;
+    padding: 4px 4px 1px 4px;
+    cursor: default;
+    font-weight: bold;
+  }
+  .channel-list .section-head:hover { background: none; color: #808080; }
+
+  /* sidebar tree for chapters */
+  .chapter-tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    overflow-y: auto;
+    max-height: 100%;
+  }
+  .chapter-tree li {
+    padding: 1px 4px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chapter-tree li:hover { background: #000080; color: #fff; }
+
+  /* FAQ in sidebar */
+  .faq-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .faq-list li {
+    padding: 3px 4px;
+    cursor: pointer;
+    font-size: 11px;
+    color: #000080;
+    border-bottom: 1px dotted #c0c0c0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .faq-list li:hover { background: #000080; color: #fff; }
+
+  /* sidebar scrollable area */
+  .sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  .sidebar-scroll::-webkit-scrollbar { width: 16px; }
+  .sidebar-scroll::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
+  .sidebar-scroll::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
+
+  /* resources */
+  .resource-link {
+    display: block;
+    font-size: 11px;
+    color: #0000ff;
+    padding: 2px 4px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .resource-link:hover { background: #000080; color: #fff; }
+
+  /* === CHAT AREA === */
+  .chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* topic bar */
+  .topic-bar {
+    background: #ffffcc;
+    border: 2px inset #ffffff;
+    padding: 3px 8px;
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 2px;
+    font-family: 'Arial', sans-serif;
+  }
+  .topic-bar b { color: #000080; }
+
+  /* chat messages */
+  .chat-frame {
+    flex: 1;
+    border: 2px inset #ffffff;
+    background: #fff;
+    overflow-y: auto;
+    padding: 4px 8px;
+    margin: 0 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 0;
+  }
+  .chat-frame::-webkit-scrollbar { width: 16px; }
+  .chat-frame::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
+  .chat-frame::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
+  .chat-frame::-webkit-scrollbar-button { background: #c0c0c0; border: 2px outset #ffffff; height: 16px; }
+
+  /* IRC-style messages */
+  .msg { margin-bottom: 4px; word-wrap: break-word; }
+
+  .msg-user {
+    color: #000;
+  }
+  .msg-user .nick { color: #cc0000; font-weight: bold; }
+
+  .msg-agent {
+    color: #000;
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .msg-agent .nick { color: #000080; font-weight: bold; font-family: 'Courier New', monospace; }
+  .msg-agent .agent-content {
+    display: block;
+    padding: 6px 0 6px 16px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* markdown inside agent messages */
+  .msg-agent strong, .msg-agent b { color: #000080; }
+  .msg-agent code {
+    font-family: 'Courier New', monospace;
+    background: #e8e8f8;
+    padding: 1px 4px;
+    border: 1px solid #c0c0e0;
+    font-size: 12px;
+  }
+  .msg-agent pre {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    padding: 8px 10px;
+    border: 2px inset #ffffff;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 6px 0;
+  }
+  .msg-agent pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+  .msg-agent h1, .msg-agent h2, .msg-agent h3, .msg-agent h4 {
+    color: #000080;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+    margin: 10px 0 4px 0;
+  }
+  .msg-agent h1 { font-size: 17px; border-bottom: 1px solid #000080; padding-bottom: 3px; }
+  .msg-agent h2 { font-size: 15px; }
+  .msg-agent h3 { font-size: 14px; }
+  .msg-agent ul, .msg-agent ol { padding-left: 24px; margin: 4px 0; }
+  .msg-agent li { margin-bottom: 3px; }
+  .msg-agent a { color: #0000ff; }
+  .msg-agent blockquote {
+    border-left: 3px solid #000080;
+    margin: 6px 0;
     padding: 3px 10px;
+    background: #f0f0ff;
+    color: #333;
+  }
+  .msg-agent table { border-collapse: collapse; margin: 6px 0; }
+  .msg-agent th, .msg-agent td { border: 1px solid #9999cc; padding: 3px 8px; text-align: left; font-size: 12px; }
+  .msg-agent th { background: #e0e0f8; font-weight: bold; }
+  .msg-agent hr { border: none; border-top: 1px solid #c0c0c0; margin: 6px 0; }
+  .msg-agent p { margin: 4px 0; }
+
+  .msg-error {
+    color: #cc0000;
+    font-weight: bold;
+  }
+
+
+  .typing90s {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #808080;
+  }
+  .typing90s::after {
+    content: "_";
+    animation: cursor90s 0.6s steps(1) infinite;
+  }
+  @keyframes cursor90s {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  /* welcome / MOTD */
+  .motd {
+    color: #808080;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    padding: 8px 0;
+    line-height: 1.6;
+  }
+  .motd .motd-title {
+    color: #000080;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  }
+  .motd .motd-divider { color: #000080; }
+  .motd .motd-highlight { color: #cc0000; }
+  .motd .motd-info { color: #008000; }
+
+  /* === INPUT AREA === */
+  .input-bar {
+    background: #c0c0c0;
+    padding: 2px 4px;
+    display: flex;
+    gap: 4px;
+    align-items: stretch;
+    border-top: 1px solid #808080;
+  }
+  .input-nick {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    color: #cc0000;
+    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border: 2px inset #ffffff;
+    background: #fff;
+  }
+
+  #user-input {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    padding: 4px 6px;
+    border: 2px inset #ffffff;
+    background: #fff;
+    resize: none;
+    min-height: 28px;
+    max-height: 80px;
+    outline: none;
+  }
+
+  #send-btn {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 12px;
     background: #c0c0c0;
     border: 2px outset #ffffff;
     cursor: pointer;
     color: #000;
+    white-space: nowrap;
   }
-  .nav-btn:active { border-style: inset; }
-  .nav-btn.active { border-style: inset; background: #a0a0a0; }
+  #send-btn:active { border-style: inset; }
+  #send-btn:disabled { color: #808080; }
 
-  .nav-separator {
-    width: 2px;
-    height: 20px;
-    background: #808080;
-    border-right: 1px solid #ffffff;
-  }
-
-  .status-bar {
+  /* === STATUS BAR === */
+  .statusbar {
     background: #c0c0c0;
-    border: 2px outset #ffffff;
-    padding: 3px 8px;
-    font-family: 'Arial', sans-serif;
-    font-size: 11px;
-    color: #000;
+    border-top: 2px outset #ffffff;
+    padding: 2px 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    font-size: 11px;
     gap: 4px;
   }
-
   .status-section {
     border: 1px inset #ffffff;
     padding: 1px 8px;
     background: #c0c0c0;
+    white-space: nowrap;
   }
-
   .status-led {
     display: inline-block;
     width: 8px;
@@ -139,405 +462,336 @@
     border-radius: 50%;
     background: #00ff00;
     border: 1px solid #008000;
-    margin-right: 4px;
+    margin-right: 3px;
     vertical-align: middle;
   }
   .status-led.offline { background: #ff0000; border-color: #800000; }
-
-  .chat-frame {
-    border: 2px inset #ffffff;
-    background: #ffffff;
-    height: calc(100vh - 420px);
-    min-height: 280px;
-    max-height: 700px;
-    overflow-y: scroll;
-    padding: 8px;
+  .status-led.working {
+    background: #ffcc00;
+    border-color: #cc9900;
+    animation: ledpulse 0.8s ease-in-out infinite;
+  }
+  @keyframes ledpulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
   }
 
-  .chat-frame::-webkit-scrollbar { width: 16px; }
-  .chat-frame::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
-  .chat-frame::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
-  .chat-frame::-webkit-scrollbar-button { background: #c0c0c0; border: 2px outset #ffffff; height: 16px; }
-
-  .msg { margin-bottom: 12px; font-size: 15px; line-height: 1.5; }
-
-  .msg-user {
-    padding: 8px;
-    background: #ffffcc;
-    border: 1px solid #cccc66;
-  }
-  .msg-user::before {
-    content: "👤 Tú escribiste:";
-    display: block;
-    font-weight: bold;
-    font-size: 13px;
-    color: #666633;
-    margin-bottom: 4px;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .msg-agent {
-    padding: 8px;
-    background: #eeeeff;
-    border: 1px solid #9999cc;
-  }
-  .msg-agent::before {
-    content: "🖥️ LISF Agent responde:";
-    display: block;
-    font-weight: bold;
-    font-size: 13px;
-    color: #333366;
-    margin-bottom: 4px;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .msg-agent strong, .msg-agent b { color: #000080; }
-  .msg-agent code {
-    font-family: 'Courier New', monospace;
-    background: #ddddff;
-    padding: 1px 4px;
-    border: 1px solid #aaaacc;
-  }
-
-  .msg-error {
-    padding: 8px;
-    background: #ffcccc;
-    border: 1px solid #cc6666;
-    color: #880000;
-  }
-  .msg-error::before {
-    content: "⚠️ ERROR:";
-    display: block;
-    font-weight: bold;
-    font-size: 13px;
-    margin-bottom: 4px;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .tool-tag {
-    display: inline-block;
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    background: #e0e0e0;
-    border: 1px inset #ffffff;
-    padding: 2px 6px;
-    margin: 4px 0;
-    color: #333;
-  }
-  .tool-tag::before { content: "⚙ "; }
-
-  .welcome-box { text-align: center; padding: 20px; }
-
-  .welcome-box h2 {
-    font-family: 'Arial Black', Arial, sans-serif;
-    color: #000080;
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
-
-  .welcome-box p {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 16px;
-  }
-
-  .welcome-box hr {
-    border: none;
-    border-top: 1px solid #808080;
-    border-bottom: 1px solid #ffffff;
-    margin: 12px 40px;
-  }
-
-  .faq-grid {
+  /* === AUTH OVERLAY === */
+  .auth-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    align-items: center;
     justify-content: center;
-    max-width: 700px;
-    margin: 0 auto;
+    z-index: 9999;
+  }
+  .auth-box {
+    background: #c0c0c0;
+    border: 3px outset #ffffff;
+    max-width: 380px;
+    width: 90%;
+  }
+  .auth-box-titlebar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .auth-box-content {
+    padding: 20px 24px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+  }
+  .auth-box-content h2 {
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+    color: #000080;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+  }
+  .auth-box-content p {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 14px;
+  }
+  .auth-error {
+    color: #cc0000;
+    font-size: 11px;
+    margin-top: 8px;
+    display: none;
   }
 
-  .faq-btn {
-    font-family: 'Arial', sans-serif;
-    font-size: 12px;
-    padding: 5px 12px;
+  /* user badge */
+  .user-badge {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .user-badge img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #808080;
+  }
+  .user-badge .signout-btn {
+    font-size: 10px;
+    padding: 0px 4px;
+    background: #c0c0c0;
+    border: 1px outset #ffffff;
+    cursor: pointer;
+    color: #000;
+  }
+  .user-badge .signout-btn:active { border-style: inset; }
+
+  /* === MODAL === */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+  }
+  .modal-box {
     background: #c0c0c0;
     border: 2px outset #ffffff;
+    max-width: 700px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-titlebar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-close {
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    font-size: 10px;
+    font-weight: bold;
     cursor: pointer;
-    color: #000080;
-    text-decoration: underline;
+    padding: 0 4px;
+    line-height: 14px;
+    color: #000;
   }
-  .faq-btn:hover { background: #a0a0ff; }
-  .faq-btn:active { border-style: inset; }
-
-  .construction {
-    font-size: 11px;
-    color: #808080;
+  .modal-close:active { border-style: inset; }
+  .modal-content {
+    padding: 12px;
+    overflow-y: auto;
+    flex: 1;
     font-family: 'Arial', sans-serif;
-    text-align: center;
-    padding: 4px;
+    font-size: 13px;
+    line-height: 1.5;
+    background: #fff;
+    border: 2px inset #ffffff;
+    margin: 3px;
   }
+  .modal-content h1, .modal-content h2, .modal-content h3 { color: #000080; font-family: 'Comic Sans MS', 'Arial', sans-serif; }
+  .modal-content table { border-collapse: collapse; width: 100%; }
+  .modal-content th, .modal-content td { border: 1px solid #999; padding: 3px 6px; text-align: left; font-size: 12px; }
+  .modal-content th { background: #e0e0f8; }
 
+  /* === BLINK === */
   .blink { animation: blink90s 1s steps(1) infinite; }
   @keyframes blink90s {
     0%, 49% { visibility: visible; }
     50%, 100% { visibility: hidden; }
   }
 
-  .input-panel {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    padding: 8px;
-    display: flex;
-    gap: 8px;
-    align-items: stretch;
-    justify-content: flex-end;
-  }
-
-  .input-spacer {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Arial', sans-serif;
-    font-size: 12px;
-    color: #666;
-  }
-
-  .input-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .input-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 12px;
-    font-weight: bold;
-    color: #000;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 6px;
-    align-items: flex-end;
-  }
-
-  #user-input {
-    flex: 1;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    padding: 8px;
-    border: 2px inset #ffffff;
-    background: #ffffff;
-    resize: none;
-    min-height: 60px;
-    max-height: 120px;
-    outline: none;
-  }
-
-  #send-btn {
-    font-family: 'Arial', sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 8px 20px;
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    cursor: pointer;
-    color: #000;
-    height: 100%;
-    min-height: 60px;
-    white-space: nowrap;
-  }
-  #send-btn:active { border-style: inset; }
-  #send-btn:disabled { color: #808080; }
-
-  .typing90s {
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    color: #000080;
-  }
-  .typing90s::after {
-    content: "█";
-    animation: cursor90s 0.8s steps(1) infinite;
-  }
-  @keyframes cursor90s {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-
-  .counter-box { display: inline-flex; gap: 2px; }
-
-  .counter-digit {
-    background: #000;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 2px 5px;
-    border: 1px inset #333;
-    min-width: 16px;
-    text-align: center;
-  }
-
-  .hr90s {
-    height: 4px;
-    background: linear-gradient(to right, #000080, #00ffff, #ff00ff, #ffff00, #00ff00, #000080);
-    border: none;
-    margin: 0;
-  }
-
-  .footer-links {
-    text-align: center;
-    padding: 8px;
-    font-family: 'Arial', sans-serif;
-    font-size: 11px;
-  }
-  .footer-links a { color: #0000ff; }
-  .footer-links a:visited { color: #800080; }
-
-  .under-construction {
-    background: #ffff00;
-    color: #000;
-    font-family: 'Arial Black', Arial, sans-serif;
-    font-size: 11px;
-    text-align: center;
-    padding: 3px;
-    border: 2px outset #cccc00;
-  }
-
-  .uc-stripe {
-    display: inline-block;
-    background: repeating-linear-gradient(-45deg, #000 0px, #000 8px, #ffcc00 8px, #ffcc00 16px);
-    width: 30px;
-    height: 14px;
-    vertical-align: middle;
-    margin: 0 6px;
-  }
-
-  @media (max-width: 600px) {
-    .header-banner h1 { font-size: 20px; }
-    .chat-frame { height: calc(100vh - 380px); min-height: 200px; }
-    .suggestion-table td { display: block; }
+  /* === RESPONSIVE === */
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    body { padding: 0; }
+    .mirc-window { height: 100vh; border: none; }
   }
 </style>
 </head>
 <body>
 
-<table class="main-table" cellpadding="0" cellspacing="0">
-  <tr><td>
-    <div class="header-banner">
-      <div class="star-divider">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
-      <h1>~ LISF Agent ~</h1>
-      <div class="subtitle">Consultor de la Ley de Instituciones de Seguros y de Fianzas</div>
-      <div class="star-divider">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+<!-- Auth overlay -->
+<div id="auth-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-box">
+    <div class="auth-box-titlebar">
+      <span>Iniciar Sesion</span>
     </div>
-  </td></tr>
-
-  <tr><td><hr class="hr90s"></td></tr>
-
-  <tr><td>
-    <div class="marquee-bar">
-      <span class="marquee-content">
-        *** BIENVENIDO al Consultor LISF *** Pregunta sobre cualquier artículo de la Ley *** Powered by Claude Agent SDK *** Última actualización: Feb 2026 ***
-      </span>
-    </div>
-  </td></tr>
-
-  <tr><td>
-    <div class="nav-bar">
-      <button class="nav-btn active">📝 Chat</button>
-      <button class="nav-btn" onclick="alert('Función disponible pronto!')">📖 Índice LISF</button>
-      <button class="nav-btn" onclick="alert('Función disponible pronto!')">❓ Ayuda</button>
-      <div class="nav-separator"></div>
-      <button class="nav-btn" onclick="clearChat()">🗑️ Limpiar</button>
-    </div>
-  </td></tr>
-
-  <tr><td>
-    <div class="under-construction">
-      <span class="uc-stripe"></span>
-      EN CONSTRUCCIÓN — Versión Beta
-      <span class="uc-stripe"></span>
-    </div>
-  </td></tr>
-
-  <tr><td>
-    <div class="chat-frame" id="chat-container">
-      <div id="welcome" class="welcome-box">
-        <h2>Bienvenido al Consultor LISF</h2>
-        <hr>
-        <p>
-          Este sitio te permite consultar la
-          <b>Ley de Instituciones de Seguros y de Fianzas</b>
-          usando inteligencia artificial.<br>
-          Escribe tu pregunta abajo o haz clic en una sugerencia:
-        </p>
-        <div id="faq-grid" class="faq-grid"></div>
-        <hr>
-        <div class="construction">
-          <span class="blink">★</span>
-          Mejor visto en Netscape Navigator 4.0 a 800x600
-          <span class="blink">★</span>
+    <div class="auth-box-content">
+      <h2>LISF Agent</h2>
+      <p>Inicia sesion para acceder al consultor.</p>
+      <div id="g-signin-btn" style="display:none; margin-bottom:12px"></div>
+      <div id="code-section" style="display:none">
+        <div id="code-divider" style="font-size:11px; color:#666; margin:8px 0; display:none">-- o ingresa un codigo --</div>
+        <div style="display:flex; gap:4px; align-items:center; justify-content:center">
+          <input type="text" id="access-code-input" placeholder="Codigo de acceso"
+            style="font-family:'Courier New',monospace; font-size:13px; padding:4px 8px; border:2px inset #fff; width:160px; text-align:center">
+          <button onclick="submitAccessCode()" class="tool-btn" style="padding:4px 10px">Entrar</button>
         </div>
       </div>
+      <div id="auth-error" class="auth-error">Acceso denegado. Verifica tu cuenta o codigo.</div>
     </div>
-  </td></tr>
+  </div>
+</div>
 
-  <tr><td><hr class="hr90s"></td></tr>
+<!-- Main mIRC window -->
+<div class="mirc-window">
 
-  <tr><td>
-    <div class="input-panel">
-      <div class="input-spacer">
-        <span>Consultor LISF v1.0 &mdash; Powered by Claude</span>
+  <!-- Title bar -->
+  <div class="titlebar">
+    <span class="titlebar-text">LISF Agent v1.0 - #lisf @ LISF-Network</span>
+    <div class="titlebar-buttons">
+      <button class="titlebar-btn">_</button>
+      <button class="titlebar-btn">o</button>
+      <button class="titlebar-btn">x</button>
+    </div>
+  </div>
+
+  <!-- Menu bar -->
+  <div class="menubar">
+    <button class="menu-item" onclick="showAyuda()"><span class="underline">A</span>rchivo</button>
+    <button class="menu-item" onclick="showIndice()"><span class="underline">I</span>ndice</button>
+    <button class="menu-item" onclick="showAyuda()">A<span class="underline">y</span>uda</button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="tool-btn active">#lisf</button>
+    <div class="toolbar-sep"></div>
+    <button class="tool-btn" onclick="showIndice()">Indice LISF</button>
+    <button class="tool-btn" onclick="showAyuda()">Ayuda</button>
+    <div class="toolbar-sep"></div>
+    <button class="tool-btn" onclick="clearChat()">Limpiar</button>
+    <div style="flex:1"></div>
+    <span style="font-size:11px; color:#666; padding-right:4px;">Powered by Claude</span>
+  </div>
+
+  <!-- Main body: sidebar + chat -->
+  <div class="main-body">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-scroll">
+
+        <!-- Channels -->
+        <div class="sidebar-section">
+          <div class="sidebar-header">Canales</div>
+          <div class="sidebar-body">
+            <ul class="channel-list">
+              <li class="active">#lisf</li>
+              <li class="section-head">-- Links --</li>
+              <li onclick="window.open('https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf')">LISF PDF</li>
+              <li onclick="window.open('https://lisfcusf.cnsf.gob.mx/')">CNSF Interactiva</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- LISF chapters tree -->
+        <div class="sidebar-section">
+          <div class="sidebar-header">Titulos LISF</div>
+          <div class="sidebar-body" style="padding:2px; max-height:280px; overflow-y:auto">
+            <ul class="chapter-tree" id="chapter-tree">
+              <li onclick="askAbout('Titulo Primero')">T.I - Cap. Unico</li>
+              <li onclick="askAbout('Titulo Segundo Capitulo Primero')">T.II - Cap.1</li>
+              <li onclick="askAbout('Titulo Segundo Capitulo Segundo')">T.II - Cap.2</li>
+              <li onclick="askAbout('Titulo Segundo Capitulo Tercero')">T.II - Cap.3</li>
+              <li onclick="askAbout('Titulo Tercero')">T.III - Cap.1-3</li>
+              <li onclick="askAbout('Titulo Cuarto')">T.IV - Cap.1-5</li>
+              <li onclick="askAbout('Titulo Quinto')">T.V - Cap.1-11</li>
+              <li onclick="askAbout('Titulo Sexto')">T.VI - Cap.1-3</li>
+              <li onclick="askAbout('Titulo Septimo')">T.VII - Cap.1-2</li>
+              <li onclick="askAbout('Titulo Octavo')">T.VIII - Cap.1-3</li>
+              <li onclick="askAbout('Titulo Noveno')">T.IX - Cap.1-4</li>
+              <li onclick="askAbout('Titulo Decimo')">T.X - Cap.1-4</li>
+              <li onclick="askAbout('Titulo Decimo Primero')">T.XI - Cap.1-2</li>
+              <li onclick="askAbout('Titulo Decimo Segundo')">T.XII - Cap.1-3</li>
+              <li onclick="askAbout('Titulo Decimo Tercero')">T.XIII - Cap.1-3</li>
+              <li onclick="askAbout('Articulos Transitorios')">Transitorios</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="sidebar-section">
+          <div class="sidebar-header">FAQ Rapido</div>
+          <div class="sidebar-body" style="padding:0">
+            <ul class="faq-list" id="faq-grid"></ul>
+          </div>
+        </div>
+
       </div>
-      <div class="input-area">
-        <div class="input-label">Escribe tu pregunta:</div>
-        <div class="input-row">
-          <textarea id="user-input" rows="3" placeholder="Ej: ¿Qué dice el artículo 201 sobre las notas técnicas?"></textarea>
-          <button id="send-btn" onclick="sendMessage()">Enviar &gt;&gt;</button>
+    </div>
+
+    <!-- Chat area -->
+    <div class="chat-area">
+
+      <!-- Topic bar -->
+      <div class="topic-bar">
+        <b>#lisf</b> -- Consultor de la Ley de Instituciones de Seguros y de Fianzas | Pregunta sobre cualquier articulo
+      </div>
+
+      <!-- Chat messages -->
+      <div class="chat-frame" id="chat-container">
+        <div id="welcome" class="motd">
+          <span class="motd-divider">***</span> Bienvenido al canal <b>#lisf</b><br>
+          <span class="motd-divider">***</span> Tema: <b>Consultor de la Ley de Instituciones de Seguros y de Fianzas</b><br>
+          <span class="motd-divider">***</span> Pregunta sobre cualquier articulo de la LISF<br>
+          <span class="motd-divider">***</span> Usa las preguntas del panel izquierdo o escribe tu consulta abajo<br>
+          <br>
+          <span class="motd-divider">-</span> <span class="motd-title">LISF Agent</span> <span class="motd-divider">-</span> Message of the Day <span class="motd-divider">-</span><br>
+          <span class="motd-info">-  Este chatbot consulta directamente el texto de la LISF</span><br>
+          <span class="motd-info">-  Respuestas con fundamento legal y citas de articulos</span><br>
+          <span class="motd-info">-  Historial de conversacion activo en esta sesion</span><br>
+          <span class="motd-divider">-</span> End of MOTD <span class="motd-divider">-</span><br>
+          <br>
+          <span class="motd-divider">***</span> <span class="motd-highlight">AVISO:</span> Referencia de estudio. No sustituye asesoria legal.
         </div>
       </div>
-    </div>
-  </td></tr>
 
-  <tr><td>
-    <div class="status-bar">
-      <span class="status-section">
-        <span class="status-led" id="status-led"></span>
-        <span id="status-text">Conectado</span>
-      </span>
-      <span class="status-section">
-        Mensajes: <b id="msg-count">0</b>
-      </span>
-      <span class="status-section">
-        Visitante #
-        <span class="counter-box">
-          <span class="counter-digit">0</span>
-          <span class="counter-digit">0</span>
-          <span class="counter-digit">0</span>
-          <span class="counter-digit" id="visitor-num">1</span>
-        </span>
-      </span>
-    </div>
-  </td></tr>
+      <!-- Input bar -->
+      <div class="input-bar">
+        <div class="input-nick" id="nick-display">[@Usuario]</div>
+        <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aqui..."></textarea>
+        <button class="tool-btn" id="btn-rapido" title="Respuesta rapida (~20s, menos detalle)" onclick="setMode('rapido')" style="font-size:11px;padding:2px 6px">Rapido</button>
+        <button class="tool-btn active" id="btn-detallado" title="Respuesta detallada (~60s, mas precisa)" onclick="setMode('detallado')" style="font-size:11px;padding:2px 6px">Detallado</button>
+        <button id="send-btn" onclick="sendMessage()">Enviar &gt;&gt;</button>
+      </div>
 
-  <tr><td>
-    <div class="footer-links">
-      <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf">📄 Descargar LISF (PDF)</a>
-      &nbsp;|&nbsp;
-      <a href="https://lisfcusf.cnsf.gob.mx/">🏛️ CNSF Interactiva</a>
-      &nbsp;|&nbsp;
-      <a href="#" onclick="alert('El libro de visitas estará disponible pronto :)'); return false;">📓 Firmar libro de visitas</a>
-      <br>
-      <span style="color:#808080">
-        © 2026 LISF Agent · Hecho con Claude Agent SDK
-        · <span class="blink" style="color:red">NEW!</span>
-      </span>
     </div>
-  </td></tr>
-</table>
+  </div>
+
+  <!-- Status bar -->
+  <div class="statusbar">
+    <span class="status-section">
+      <span class="status-led" id="status-led"></span>
+      <span id="status-text">Conectado</span>
+    </span>
+    <span class="status-section">
+      Msgs: <b id="msg-count">0</b>
+    </span>
+    <span class="status-section" id="user-section" style="display:none">
+      <span class="user-badge">
+        <img id="user-avatar" src="" alt="">
+        <span id="user-email"></span>
+        <button class="signout-btn" onclick="signOut()">Salir</button>
+      </span>
+    </span>
+    <span class="status-section" style="margin-left:auto">
+      LISF Agent v1.0
+    </span>
+  </div>
+
+</div>
 
 <script>
 const chatContainer = document.getElementById('chat-container');
@@ -546,29 +800,51 @@ const sendBtn = document.getElementById('send-btn');
 const statusLed = document.getElementById('status-led');
 const statusText = document.getElementById('status-text');
 const msgCount = document.getElementById('msg-count');
-const welcome = document.getElementById('welcome');
 
 let isStreaming = false;
 let messageCounter = 0;
-
-document.getElementById('visitor-num').textContent = Math.floor(Math.random() * 9) + 1;
+let authToken = null;
+let accessCode = null;
+let authRequired = false;
+let conversationHistory = [];
+let chatMode = 'detallado'; // 'rapido' or 'detallado'
 
 userInput.addEventListener('input', () => {
   userInput.style.height = 'auto';
-  userInput.style.height = Math.min(userInput.scrollHeight, 100) + 'px';
+  userInput.style.height = Math.min(userInput.scrollHeight, 80) + 'px';
 });
 
 userInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-function askSuggestion(btn) { userInput.value = btn.textContent; sendMessage(); }
+function setMode(mode) {
+  chatMode = mode;
+  document.getElementById('btn-rapido').classList.toggle('active', mode === 'rapido');
+  document.getElementById('btn-detallado').classList.toggle('active', mode === 'detallado');
+}
+
+function askAbout(topic) {
+  userInput.value = 'Explicame el ' + topic + ' de la LISF';
+  sendMessage();
+}
 
 function clearChat() {
-  if (confirm('¿Limpiar todas las conversaciones?')) {
+  if (confirm('Limpiar todas las conversaciones?')) {
     chatContainer.innerHTML = '';
     messageCounter = 0;
     msgCount.textContent = '0';
+    conversationHistory = [];
+    // Restore MOTD
+    const motd = document.createElement('div');
+    motd.id = 'welcome';
+    motd.className = 'motd';
+    motd.innerHTML =
+      '<span class="motd-divider">***</span> Bienvenido al canal <b>#lisf</b><br>' +
+      '<span class="motd-divider">***</span> Tema: <b>Consultor de la Ley de Instituciones de Seguros y de Fianzas</b><br>' +
+      '<span class="motd-divider">***</span> Historial limpiado. Escribe tu consulta abajo.<br>' +
+      '<span class="motd-divider">-</span> End of MOTD <span class="motd-divider">-</span>';
+    chatContainer.appendChild(motd);
   }
 }
 
@@ -576,49 +852,185 @@ function updateMsgCount() { messageCounter++; msgCount.textContent = messageCoun
 
 function addMessage(role, content) {
   const div = document.createElement('div');
-  const cls = role === 'user' ? 'msg-user' : role === 'error' ? 'msg-error' : 'msg-agent';
-  div.className = `msg ${cls}`;
-  div.innerHTML = content;
+  if (role === 'user') {
+    div.className = 'msg msg-user';
+    div.innerHTML = '<span class="nick">&lt;Usuario&gt;</span> ' + content;
+  } else if (role === 'error') {
+    div.className = 'msg msg-error';
+    div.innerHTML = '*** ERROR: ' + content;
+  } else {
+    div.className = 'msg msg-agent';
+    div.innerHTML = '<span class="nick">&lt;LISF_Bot&gt;</span><span class="agent-content">' + content + '</span>';
+  }
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
   updateMsgCount();
   return div;
 }
 
-function addToolTag(container, toolName) {
-  const tag = document.createElement('div');
-  tag.className = 'tool-tag';
-  tag.textContent = `Usando herramienta: ${toolName}`;
-  container.appendChild(tag);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+const _statusPhrases = [
+  'pensando',
+  'revisando la ley',
+  'buscando articulos',
+  'leyendo la LISF',
+  'consultando',
+  'analizando',
+];
+let _statusIdx = 0;
+let _statusInterval = null;
 
 function showTyping() {
+  _statusIdx = 0;
   const div = document.createElement('div');
-  div.className = 'msg msg-agent';
+  div.className = 'msg';
   div.id = 'typing-msg';
-  div.innerHTML = '<span class="typing90s">Procesando consulta</span>';
+  const modeLabel = chatMode === 'rapido' ? ' (rapido)' : '';
+  div.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta pensando' + modeLabel + '</span>';
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
+  _statusInterval = setInterval(() => {
+    const el = document.getElementById('typing-msg');
+    if (!el) { clearInterval(_statusInterval); return; }
+    _statusIdx = (_statusIdx + 1) % _statusPhrases.length;
+    el.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta ' + _statusPhrases[_statusIdx] + '</span>';
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, 3000);
 }
 
 function removeTyping() {
+  if (_statusInterval) { clearInterval(_statusInterval); _statusInterval = null; }
   const el = document.getElementById('typing-msg');
   if (el) el.remove();
 }
 
 function formatText(text) {
+  if (typeof marked !== 'undefined') {
+    marked.setOptions({ breaks: true, gfm: true });
+    return marked.parse(text);
+  }
   return text
     .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
     .replace(/`(.*?)`/g, '<code>$1</code>')
     .replace(/\n/g, '<br>');
 }
 
+// --- Auth ---
+
+function handleCredentialResponse(response) {
+  authToken = response.credential;
+  accessCode = null;
+  const payload = JSON.parse(atob(authToken.split('.')[1]));
+  showSignedIn(payload.email, payload.picture);
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+function submitAccessCode() {
+  const code = document.getElementById('access-code-input').value.trim();
+  if (!code) return;
+  fetch('/api/verify-code', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code }),
+  })
+    .then(r => {
+      if (r.ok) {
+        accessCode = code;
+        authToken = null;
+        showSignedIn('Invitado', '');
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('auth-error').style.display = 'none';
+      } else {
+        document.getElementById('auth-error').style.display = 'block';
+      }
+    })
+    .catch(() => {
+      document.getElementById('auth-error').style.display = 'block';
+    });
+}
+
+function showSignedIn(email, picture) {
+  const section = document.getElementById('user-section');
+  const avatar = document.getElementById('user-avatar');
+  if (picture) {
+    avatar.src = picture;
+    avatar.style.display = '';
+  } else {
+    avatar.style.display = 'none';
+  }
+  document.getElementById('user-email').textContent = email;
+  document.getElementById('nick-display').textContent = '[@' + email.split('@')[0] + ']';
+  section.style.display = '';
+  userInput.disabled = false;
+  sendBtn.disabled = false;
+}
+
+function signOut() {
+  authToken = null;
+  accessCode = null;
+  if (typeof google !== 'undefined' && google.accounts) {
+    google.accounts.id.disableAutoSelect();
+  }
+  document.getElementById('user-section').style.display = 'none';
+  document.getElementById('nick-display').textContent = '[@Usuario]';
+  if (authRequired) {
+    userInput.disabled = true;
+    sendBtn.disabled = true;
+    document.getElementById('auth-overlay').style.display = 'flex';
+    document.getElementById('auth-error').style.display = 'none';
+  }
+}
+
+function showAuthError() {
+  document.getElementById('auth-error').style.display = 'block';
+  authToken = null;
+  accessCode = null;
+}
+
+function initAuth(config) {
+  const overlay = document.getElementById('auth-overlay');
+  overlay.style.display = 'flex';
+  userInput.disabled = true;
+  sendBtn.disabled = true;
+
+  if (config.has_google && config.google_client_id) {
+    document.getElementById('g-signin-btn').style.display = 'block';
+    const waitForGsi = setInterval(() => {
+      if (typeof google !== 'undefined' && google.accounts) {
+        clearInterval(waitForGsi);
+        google.accounts.id.initialize({
+          client_id: config.google_client_id,
+          callback: handleCredentialResponse,
+          auto_select: true,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById('g-signin-btn'),
+          { theme: 'outline', size: 'large', text: 'signin_with', locale: 'es' }
+        );
+        google.accounts.id.prompt();
+      }
+    }, 100);
+  }
+
+  if (config.has_access_code) {
+    document.getElementById('code-section').style.display = 'block';
+    if (config.has_google) {
+      document.getElementById('code-divider').style.display = 'block';
+    }
+    document.getElementById('access-code-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitAccessCode();
+    });
+  }
+}
+
+// --- Chat ---
+
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text || isStreaming) return;
 
-  if (welcome) welcome.style.display = 'none';
+  const welcomeEl = document.getElementById('welcome');
+  if (welcomeEl) welcomeEl.style.display = 'none';
 
   addMessage('user', formatText(text));
   userInput.value = '';
@@ -626,20 +1038,36 @@ async function sendMessage() {
 
   isStreaming = true;
   sendBtn.disabled = true;
-  statusText.textContent = 'Procesando...';
+  statusText.textContent = chatMode === 'rapido' ? 'Rapido...' : 'Detallado...';
+  statusLed.classList.add('working');
   showTyping();
 
   try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+    if (accessCode) headers['X-Access-Code'] = accessCode;
+
+    conversationHistory.push({ role: 'user', content: text });
+
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text }),
+      headers: headers,
+      body: JSON.stringify({ message: text, history: conversationHistory, mode: chatMode }),
     });
 
-    removeTyping();
+    if (response.status === 401) {
+      removeTyping();
+      if (authRequired) {
+        showAuthError();
+        document.getElementById('auth-overlay').style.display = 'flex';
+      }
+      addMessage('error', 'Sesion expirada o no autorizada. Inicia sesion de nuevo.');
+      return;
+    }
 
     if (!response.ok) {
-      addMessage('error', `HTTP Error: ${response.status} ${response.statusText}`);
+      removeTyping();
+      addMessage('error', 'HTTP Error: ' + response.status + ' ' + response.statusText);
       return;
     }
 
@@ -648,6 +1076,7 @@ async function sendMessage() {
     let agentDiv = null;
     let currentText = '';
     let buffer = '';
+    let typingRemoved = false;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -662,51 +1091,131 @@ async function sendMessage() {
         try {
           const data = JSON.parse(line.slice(6));
           if (data.type === 'text') {
+            if (!typingRemoved) { removeTyping(); typingRemoved = true; }
             if (!agentDiv) agentDiv = addMessage('agent', '');
             currentText += data.content;
-            agentDiv.innerHTML = formatText(currentText);
+            const contentEl = agentDiv.querySelector('.agent-content');
+            if (contentEl) contentEl.innerHTML = formatText(currentText);
             chatContainer.scrollTop = chatContainer.scrollHeight;
           }
           else if (data.type === 'tool_use') {
-            if (!agentDiv) agentDiv = addMessage('agent', '');
-            addToolTag(agentDiv, data.tool);
+            // Just bump the typing status phrase, no visible tool tag
+            const el = document.getElementById('typing-msg');
+            if (el) {
+              _statusIdx = (_statusIdx + 1) % _statusPhrases.length;
+              el.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta ' + _statusPhrases[_statusIdx] + '</span>';
+              chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
           }
           else if (data.type === 'error') {
+            if (!typingRemoved) { removeTyping(); typingRemoved = true; }
             addMessage('error', data.content);
           }
         } catch (e) { /* skip */ }
       }
     }
+    if (!typingRemoved) removeTyping();
 
-    if (!agentDiv) addMessage('agent', '<i>Sin respuesta del agente.</i>');
+    if (!agentDiv) {
+      addMessage('agent', '<i>Sin respuesta del agente.</i>');
+    } else if (currentText) {
+      conversationHistory.push({ role: 'assistant', content: currentText });
+    }
 
   } catch (err) {
     removeTyping();
-    addMessage('error', `Error de conexión: ${err.message}`);
+    addMessage('error', 'Error de conexion: ' + err.message);
   } finally {
     isStreaming = false;
     sendBtn.disabled = false;
     statusText.textContent = 'Conectado';
+    statusLed.classList.remove('working');
     userInput.focus();
   }
 }
 
-// Load FAQ buttons
-fetch('/api/faq')
-  .then(r => r.json())
-  .then(faqs => {
-    const grid = document.getElementById('faq-grid');
-    if (grid && faqs.length) {
-      faqs.forEach(f => {
-        const btn = document.createElement('button');
-        btn.className = 'faq-btn';
-        btn.textContent = f.q;
-        btn.onclick = () => { userInput.value = f.q; sendMessage(); };
-        grid.appendChild(btn);
-      });
-    }
-  })
-  .catch(() => {});
+// --- Modals ---
+
+function showModal(title, htmlContent) {
+  const existing = document.querySelector('.modal-overlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML =
+    '<div class="modal-box">' +
+      '<div class="modal-titlebar">' +
+        '<span>' + title + '</span>' +
+        '<button class="modal-close" onclick="this.closest(\'.modal-overlay\').remove()">X</button>' +
+      '</div>' +
+      '<div class="modal-content">' + htmlContent + '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+function showIndice() {
+  showModal('Indice LISF', '<p style="color:#808080">Cargando indice...</p>');
+  fetch('/api/indice')
+    .then(r => r.json())
+    .then(data => {
+      const content = document.querySelector('.modal-content');
+      if (content && typeof marked !== 'undefined') {
+        content.innerHTML = marked.parse(data.content || 'Indice no disponible.');
+      } else if (content) {
+        content.textContent = data.content || 'Indice no disponible.';
+      }
+    })
+    .catch(() => {
+      const content = document.querySelector('.modal-content');
+      if (content) content.textContent = 'Error al cargar el indice.';
+    });
+}
+
+function showAyuda() {
+  const helpHtml =
+    '<h2>Como usar el Consultor LISF</h2>' +
+    '<p>Este chatbot te ayuda a consultar la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b>.</p>' +
+    '<h3>Ejemplos de preguntas</h3>' +
+    '<ul>' +
+      '<li>"Que dice el articulo 201 sobre las notas tecnicas?"</li>' +
+      '<li>"Cuales son los requisitos para operar como institucion de seguros?"</li>' +
+      '<li>"Que son las reservas tecnicas?"</li>' +
+      '<li>"Explicame el Titulo Tercero de la LISF"</li>' +
+    '</ul>' +
+    '<h3>Consejos</h3>' +
+    '<ul>' +
+      '<li>Puedes hacer preguntas de seguimiento -- el chatbot recuerda la conversacion.</li>' +
+      '<li>Menciona articulos especificos para obtener respuestas mas rapidas.</li>' +
+      '<li>Haz clic en los titulos de la barra lateral para explorar secciones.</li>' +
+      '<li>Las preguntas del panel FAQ dan respuestas instantaneas.</li>' +
+      '<li>Usa <b>Limpiar</b> para iniciar una nueva conversacion.</li>' +
+    '</ul>' +
+    '<h3>Aviso</h3>' +
+    '<p>Esta herramienta es una referencia de estudio. No sustituye la lectura completa de la LISF ni constituye asesoria legal.</p>';
+  showModal('Ayuda', helpHtml);
+}
+
+// --- Init ---
+
+function loadFaqButtons() {
+  fetch('/api/faq')
+    .then(r => r.json())
+    .then(faqs => {
+      const grid = document.getElementById('faq-grid');
+      if (grid && faqs.length) {
+        grid.innerHTML = '';
+        faqs.forEach(f => {
+          const li = document.createElement('li');
+          li.textContent = f.q;
+          li.title = f.q;
+          li.onclick = () => { userInput.value = f.q; sendMessage(); };
+          grid.appendChild(li);
+        });
+      }
+    })
+    .catch(() => {});
+}
+loadFaqButtons();
 
 fetch('/api/health')
   .then(r => r.json())
@@ -723,6 +1232,16 @@ fetch('/api/health')
     statusLed.classList.add('offline');
     statusText.textContent = 'Desconectado';
   });
+
+fetch('/api/auth-config')
+  .then(r => r.json())
+  .then(config => {
+    if (config.auth_required) {
+      authRequired = true;
+      initAuth(config);
+    }
+  })
+  .catch(() => {});
 </script>
 </body>
 </html>

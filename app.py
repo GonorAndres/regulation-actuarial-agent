@@ -15,7 +15,7 @@ logger = logging.getLogger("lisf-agent")
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
 load_dotenv()
 
@@ -35,8 +35,59 @@ PROJECT_DIR = Path(__file__).parent.resolve()
 DOCS_DIR = PROJECT_DIR / "docs"
 LISF_MD_DIR = DOCS_DIR / "lisf_md"
 
-CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-haiku-4-5-20251001")
+CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-6")
+MODEL_MAP = {
+    "rapido": "claude-haiku-4-5-20251001",
+    "detallado": CLAUDE_MODEL,
+}
 FAQ_PATH = PROJECT_DIR / "subagents_outputs" / "lisf_faq.json"
+
+# --- Auth -------------------------------------------------------------------
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
+AUTH_ENABLED = os.getenv("AUTH_ENABLED", "true").lower() in ("true", "1", "yes")
+ACCESS_CODE = os.getenv("ACCESS_CODE", "")
+ALLOWED_EMAILS = {
+    e.strip().lower()
+    for e in os.getenv("ALLOWED_EMAILS", "").split(",")
+    if e.strip()
+}
+
+def _verify_auth(request: Request) -> dict | None:
+    """Verify request auth via Google token or access code. Returns claims or None."""
+    if not AUTH_ENABLED:
+        return {"email": "anonymous"}
+
+    auth = request.headers.get("Authorization", "")
+
+    # Check access code (X-Access-Code header)
+    code = request.headers.get("X-Access-Code", "")
+    if ACCESS_CODE and code == ACCESS_CODE:
+        return {"email": "guest", "auth_method": "access_code"}
+
+    # Check Google token
+    if GOOGLE_CLIENT_ID and auth.startswith("Bearer "):
+        token = auth[7:]
+        try:
+            from google.oauth2 import id_token
+            from google.auth.transport import requests as google_requests
+            claims = id_token.verify_oauth2_token(
+                token, google_requests.Request(), GOOGLE_CLIENT_ID
+            )
+            email = claims.get("email", "").lower()
+            if ALLOWED_EMAILS and email not in ALLOWED_EMAILS:
+                logger.warning("Rejected email: %s", email)
+                return None
+            claims["auth_method"] = "google"
+            return claims
+        except Exception as e:
+            logger.warning("Token verification failed: %s", e)
+            return None
+
+    # No valid auth method and auth is enabled
+    if not GOOGLE_CLIENT_ID and not ACCESS_CODE:
+        return {"email": "anonymous"}  # auth enabled but nothing configured
+    return None
 
 # --- FAQ Cache ---------------------------------------------------------------
 
@@ -82,34 +133,115 @@ def _match_faq(user_message: str) -> str | None:
             return FAQ_ENTRIES[idx]["a"]
     return None
 
+# --- Article Index -----------------------------------------------------------
+
+_ARTICLE_PATTERN = re.compile(r"\*\*ARTÍCULO\s+(\d+)")
+
+def _build_article_index() -> dict[int, str]:
+    """Scan LISF markdown files and build article_number -> filename mapping."""
+    index: dict[int, str] = {}
+    if not LISF_MD_DIR.is_dir():
+        return index
+    for md_file in sorted(LISF_MD_DIR.glob("*.md")):
+        if md_file.name in ("00_indice.md", "full_lisf.md"):
+            continue
+        try:
+            for line in md_file.read_text(encoding="utf-8").splitlines():
+                m = _ARTICLE_PATTERN.search(line)
+                if m:
+                    index[int(m.group(1))] = md_file.name
+        except Exception:
+            continue
+    return index
+
+ARTICLE_INDEX = _build_article_index()
+logger.info("Article index built: %d articles mapped", len(ARTICLE_INDEX))
+
+_ARTICLE_REF = re.compile(r"(?:art[ií]culo|art\.?)\s*(\d+)", re.IGNORECASE)
+
+def _article_hints(user_message: str) -> str:
+    """Detect article references in user message and return file hints."""
+    matches = _ARTICLE_REF.findall(user_message)
+    if not matches:
+        return ""
+    hints = []
+    seen = set()
+    for num_str in matches:
+        num = int(num_str)
+        if num in seen:
+            continue
+        seen.add(num)
+        filename = ARTICLE_INDEX.get(num)
+        if filename:
+            hints.append(
+                f"[interno] Articulo {num} -> archivo {filename}. No menciones este archivo al usuario."
+            )
+    return "\n".join(hints)
+
 # Detect mode at import time
 API_KEY = os.getenv("ANTHROPIC_API_KEY", "").strip()
 USE_API_KEY_MODE = bool(API_KEY)
 
-SYSTEM_PROMPT = """Eres un consultor experto en regulacion mexicana de seguros y fianzas.
-Tu fuente principal es la Ley de Instituciones de Seguros y de Fianzas (LISF).
+_LISF_CONTEXT = """## Datos clave de la LISF (usa esta informacion para responder sin buscar)
+- **Nombre completo:** Ley de Instituciones de Seguros y de Fianzas (LISF)
+- **Publicacion original:** 4 de abril de 2013 en el DOF
+- **Total de articulos:** 510 (Arts. 1-510), mas articulos transitorios
+- **Estructura:** 13 Titulos, cada uno con capitulos. Los Articulos Transitorios (originales y de todas las reformas) se ubican al final de la ley.
+- **Reformas publicadas en el DOF:**
+  1. 10 de enero de 2014 — Materia financiera (Arts. 49, 50, 51, 80, 369, 372)
+  2. 22 de junio de 2018 — Inclusion de personas con discapacidad (Art. 27)
+  3. 11 de mayo de 2022 — Paridad de genero (Art. 368)
+  4. 24 de enero de 2024 — Procedimiento administrativo (Arts. 334, 335, 364, 388, 478)
+  5. 14 de noviembre de 2025 — Homologacion con Codigo Nacional de Procedimientos Civiles y Familiares (Arts. 193, 280, 281, 479)
+- **Articulos mas recientemente reformados:** 193, 280, 281 y 479 (reforma del 14 nov 2025)
+- **Regulador:** Comision Nacional de Seguros y Fianzas (CNSF)
+- **Alcance:** Regula la organizacion, operacion y funcionamiento de Instituciones de Seguros, Instituciones de Fianzas y Sociedades Mutualistas de Seguros
 
+## Estructura de Titulos
+| Titulo | Tema | Articulos aprox. |
+|--------|------|-----------------|
+| I | Disposiciones preliminares | 1-18 |
+| II | Organizacion (autorizaciones, capital, gobierno corporativo) | 19-38 |
+| III | Intermediarios (agentes, reaseguradoras extranjeras) | 39-89 |
+| IV | Operacion (contratos, notas tecnicas, coaseguro, reaseguro) | 90-117 |
+| V | Reservas tecnicas, inversiones, capital minimo, solvencia | 118-273 |
+| VI | Contabilidad, actuarios, auditoria | 214-293 |
+| VII | Vigilancia, medidas correctivas, intervencion | 294-319 |
+| VIII | Revocacion, liquidacion, quiebra | 274-319 |
+| IX | Otras instituciones (reaseguradoras, oficinas de representacion) | 320-369 |
+| X | Grupos financieros, filiales | 370-392 |
+| XI | CNSF (facultades, sanciones) | 393-443 |
+| XII | Procedimientos administrativos y penales | 444-485 |
+| XIII | Disposiciones finales | 486-510 |
+"""
+
+SYSTEM_PROMPT = """**Aviso:** Esta herramienta es una referencia rapida de estudio. No sustituye la lectura completa de la LISF ni constituye asesoria legal.
+
+Eres un tutor amigable que ayuda a entender la Ley de Instituciones de Seguros y de Fianzas (LISF) de forma clara y accesible.
+
+""" + _LISF_CONTEXT + """
 ## Herramientas disponibles
 Tienes 3 herramientas para consultar la LISF:
-1. **list_lisf_files** — Muestra el indice de archivos con los articulos que contiene cada uno. Usala primero para orientarte.
-2. **search_lisf** — Busca texto en toda la LISF. Usa terminos cortos y especificos. Si no encuentras resultados, prueba con sinonimos o sin acentos.
-3. **read_lisf_file** — Lee un archivo completo. Usala despues de identificar el archivo relevante con list o search.
+1. **search_lisf** -- Busca texto en toda la LISF. Usa terminos cortos y especificos.
+2. **read_lisf_file** -- Lee un archivo completo. Si el usuario pregunta por un articulo especifico y te indican el archivo, lee directamente ese archivo.
+3. **list_lisf_files** -- Muestra el indice de archivos. Usala solo si necesitas orientarte.
 
-## Estrategia de busqueda
-- SIEMPRE consulta la ley antes de responder. No confies en tu memoria.
-- Primero busca con search_lisf usando palabras clave. Si necesitas contexto completo, lee el archivo con read_lisf_file.
-- Para preguntas sobre un articulo especifico (ej: "Art. 201"), busca "ARTICULO 201" directamente.
-- Si la busqueda no da resultados, intenta con variantes: sin acentos, sinonimos, o busca en el indice.
+## Estrategia de respuesta
+- Si puedes responder con los Datos clave de arriba, hazlo INMEDIATAMENTE sin usar herramientas. Usa herramientas solo cuando necesites el texto exacto de un articulo.
+- Si la pregunta es ambigua o demasiado general, pide una aclaracion al usuario en vez de buscar a ciegas. Ejemplo: "articulos mas nuevos" puede significar los de numeracion mas alta, los mas recientemente reformados, o los transitorios. Pregunta que quiere decir.
+- Responde de forma progresiva: empieza con una explicacion breve y clara, luego consulta la fuente para citar el fundamento exacto.
+- SIEMPRE consulta la ley antes de dar la cita exacta. No confies en tu memoria para los detalles.
+- Si el mensaje incluye una pista de archivo, lee ese archivo directamente sin buscar primero.
 
 ## Formato de respuesta
 - Responde en espanol a menos que el usuario escriba en otro idioma.
-- Escribe en PROSA, como un consultor explicando a un colega. Parrafos fluidos y naturales.
-- NO uses listas con viñetas ni bullet points para explicar. Solo usa listas numeradas cuando
-  cites fracciones o incisos textuales de la ley que ya vienen en formato de lista.
-- Estructura: primero la respuesta directa en un parrafo, luego el fundamento legal.
-- Cita articulos en linea dentro del texto: "segun el Articulo 201, fraccion I..." o "(Art. 201-I)".
-- Cuando cites texto literal de la ley, usa comillas para distinguirlo de tu explicacion.
-- Se conciso. No repitas el texto completo del articulo — resume y cita la referencia.
+- Usa un tono didactico y accesible, como un tutor explicando a un estudiante.
+- Escribe en prosa clara. Solo usa listas numeradas cuando cites fracciones o incisos textuales de la ley.
+- Cita articulos en linea: "segun el Articulo 201, fraccion I..." o "(Art. 201-I)".
+- Se conciso. Resume y cita la referencia.
+- Siempre indica donde profundizar: "Para mas detalle, consulta el Articulo X, fracciones Y-Z del Titulo N."
+- NO uses emojis en tus respuestas. Nunca.
+- NUNCA menciones nombres de archivos, rutas internas, ni herramientas (Read, Grep, docs/lisf_md/, etc.) en tu respuesta. El usuario no sabe que existen. Cuando quieras referir al usuario a una fuente, usa el nombre del Titulo y Capitulo (ej: "Titulo Quinto, Capitulo Tercero") o la URL publica: https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf
 
 ## Limites
 - Si no encuentras la respuesta en la LISF, dilo honestamente.
@@ -118,30 +250,43 @@ Tienes 3 herramientas para consultar la LISF:
 """
 
 # System prompt for OAuth mode (points at markdown files if available, else PDF)
-SYSTEM_PROMPT_OAUTH = """Eres un consultor experto en regulacion mexicana de seguros y fianzas.
-Tu fuente principal es la Ley de Instituciones de Seguros y de Fianzas (LISF).
+SYSTEM_PROMPT_OAUTH = """**Aviso:** Esta herramienta es una referencia rapida de estudio. No sustituye la lectura completa de la LISF ni constituye asesoria legal.
 
+Eres un tutor amigable que ayuda a entender la Ley de Instituciones de Seguros y de Fianzas (LISF) de forma clara y accesible.
+
+""" + _LISF_CONTEXT + """
 {source_instructions}
 
-## Estrategia de busqueda
-- SIEMPRE consulta la ley antes de responder. No confies en tu memoria.
-- Consulta docs/lisf_md/00_indice.md para orientarte sobre que archivo contiene que articulos.
-- Usa Grep para buscar terminos especificos en docs/lisf_md/.
-- Usa Read para leer el archivo completo cuando necesites contexto.
+## Estrategia de respuesta
+- Si puedes responder con los Datos clave de arriba, hazlo INMEDIATAMENTE sin usar herramientas. Usa Read/Grep solo cuando necesites el texto exacto de un articulo.
+- Si la pregunta es ambigua o demasiado general, pide una aclaracion al usuario en vez de buscar a ciegas. Ejemplo: "articulos mas nuevos" puede significar los de numeracion mas alta, los mas recientemente reformados, o los transitorios. Pregunta que quiere decir.
+- Responde de forma progresiva: empieza con una explicacion breve y clara, luego consulta la fuente para citar el fundamento exacto.
+- SIEMPRE consulta la ley antes de dar la cita exacta. No confies en tu memoria para los detalles.
+- Si el mensaje incluye una pista de archivo, lee ese archivo directamente sin buscar primero.
+- Usa Grep solo cuando necesites buscar un tema general.
 
 ## Formato de respuesta
 - Responde en espanol a menos que el usuario escriba en otro idioma.
-- Escribe en PROSA, como un consultor explicando a un colega. Parrafos fluidos y naturales.
-- NO uses listas con viñetas ni bullet points. Solo usa listas numeradas cuando
-  cites fracciones o incisos textuales de la ley que ya vienen en formato de lista.
-- Cita articulos en linea dentro del texto: "segun el Articulo 201, fraccion I...".
-- Se conciso. Resume y cita la referencia, no repitas texto completo.
+- Usa un tono didactico y accesible, como un tutor explicando a un estudiante.
+- Escribe en prosa clara. Solo usa listas numeradas cuando cites fracciones o incisos textuales de la ley.
+- Cita articulos en linea: "segun el Articulo 201, fraccion I..." o "(Art. 201-I)".
+- Se conciso. Resume y cita la referencia.
+- Siempre indica donde profundizar: "Para mas detalle, consulta el Articulo X, fracciones Y-Z del Titulo N."
+- NO uses emojis en tus respuestas. Nunca.
+- NUNCA menciones nombres de archivos, rutas internas, ni herramientas (Read, Grep, docs/lisf_md/, etc.) en tu respuesta. El usuario no sabe que existen. Cuando quieras referir al usuario a una fuente, usa el nombre del Titulo y Capitulo (ej: "Titulo Quinto, Capitulo Tercero") o la URL publica: https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf
 
 ## Limites
 - Si no encuentras la respuesta en la LISF, dilo honestamente.
 - Si el usuario pregunta algo fuera del alcance de la LISF, puedes responder
   con tu conocimiento general pero aclara que no proviene de la ley.
 """
+
+HAIKU_SUFFIX = (
+    "\n\n## Modo rapido\n"
+    "Estas en modo rapido. Se mas conciso: "
+    "da la respuesta directa con la cita del articulo. "
+    "Omite explicaciones largas y ve al grano."
+)
 
 
 # =============================================================================
@@ -217,7 +362,7 @@ if USE_API_KEY_MODE:
         source_dir = _get_source_dir()
 
         if source_dir is None:
-            return "Error: No se encontraron archivos markdown de la LISF en docs/lisf_md/. Ejecuta convert_pdf.py primero."
+            return "Error: Los archivos de la LISF no estan disponibles en este momento."
 
         if name == "list_lisf_files":
             index_file = source_dir / "00_indice.md"
@@ -265,20 +410,34 @@ if USE_API_KEY_MODE:
 
         return f"Herramienta desconocida: {name}"
 
-    async def _api_key_stream(user_message: str):
+    async def _api_key_stream(user_message: str, history: list | None = None, *, model: str = CLAUDE_MODEL, rapido: bool = False):
         """Stream a response using the Anthropic API with tool use."""
-        messages = [{"role": "user", "content": user_message}]
+        hints = _article_hints(user_message)
+        prompt = f"{user_message}\n\n[Sistema: {hints}]" if hints else user_message
 
-        max_iterations = 15
+        # Build messages from conversation history
+        messages = []
+        if history:
+            # Include prior turns (exclude the current message which is last in history)
+            for turn in history[:-1]:
+                role = turn.get("role", "user")
+                content = turn.get("content", "")
+                if role in ("user", "assistant") and content:
+                    messages.append({"role": role, "content": content})
+        messages.append({"role": "user", "content": prompt})
+
+        system = SYSTEM_PROMPT + (HAIKU_SUFFIX if rapido else "")
+
+        max_iterations = 5
         for _ in range(max_iterations):
             # Stream the response
             collected_content = []
             stop_reason = None
 
             async with _client.messages.stream(
-                model=CLAUDE_MODEL,
+                model=model,
                 max_tokens=4096,
-                system=SYSTEM_PROMPT,
+                system=system,
                 tools=TOOLS,
                 messages=messages,
             ) as stream:
@@ -375,9 +534,11 @@ if _oauth_available:
         """Build OAuth system prompt based on available sources."""
         if LISF_MD_DIR.is_dir() and any(LISF_MD_DIR.glob("*.md")):
             instructions = (
-                "Los archivos markdown de la LISF se encuentran en: docs/lisf_md/\n"
-                "Usa Grep para buscar articulos y Read para leer archivos especificos.\n"
-                "Consulta docs/lisf_md/00_indice.md para ver el indice de archivos."
+                "## Fuentes internas (NO mencionar al usuario)\n"
+                "Los archivos de la LISF estan en docs/lisf_md/. "
+                "Usa Grep para buscar y Read para leer. "
+                "El indice esta en docs/lisf_md/00_indice.md.\n"
+                "NUNCA menciones estos paths, nombres de archivo, ni herramientas en tu respuesta."
             )
         else:
             instructions = (
@@ -389,17 +550,44 @@ if _oauth_available:
     AGENT_OPTIONS = ClaudeCodeOptions(
         system_prompt=_get_oauth_system_prompt(),
         model=CLAUDE_MODEL,
-        allowed_tools=["Read", "Bash", "Glob", "Grep"],
+        allowed_tools=["Read", "Grep"],
         permission_mode="bypassPermissions",
         cwd=str(PROJECT_DIR),
-        max_turns=15,
+        max_turns=5,
     )
 
-    async def _oauth_stream(user_message: str):
+    async def _oauth_stream(user_message: str, history: list | None = None, *, model: str = CLAUDE_MODEL, rapido: bool = False):
         """Stream a response using claude-code-sdk."""
+        hints = _article_hints(user_message)
+        prompt = f"{user_message}\n\n[Sistema: {hints}]" if hints else user_message
+
+        # Include conversation history as context in the prompt
+        if history and len(history) > 1:
+            context_lines = []
+            for turn in history[:-1]:
+                role = "Usuario" if turn.get("role") == "user" else "Asistente"
+                content = turn.get("content", "")
+                if content:
+                    context_lines.append(f"{role}: {content}")
+            if context_lines:
+                context = "\n\n".join(context_lines)
+                prompt = f"[Historial de conversacion previa]\n{context}\n\n[Mensaje actual del usuario]\n{prompt}"
+
+        system_prompt = _get_oauth_system_prompt() + (HAIKU_SUFFIX if rapido else "")
+        # OAuth mode: always use CLAUDE_MODEL (credentials may not authorize other models)
+        # Rapido differentiation is handled via prompt suffix only
+        request_options = ClaudeCodeOptions(
+            system_prompt=system_prompt,
+            model=CLAUDE_MODEL,
+            allowed_tools=["Read", "Grep"],
+            permission_mode="bypassPermissions",
+            cwd=str(PROJECT_DIR),
+            max_turns=3 if rapido else 5,
+        )
+
         async for message in claude_query(
-            prompt=user_message,
-            options=AGENT_OPTIONS,
+            prompt=prompt,
+            options=request_options,
         ):
             if isinstance(message, AssistantMessage):
                 for block in message.content:
@@ -435,6 +623,27 @@ async def serve_frontend():
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
+@app.get("/api/auth-config")
+async def auth_config():
+    """Return auth configuration for the frontend."""
+    return {
+        "google_client_id": GOOGLE_CLIENT_ID if AUTH_ENABLED else "",
+        "auth_required": AUTH_ENABLED and bool(GOOGLE_CLIENT_ID or ACCESS_CODE),
+        "has_google": AUTH_ENABLED and bool(GOOGLE_CLIENT_ID),
+        "has_access_code": AUTH_ENABLED and bool(ACCESS_CODE),
+    }
+
+
+@app.post("/api/verify-code")
+async def verify_code(request: Request):
+    """Verify an access code. Returns success or 401."""
+    body = await request.json()
+    code = body.get("code", "").strip()
+    if ACCESS_CODE and code == ACCESS_CODE:
+        return {"valid": True}
+    return JSONResponse(status_code=401, content={"valid": False, "error": "Codigo de acceso invalido."})
+
+
 @app.post("/api/chat")
 async def chat(request: Request):
     """
@@ -442,8 +651,20 @@ async def chat(request: Request):
     Request body: {"message": "Que dice el articulo 201?"}
     Response: text/event-stream with JSON chunks
     """
+    # Auth check
+    claims = _verify_auth(request)
+    if claims is None:
+        return JSONResponse(
+            status_code=401,
+            content={"error": "No autorizado. Inicia sesion o ingresa el codigo de acceso."},
+        )
+
     body = await request.json()
     user_message = body.get("message", "").strip()
+    history = body.get("history", [])
+    mode = body.get("mode", "detallado")
+    model = MODEL_MAP.get(mode, MODEL_MAP["detallado"])
+    is_rapido = (mode == "rapido")
 
     if not user_message:
         return {"error": "No message provided"}
@@ -460,9 +681,9 @@ async def chat(request: Request):
                 return
 
             if USE_API_KEY_MODE:
-                gen = _api_key_stream(user_message)
+                gen = _api_key_stream(user_message, history, model=model, rapido=is_rapido)
             elif _oauth_available:
-                gen = _oauth_stream(user_message)
+                gen = _oauth_stream(user_message, history, model=model, rapido=is_rapido)
             else:
                 yield f"data: {json.dumps({'type': 'error', 'content': 'No auth configured. Set ANTHROPIC_API_KEY or install claude-code-sdk.'})}\n\n"
                 return
@@ -488,6 +709,15 @@ async def chat(request: Request):
 async def faq():
     """Return FAQ questions for the frontend."""
     return [{"q": e["q"]} for e in FAQ_ENTRIES]
+
+
+@app.get("/api/indice")
+async def indice():
+    """Return the LISF index content."""
+    index_file = LISF_MD_DIR / "00_indice.md"
+    if index_file.exists():
+        return {"content": index_file.read_text(encoding="utf-8")}
+    return {"content": "Indice no disponible."}
 
 
 @app.get("/api/health")
