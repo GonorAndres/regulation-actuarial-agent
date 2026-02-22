@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>★ LISF Agent ★ ~ Consultor Regulatorio ~ ★</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    color: #000000;
+    background-color: #c0c0c0;
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='8' height='8' fill='%23c0c0c0'/%3E%3Crect x='0' y='0' width='4' height='4' fill='%23b8b8b8' opacity='0.3'/%3E%3Crect x='4' y='4' width='4' height='4' fill='%23b8b8b8' opacity='0.3'/%3E%3C/svg%3E");
+    margin: 0;
+    padding: 8px;
+  }
+
+  .bevel-out {
+    border: 2px outset #ffffff;
+    background: #c0c0c0;
+  }
+  .bevel-in {
+    border: 2px inset #ffffff;
+    background: #ffffff;
+  }
+
+  .main-table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .header-banner {
+    background: linear-gradient(to right, #000080, #0000cd, #000080);
+    padding: 12px 16px;
+    border: 3px outset #4444aa;
+    text-align: center;
+  }
+
+  .header-banner h1 {
+    font-family: 'Comic Sans MS', 'Arial Black', Arial, sans-serif;
+    color: #ffff00;
+    font-size: 28px;
+    margin: 0;
+    text-shadow: 2px 2px 0px #000000;
+    letter-spacing: 2px;
+  }
+
+  .header-banner .subtitle {
+    color: #00ffff;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    margin-top: 4px;
+  }
+
+  .star-divider {
+    color: #ffff00;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin: 6px 0;
+  }
+
+  .marquee-bar {
+    background: #000080;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 0;
+    border: 2px inset #4444aa;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 22s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .nav-bar {
+    background: #c0c0c0;
+    padding: 6px 8px;
+    border: 2px outset #ffffff;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    padding: 3px 10px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    cursor: pointer;
+    color: #000;
+  }
+  .nav-btn:active { border-style: inset; }
+  .nav-btn.active { border-style: inset; background: #a0a0a0; }
+
+  .nav-separator {
+    width: 2px;
+    height: 20px;
+    background: #808080;
+    border-right: 1px solid #ffffff;
+  }
+
+  .status-bar {
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    padding: 3px 8px;
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .status-section {
+    border: 1px inset #ffffff;
+    padding: 1px 8px;
+    background: #c0c0c0;
+  }
+
+  .status-led {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff00;
+    border: 1px solid #008000;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .status-led.offline { background: #ff0000; border-color: #800000; }
+
+  .chat-frame {
+    border: 2px inset #ffffff;
+    background: #ffffff;
+    height: calc(100vh - 420px);
+    min-height: 280px;
+    max-height: 700px;
+    overflow-y: scroll;
+    padding: 8px;
+  }
+
+  .chat-frame::-webkit-scrollbar { width: 16px; }
+  .chat-frame::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
+  .chat-frame::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
+  .chat-frame::-webkit-scrollbar-button { background: #c0c0c0; border: 2px outset #ffffff; height: 16px; }
+
+  .msg { margin-bottom: 12px; font-size: 15px; line-height: 1.5; }
+
+  .msg-user {
+    padding: 8px;
+    background: #ffffcc;
+    border: 1px solid #cccc66;
+  }
+  .msg-user::before {
+    content: "👤 Tú escribiste:";
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    color: #666633;
+    margin-bottom: 4px;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .msg-agent {
+    padding: 8px;
+    background: #eeeeff;
+    border: 1px solid #9999cc;
+  }
+  .msg-agent::before {
+    content: "🖥️ LISF Agent responde:";
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333366;
+    margin-bottom: 4px;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .msg-agent strong, .msg-agent b { color: #000080; }
+  .msg-agent code {
+    font-family: 'Courier New', monospace;
+    background: #ddddff;
+    padding: 1px 4px;
+    border: 1px solid #aaaacc;
+  }
+
+  .msg-error {
+    padding: 8px;
+    background: #ffcccc;
+    border: 1px solid #cc6666;
+    color: #880000;
+  }
+  .msg-error::before {
+    content: "⚠️ ERROR:";
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 4px;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .tool-tag {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    background: #e0e0e0;
+    border: 1px inset #ffffff;
+    padding: 2px 6px;
+    margin: 4px 0;
+    color: #333;
+  }
+  .tool-tag::before { content: "⚙ "; }
+
+  .welcome-box { text-align: center; padding: 20px; }
+
+  .welcome-box h2 {
+    font-family: 'Arial Black', Arial, sans-serif;
+    color: #000080;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .welcome-box p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+
+  .welcome-box hr {
+    border: none;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 12px 40px;
+  }
+
+  .faq-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .faq-btn {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    padding: 5px 12px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    cursor: pointer;
+    color: #000080;
+    text-decoration: underline;
+  }
+  .faq-btn:hover { background: #a0a0ff; }
+  .faq-btn:active { border-style: inset; }
+
+  .construction {
+    font-size: 11px;
+    color: #808080;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 4px;
+  }
+
+  .blink { animation: blink90s 1s steps(1) infinite; }
+  @keyframes blink90s {
+    0%, 49% { visibility: visible; }
+    50%, 100% { visibility: hidden; }
+  }
+
+  .input-panel {
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+
+  .input-spacer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .input-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .input-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  #user-input {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    padding: 8px;
+    border: 2px inset #ffffff;
+    background: #ffffff;
+    resize: none;
+    min-height: 60px;
+    max-height: 120px;
+    outline: none;
+  }
+
+  #send-btn {
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 20px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    cursor: pointer;
+    color: #000;
+    height: 100%;
+    min-height: 60px;
+    white-space: nowrap;
+  }
+  #send-btn:active { border-style: inset; }
+  #send-btn:disabled { color: #808080; }
+
+  .typing90s {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #000080;
+  }
+  .typing90s::after {
+    content: "█";
+    animation: cursor90s 0.8s steps(1) infinite;
+  }
+  @keyframes cursor90s {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .counter-box { display: inline-flex; gap: 2px; }
+
+  .counter-digit {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border: 1px inset #333;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  .hr90s {
+    height: 4px;
+    background: linear-gradient(to right, #000080, #00ffff, #ff00ff, #ffff00, #00ff00, #000080);
+    border: none;
+    margin: 0;
+  }
+
+  .footer-links {
+    text-align: center;
+    padding: 8px;
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+  }
+  .footer-links a { color: #0000ff; }
+  .footer-links a:visited { color: #800080; }
+
+  .under-construction {
+    background: #ffff00;
+    color: #000;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 11px;
+    text-align: center;
+    padding: 3px;
+    border: 2px outset #cccc00;
+  }
+
+  .uc-stripe {
+    display: inline-block;
+    background: repeating-linear-gradient(-45deg, #000 0px, #000 8px, #ffcc00 8px, #ffcc00 16px);
+    width: 30px;
+    height: 14px;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  @media (max-width: 600px) {
+    .header-banner h1 { font-size: 20px; }
+    .chat-frame { height: calc(100vh - 380px); min-height: 200px; }
+    .suggestion-table td { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<table class="main-table" cellpadding="0" cellspacing="0">
+  <tr><td>
+    <div class="header-banner">
+      <div class="star-divider">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+      <h1>~ LISF Agent ~</h1>
+      <div class="subtitle">Consultor de la Ley de Instituciones de Seguros y de Fianzas</div>
+      <div class="star-divider">★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+    </div>
+  </td></tr>
+
+  <tr><td><hr class="hr90s"></td></tr>
+
+  <tr><td>
+    <div class="marquee-bar">
+      <span class="marquee-content">
+        *** BIENVENIDO al Consultor LISF *** Pregunta sobre cualquier artículo de la Ley *** Powered by Claude Agent SDK *** Última actualización: Feb 2026 ***
+      </span>
+    </div>
+  </td></tr>
+
+  <tr><td>
+    <div class="nav-bar">
+      <button class="nav-btn active">📝 Chat</button>
+      <button class="nav-btn" onclick="alert('Función disponible pronto!')">📖 Índice LISF</button>
+      <button class="nav-btn" onclick="alert('Función disponible pronto!')">❓ Ayuda</button>
+      <div class="nav-separator"></div>
+      <button class="nav-btn" onclick="clearChat()">🗑️ Limpiar</button>
+    </div>
+  </td></tr>
+
+  <tr><td>
+    <div class="under-construction">
+      <span class="uc-stripe"></span>
+      EN CONSTRUCCIÓN — Versión Beta
+      <span class="uc-stripe"></span>
+    </div>
+  </td></tr>
+
+  <tr><td>
+    <div class="chat-frame" id="chat-container">
+      <div id="welcome" class="welcome-box">
+        <h2>Bienvenido al Consultor LISF</h2>
+        <hr>
+        <p>
+          Este sitio te permite consultar la
+          <b>Ley de Instituciones de Seguros y de Fianzas</b>
+          usando inteligencia artificial.<br>
+          Escribe tu pregunta abajo o haz clic en una sugerencia:
+        </p>
+        <div id="faq-grid" class="faq-grid"></div>
+        <hr>
+        <div class="construction">
+          <span class="blink">★</span>
+          Mejor visto en Netscape Navigator 4.0 a 800x600
+          <span class="blink">★</span>
+        </div>
+      </div>
+    </div>
+  </td></tr>
+
+  <tr><td><hr class="hr90s"></td></tr>
+
+  <tr><td>
+    <div class="input-panel">
+      <div class="input-spacer">
+        <span>Consultor LISF v1.0 &mdash; Powered by Claude</span>
+      </div>
+      <div class="input-area">
+        <div class="input-label">Escribe tu pregunta:</div>
+        <div class="input-row">
+          <textarea id="user-input" rows="3" placeholder="Ej: ¿Qué dice el artículo 201 sobre las notas técnicas?"></textarea>
+          <button id="send-btn" onclick="sendMessage()">Enviar &gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+  </td></tr>
+
+  <tr><td>
+    <div class="status-bar">
+      <span class="status-section">
+        <span class="status-led" id="status-led"></span>
+        <span id="status-text">Conectado</span>
+      </span>
+      <span class="status-section">
+        Mensajes: <b id="msg-count">0</b>
+      </span>
+      <span class="status-section">
+        Visitante #
+        <span class="counter-box">
+          <span class="counter-digit">0</span>
+          <span class="counter-digit">0</span>
+          <span class="counter-digit">0</span>
+          <span class="counter-digit" id="visitor-num">1</span>
+        </span>
+      </span>
+    </div>
+  </td></tr>
+
+  <tr><td>
+    <div class="footer-links">
+      <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf">📄 Descargar LISF (PDF)</a>
+      &nbsp;|&nbsp;
+      <a href="https://lisfcusf.cnsf.gob.mx/">🏛️ CNSF Interactiva</a>
+      &nbsp;|&nbsp;
+      <a href="#" onclick="alert('El libro de visitas estará disponible pronto :)'); return false;">📓 Firmar libro de visitas</a>
+      <br>
+      <span style="color:#808080">
+        © 2026 LISF Agent · Hecho con Claude Agent SDK
+        · <span class="blink" style="color:red">NEW!</span>
+      </span>
+    </div>
+  </td></tr>
+</table>
+
+<script>
+const chatContainer = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const statusLed = document.getElementById('status-led');
+const statusText = document.getElementById('status-text');
+const msgCount = document.getElementById('msg-count');
+const welcome = document.getElementById('welcome');
+
+let isStreaming = false;
+let messageCounter = 0;
+
+document.getElementById('visitor-num').textContent = Math.floor(Math.random() * 9) + 1;
+
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 100) + 'px';
+});
+
+userInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function askSuggestion(btn) { userInput.value = btn.textContent; sendMessage(); }
+
+function clearChat() {
+  if (confirm('¿Limpiar todas las conversaciones?')) {
+    chatContainer.innerHTML = '';
+    messageCounter = 0;
+    msgCount.textContent = '0';
+  }
+}
+
+function updateMsgCount() { messageCounter++; msgCount.textContent = messageCounter; }
+
+function addMessage(role, content) {
+  const div = document.createElement('div');
+  const cls = role === 'user' ? 'msg-user' : role === 'error' ? 'msg-error' : 'msg-agent';
+  div.className = `msg ${cls}`;
+  div.innerHTML = content;
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  updateMsgCount();
+  return div;
+}
+
+function addToolTag(container, toolName) {
+  const tag = document.createElement('div');
+  tag.className = 'tool-tag';
+  tag.textContent = `Usando herramienta: ${toolName}`;
+  container.appendChild(tag);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg msg-agent';
+  div.id = 'typing-msg';
+  div.innerHTML = '<span class="typing90s">Procesando consulta</span>';
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-msg');
+  if (el) el.remove();
+}
+
+function formatText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+async function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text || isStreaming) return;
+
+  if (welcome) welcome.style.display = 'none';
+
+  addMessage('user', formatText(text));
+  userInput.value = '';
+  userInput.style.height = 'auto';
+
+  isStreaming = true;
+  sendBtn.disabled = true;
+  statusText.textContent = 'Procesando...';
+  showTyping();
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+    });
+
+    removeTyping();
+
+    if (!response.ok) {
+      addMessage('error', `HTTP Error: ${response.status} ${response.statusText}`);
+      return;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let agentDiv = null;
+    let currentText = '';
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.type === 'text') {
+            if (!agentDiv) agentDiv = addMessage('agent', '');
+            currentText += data.content;
+            agentDiv.innerHTML = formatText(currentText);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }
+          else if (data.type === 'tool_use') {
+            if (!agentDiv) agentDiv = addMessage('agent', '');
+            addToolTag(agentDiv, data.tool);
+          }
+          else if (data.type === 'error') {
+            addMessage('error', data.content);
+          }
+        } catch (e) { /* skip */ }
+      }
+    }
+
+    if (!agentDiv) addMessage('agent', '<i>Sin respuesta del agente.</i>');
+
+  } catch (err) {
+    removeTyping();
+    addMessage('error', `Error de conexión: ${err.message}`);
+  } finally {
+    isStreaming = false;
+    sendBtn.disabled = false;
+    statusText.textContent = 'Conectado';
+    userInput.focus();
+  }
+}
+
+// Load FAQ buttons
+fetch('/api/faq')
+  .then(r => r.json())
+  .then(faqs => {
+    const grid = document.getElementById('faq-grid');
+    if (grid && faqs.length) {
+      faqs.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = 'faq-btn';
+        btn.textContent = f.q;
+        btn.onclick = () => { userInput.value = f.q; sendMessage(); };
+        grid.appendChild(btn);
+      });
+    }
+  })
+  .catch(() => {});
+
+fetch('/api/health')
+  .then(r => r.json())
+  .then(data => {
+    if (!data.auth_configured) {
+      statusLed.classList.add('offline');
+      statusText.textContent = 'Sin autenticacion';
+    } else {
+      const modeLabel = data.mode === 'api_key' ? 'API' : 'OAuth';
+      statusText.textContent = 'Conectado (' + modeLabel + ')';
+    }
+  })
+  .catch(() => {
+    statusLed.classList.add('offline');
+    statusText.textContent = 'Desconectado';
+  });
+</script>
+</body>
+</html>

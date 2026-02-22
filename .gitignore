@@ -1,0 +1,6 @@
+.env
+.env.local
+__pycache__/
+*.pyc
+docs/LISF.pdf
+docs/lisf_md/full_lisf.md

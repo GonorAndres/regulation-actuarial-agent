@@ -1,0 +1,11 @@
+.env
+.env.local
+.git/
+.claude/
+__pycache__/
+*.pyc
+docs/LISF.pdf
+docs/lisf_md/full_lisf.md
+convert_pdf.py
+Dockerfile
+Dockerfile.oauth
