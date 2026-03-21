@@ -4,3 +4,15 @@ __pycache__/
 *.pyc
 docs/LISF.pdf
 docs/lisf_md/full_lisf.md
+
+# Audit 2026-03-21
+CLAUDE.md
+subagents_outputs/
+cat
+*.png
+.playwright-mcp/
+.claude/
+docs/regulation.db
+docs/CUSF.pdf
+docs/CUSF_gob_2024.docx
+docs/cusf_md/

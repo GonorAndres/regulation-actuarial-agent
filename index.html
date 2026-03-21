@@ -3,122 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LISF Agent v1.0 - #lisf</title>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<title>ActuarialClaude - Consultor de Regulación Aseguradora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-  * { box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB;
+    --surface: #FFFFFF;
+    --primary: #2D5F5D;
+    --accent: #D4956A;
+    --text: #2C3E50;
+    --text-light: #7F8C8D;
+    --border: #E0D5CC;
+    --chat-user: #F0E6DC;
+    --chat-bot: #FFFFFF;
+    --error: #C0392B;
+    --success: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Arial', sans-serif;
-    font-size: 13px;
-    color: #000;
-    background: #008080;
-    margin: 0;
-    padding: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
     height: 100vh;
     overflow: hidden;
   }
 
-  /* === WINDOW CHROME === */
-  .mirc-window {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
+  /* === SCROLLBARS === */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #c4b8ad; }
+
+  /* === LAYOUT SHELL === */
+  .app-shell {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 12px);
+    height: 100vh;
   }
 
-  .titlebar {
-    background: linear-gradient(to right, #000080, #1084d0);
-    padding: 3px 4px;
+  /* === TOP NAV === */
+  .top-nav {
+    height: 56px;
+    background: var(--primary);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 22px;
-    user-select: none;
-  }
-  .titlebar-text {
-    color: #fff;
-    font-weight: bold;
-    font-size: 12px;
-    padding-left: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .titlebar-buttons {
-    display: flex;
-    gap: 2px;
+    padding: 0 20px;
     flex-shrink: 0;
+    z-index: 100;
   }
-  .titlebar-btn {
-    width: 16px;
-    height: 14px;
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    font-size: 9px;
-    font-weight: bold;
-    line-height: 10px;
-    text-align: center;
-    cursor: default;
-    color: #000;
-    padding: 0;
-    font-family: 'Courier New', monospace;
-  }
-  .titlebar-btn:active { border-style: inset; }
-
-  /* === MENU BAR === */
-  .menubar {
-    background: #c0c0c0;
-    padding: 1px 2px;
-    border-bottom: 1px solid #808080;
+  .top-nav-left {
     display: flex;
-    gap: 0;
+    align-items: center;
+    gap: 12px;
   }
-  .menu-item {
-    font-size: 12px;
-    padding: 2px 8px;
-    cursor: default;
+  .hamburger-btn {
+    display: none;
     background: none;
     border: none;
-    font-family: 'Arial', sans-serif;
-    color: #000;
-  }
-  .menu-item:hover { background: #000080; color: #fff; }
-  .menu-item .underline { text-decoration: underline; }
-
-  /* === TOOLBAR === */
-  .toolbar {
-    background: #c0c0c0;
-    padding: 2px 4px;
-    border-bottom: 1px solid #808080;
-    display: flex;
-    gap: 2px;
-    align-items: center;
-  }
-  .tool-btn {
-    font-size: 11px;
-    padding: 2px 8px;
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
+    color: #fff;
+    font-size: 22px;
     cursor: pointer;
-    font-family: 'Arial', sans-serif;
-    color: #000;
-    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
   }
-  .tool-btn:active { border-style: inset; }
-  .tool-btn.active { border-style: inset; background: #a0a0a0; }
-  .toolbar-sep {
-    width: 2px;
-    height: 18px;
-    border-left: 1px solid #808080;
-    border-right: 1px solid #ffffff;
-    margin: 0 2px;
+  .hamburger-btn:hover { background: rgba(255,255,255,0.15); }
+  .top-nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-user-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    display: none;
+  }
+  .nav-signout-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    transition: background 0.2s ease;
+  }
+  .nav-signout-btn:hover { background: rgba(255,255,255,0.25); }
+  .nav-links {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-link-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-link-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
   }
 
-  /* === MAIN BODY (sidebar + chat) === */
-  .main-body {
+  /* === MAIN CONTENT (sidebar + chat) === */
+  .main-content {
     flex: 1;
     display: flex;
     overflow: hidden;
@@ -127,116 +137,110 @@
 
   /* === SIDEBAR === */
   .sidebar {
-    width: 200px;
-    min-width: 160px;
-    background: #c0c0c0;
-    border-right: 2px outset #ffffff;
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: transform 0.3s ease;
   }
-
-  .sidebar-section {
-    border-bottom: 1px solid #808080;
-  }
-  .sidebar-header {
-    background: linear-gradient(to right, #000080, #1084d0);
-    color: #fff;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 3px 6px;
-    user-select: none;
-  }
-  .sidebar-body {
-    padding: 4px;
-    background: #fff;
-    border: 2px inset #ffffff;
-    margin: 2px;
-  }
-
-  /* channel/section list */
-  .channel-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: 12px;
-  }
-  .channel-list li {
-    padding: 2px 4px;
-    cursor: pointer;
-    font-family: 'Arial', sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .channel-list li:hover { background: #000080; color: #fff; }
-  .channel-list li.active { background: #000080; color: #fff; font-weight: bold; }
-  .channel-list .section-head {
-    color: #808080;
-    font-size: 11px;
-    padding: 4px 4px 1px 4px;
-    cursor: default;
-    font-weight: bold;
-  }
-  .channel-list .section-head:hover { background: none; color: #808080; }
-
-  /* sidebar tree for chapters */
-  .chapter-tree {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: 11px;
-    overflow-y: auto;
-    max-height: 100%;
-  }
-  .chapter-tree li {
-    padding: 1px 4px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .chapter-tree li:hover { background: #000080; color: #fff; }
-
-  /* FAQ in sidebar */
-  .faq-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .faq-list li {
-    padding: 3px 4px;
-    cursor: pointer;
-    font-size: 11px;
-    color: #000080;
-    border-bottom: 1px dotted #c0c0c0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .faq-list li:hover { background: #000080; color: #fff; }
-
-  /* sidebar scrollable area */
   .sidebar-scroll {
     flex: 1;
     overflow-y: auto;
-    min-height: 0;
+    padding-bottom: 12px;
   }
-  .sidebar-scroll::-webkit-scrollbar { width: 16px; }
-  .sidebar-scroll::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
-  .sidebar-scroll::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
+  .sidebar-section {
+    margin-bottom: 2px;
+  }
+  .sidebar-header {
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s ease;
+  }
+  .sidebar-header:hover { background: #245250; }
+  .sidebar-header .toggle-arrow {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+  }
+  .sidebar-header.collapsed .toggle-arrow { transform: rotate(-90deg); }
+  .sidebar-body {
+    padding: 6px 8px;
+    background: var(--surface);
+  }
+  .sidebar-body.hidden { display: none; }
 
-  /* resources */
+  /* chapter tree */
+  .chapter-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .chapter-tree li {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text);
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.15s ease;
+  }
+  .chapter-tree li:hover {
+    background: var(--bg);
+    color: var(--primary);
+  }
+
+  /* FAQ list */
+  .faq-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .faq-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .faq-list li:last-child { border-bottom: none; }
+  .faq-list li:hover {
+    background: var(--bg);
+    color: var(--accent);
+  }
+
+  /* resource links */
   .resource-link {
     display: block;
-    font-size: 11px;
-    color: #0000ff;
-    padding: 2px 4px;
-    text-decoration: underline;
-    cursor: pointer;
+    font-size: 12px;
+    color: var(--primary);
+    padding: 8px 12px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s ease;
   }
-  .resource-link:hover { background: #000080; color: #fff; }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-link:hover {
+    background: var(--bg);
+    color: var(--accent);
+  }
 
   /* === CHAT AREA === */
   .chat-area {
@@ -244,234 +248,345 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    background: var(--bg);
   }
 
-  /* topic bar */
-  .topic-bar {
-    background: #ffffcc;
-    border: 2px inset #ffffff;
-    padding: 3px 8px;
-    font-size: 12px;
-    color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 2px;
-    font-family: 'Arial', sans-serif;
-  }
-  .topic-bar b { color: #000080; }
-
-  /* chat messages */
   .chat-frame {
     flex: 1;
-    border: 2px inset #ffffff;
-    background: #fff;
     overflow-y: auto;
-    padding: 4px 8px;
-    margin: 0 2px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 1.5;
+    padding: 20px 24px;
     min-height: 0;
   }
-  .chat-frame::-webkit-scrollbar { width: 16px; }
-  .chat-frame::-webkit-scrollbar-track { background: #c0c0c0; border: 1px inset #ffffff; }
-  .chat-frame::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px outset #ffffff; }
-  .chat-frame::-webkit-scrollbar-button { background: #c0c0c0; border: 2px outset #ffffff; height: 16px; }
 
-  /* IRC-style messages */
-  .msg { margin-bottom: 4px; word-wrap: break-word; }
-
-  .msg-user {
-    color: #000;
+  /* === WELCOME === */
+  .welcome-block {
+    max-width: 540px;
+    margin: 60px auto 0 auto;
+    text-align: center;
+    padding: 0 20px;
   }
-  .msg-user .nick { color: #cc0000; font-weight: bold; }
-
-  .msg-agent {
-    color: #000;
-    font-family: 'Arial', sans-serif;
-    font-size: 13px;
-    padding: 4px 0;
+  .welcome-block h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--primary);
+    margin-bottom: 12px;
   }
-  .msg-agent .nick { color: #000080; font-weight: bold; font-family: 'Courier New', monospace; }
-  .msg-agent .agent-content {
-    display: block;
-    padding: 6px 0 6px 16px;
-    font-family: 'Arial', sans-serif;
+  .welcome-block .welcome-subtitle {
+    font-size: 15px;
+    color: var(--text-light);
     line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .welcome-block .welcome-disclaimer {
+    font-size: 12px;
+    color: var(--text-light);
+    background: #FFF9F2;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: inline-block;
   }
 
-  /* markdown inside agent messages */
-  .msg-agent strong, .msg-agent b { color: #000080; }
-  .msg-agent code {
-    font-family: 'Courier New', monospace;
-    background: #e8e8f8;
-    padding: 1px 4px;
-    border: 1px solid #c0c0e0;
+  /* === CHAT MESSAGES === */
+  .msg {
+    margin-bottom: 16px;
+    max-width: 780px;
+  }
+
+  /* User messages */
+  .msg-user {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .msg-user .bubble {
+    background: var(--chat-user);
+    border-radius: 12px 12px 2px 12px;
+    padding: 10px 16px;
+    max-width: 70%;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+
+  /* Bot messages */
+  .msg-agent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .msg-agent .agent-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+  .msg-agent .bubble {
+    background: var(--chat-bot);
+    border-radius: 12px 12px 12px 2px;
+    padding: 14px 18px;
+    max-width: 85%;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    font-size: 14px;
+    line-height: 1.65;
+    word-wrap: break-word;
+  }
+
+  /* markdown inside bot messages */
+  .msg-agent .bubble strong, .msg-agent .bubble b { color: var(--primary); }
+  .msg-agent .bubble code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #F0EDE8;
+    padding: 2px 6px;
+    border-radius: 4px;
     font-size: 12px;
   }
-  .msg-agent pre {
-    background: #1a1a2e;
-    color: #e0e0e0;
-    padding: 8px 10px;
-    border: 2px inset #ffffff;
+  .msg-agent .bubble pre {
+    background: #1E2D2C;
+    color: #E0E8E7;
+    padding: 12px 14px;
+    border-radius: 8px;
     overflow-x: auto;
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    line-height: 1.4;
-    margin: 6px 0;
+    line-height: 1.5;
+    margin: 8px 0;
   }
-  .msg-agent pre code {
+  .msg-agent .bubble pre code {
     background: none;
-    border: none;
     padding: 0;
     color: inherit;
+    border-radius: 0;
   }
-  .msg-agent h1, .msg-agent h2, .msg-agent h3, .msg-agent h4 {
-    color: #000080;
-    font-family: 'Comic Sans MS', 'Arial', sans-serif;
-    margin: 10px 0 4px 0;
+  .msg-agent .bubble h1, .msg-agent .bubble h2, .msg-agent .bubble h3, .msg-agent .bubble h4 {
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+    margin: 14px 0 6px 0;
   }
-  .msg-agent h1 { font-size: 17px; border-bottom: 1px solid #000080; padding-bottom: 3px; }
-  .msg-agent h2 { font-size: 15px; }
-  .msg-agent h3 { font-size: 14px; }
-  .msg-agent ul, .msg-agent ol { padding-left: 24px; margin: 4px 0; }
-  .msg-agent li { margin-bottom: 3px; }
-  .msg-agent a { color: #0000ff; }
-  .msg-agent blockquote {
-    border-left: 3px solid #000080;
-    margin: 6px 0;
-    padding: 3px 10px;
-    background: #f0f0ff;
-    color: #333;
+  .msg-agent .bubble h1 { font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  .msg-agent .bubble h2 { font-size: 16px; }
+  .msg-agent .bubble h3 { font-size: 15px; }
+  .msg-agent .bubble h4 { font-size: 14px; }
+  .msg-agent .bubble ul, .msg-agent .bubble ol { padding-left: 24px; margin: 6px 0; }
+  .msg-agent .bubble li { margin-bottom: 4px; }
+  .msg-agent .bubble a { color: var(--accent); text-decoration: underline; }
+  .msg-agent .bubble blockquote {
+    border-left: 3px solid var(--primary);
+    margin: 8px 0;
+    padding: 6px 14px;
+    background: #F5F0EB;
+    color: var(--text);
+    border-radius: 0 6px 6px 0;
   }
-  .msg-agent table { border-collapse: collapse; margin: 6px 0; }
-  .msg-agent th, .msg-agent td { border: 1px solid #9999cc; padding: 3px 8px; text-align: left; font-size: 12px; }
-  .msg-agent th { background: #e0e0f8; font-weight: bold; }
-  .msg-agent hr { border: none; border-top: 1px solid #c0c0c0; margin: 6px 0; }
-  .msg-agent p { margin: 4px 0; }
-
-  .msg-error {
-    color: #cc0000;
-    font-weight: bold;
-  }
-
-
-  .typing90s {
-    font-family: 'Courier New', monospace;
+  .msg-agent .bubble table { border-collapse: collapse; margin: 8px 0; width: 100%; }
+  .msg-agent .bubble th, .msg-agent .bubble td {
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    text-align: left;
     font-size: 13px;
-    color: #808080;
   }
-  .typing90s::after {
-    content: "_";
-    animation: cursor90s 0.6s steps(1) infinite;
-  }
-  @keyframes cursor90s {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
+  .msg-agent .bubble th { background: var(--bg); font-weight: 600; }
+  .msg-agent .bubble hr { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+  .msg-agent .bubble p { margin: 6px 0; }
 
-  /* welcome / MOTD */
-  .motd {
-    color: #808080;
-    font-family: 'Courier New', monospace;
+  /* citation panel */
+  .citation-panel {
+    background: #FFFBF0;
+    border: 1px solid #E8DCC8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    max-width: 85%;
     font-size: 12px;
-    padding: 8px 0;
-    line-height: 1.6;
   }
-  .motd .motd-title {
-    color: #000080;
-    font-weight: bold;
-    font-size: 14px;
-    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  .citation-header {
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-  .motd .motd-divider { color: #000080; }
-  .motd .motd-highlight { color: #cc0000; }
-  .motd .motd-info { color: #008000; }
+  .citation-item {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    padding: 4px 0;
+    line-height: 1.5;
+    border-bottom: 1px solid #F0E8DA;
+  }
+  .citation-item:last-child { border-bottom: none; }
 
-  /* === INPUT AREA === */
-  .input-bar {
-    background: #c0c0c0;
-    padding: 2px 4px;
+  /* Error messages */
+  .msg-error {
     display: flex;
-    gap: 4px;
-    align-items: stretch;
-    border-top: 1px solid #808080;
+    align-items: flex-start;
+    gap: 8px;
   }
-  .input-nick {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: bold;
-    color: #cc0000;
-    padding: 4px 6px;
+  .msg-error .error-icon {
+    color: var(--error);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .msg-error .error-text {
+    color: var(--error);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* typing indicator */
+  .typing-indicator {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+  .typing-indicator .agent-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+  .typing-bubble {
+    background: var(--chat-bot);
+    border-radius: 12px 12px 12px 2px;
+    padding: 12px 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    color: var(--text-light);
+    font-size: 13px;
     display: flex;
     align-items: center;
-    white-space: nowrap;
-    border: 2px inset #ffffff;
-    background: #fff;
+    gap: 8px;
+  }
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+  }
+  .typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 50%;
+    animation: dotpulse 1.2s ease-in-out infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotpulse {
+    0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* === INPUT BAR === */
+  .input-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-shrink: 0;
   }
 
   #user-input {
     flex: 1;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    padding: 4px 6px;
-    border: 2px inset #ffffff;
-    background: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
     resize: none;
-    min-height: 28px;
-    max-height: 80px;
+    min-height: 40px;
+    max-height: 120px;
     outline: none;
+    color: var(--text);
+    transition: border-color 0.2s ease;
+    line-height: 1.4;
   }
+  #user-input:focus { border-color: var(--primary); }
+  #user-input::placeholder { color: var(--text-light); }
+
+  .mode-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    align-self: flex-end;
+    height: 40px;
+  }
+  .mode-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0 14px;
+    background: var(--surface);
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.2s ease;
+    height: 100%;
+  }
+  .mode-btn:first-child { border-right: 1px solid var(--border); }
+  .mode-btn.active {
+    background: var(--primary);
+    color: #fff;
+  }
+  .mode-btn:hover:not(.active) { background: var(--bg); }
 
   #send-btn {
-    font-family: 'Arial', sans-serif;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 4px 12px;
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 20px;
+    height: 40px;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
-    color: #000;
+    color: #fff;
     white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
   }
-  #send-btn:active { border-style: inset; }
-  #send-btn:disabled { color: #808080; }
+  #send-btn:hover { background: #C4854F; }
+  #send-btn:active { transform: scale(0.97); }
+  #send-btn:disabled { background: var(--border); color: var(--text-light); cursor: default; transform: none; }
 
   /* === STATUS BAR === */
   .statusbar {
-    background: #c0c0c0;
-    border-top: 2px outset #ffffff;
-    padding: 2px 4px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 6px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 11px;
-    gap: 4px;
+    font-size: 12px;
+    color: var(--text-light);
+    flex-shrink: 0;
   }
-  .status-section {
-    border: 1px inset #ffffff;
-    padding: 1px 8px;
-    background: #c0c0c0;
-    white-space: nowrap;
+  .status-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  .status-led {
+  .status-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #00ff00;
-    border: 1px solid #008000;
-    margin-right: 3px;
+    background: var(--success);
+    margin-right: 6px;
     vertical-align: middle;
   }
-  .status-led.offline { background: #ff0000; border-color: #800000; }
-  .status-led.working {
-    background: #ffcc00;
-    border-color: #cc9900;
-    animation: ledpulse 0.8s ease-in-out infinite;
+  .status-dot.offline { background: var(--error); }
+  .status-dot.working {
+    background: var(--accent);
+    animation: statuspulse 1s ease-in-out infinite;
   }
-  @keyframes ledpulse {
+  @keyframes statuspulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
   }
@@ -480,142 +595,279 @@
   .auth-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(44, 62, 80, 0.6);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
   }
   .auth-box {
-    background: #c0c0c0;
-    border: 3px outset #ffffff;
+    background: var(--surface);
+    border-radius: 16px;
     max-width: 380px;
     width: 90%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
-  .auth-box-titlebar {
-    background: linear-gradient(to right, #000080, #1084d0);
+  .auth-box-header {
+    background: var(--primary);
+    padding: 24px 28px;
+    text-align: center;
+  }
+  .auth-box-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 22px;
     color: #fff;
+    margin-bottom: 4px;
+  }
+  .auth-box-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+  }
+  .auth-box-content {
+    padding: 28px;
+    text-align: center;
+  }
+  .auth-box-content .auth-label {
     font-size: 12px;
-    font-weight: bold;
-    padding: 3px 6px;
+    font-weight: 500;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .auth-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  #access-code-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 180px;
+    text-align: center;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  #access-code-input:focus { border-color: var(--primary); }
+  #access-code-input::placeholder { color: var(--text-light); }
+  .auth-enter-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 22px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .auth-enter-btn:hover { background: #C4854F; }
+  .auth-error {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* === SONNET PREMIUM PROMPT === */
+  .sonnet-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(44, 62, 80, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+  }
+  .sonnet-box {
+    background: var(--surface);
+    border-radius: 16px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+  .sonnet-box-header {
+    background: var(--primary);
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .auth-box-content {
-    padding: 20px 24px;
+  .sonnet-box-header h3 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
+  }
+  .sonnet-box-content {
+    padding: 24px;
     text-align: center;
-    font-family: 'Arial', sans-serif;
   }
-  .auth-box-content h2 {
-    font-family: 'Comic Sans MS', 'Arial', sans-serif;
-    color: #000080;
-    font-size: 16px;
-    margin: 0 0 8px 0;
+  .sonnet-box-content p {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.5;
   }
-  .auth-box-content p {
-    font-size: 12px;
-    color: #333;
-    margin-bottom: 14px;
-  }
-  .auth-error {
-    color: #cc0000;
-    font-size: 11px;
-    margin-top: 8px;
-    display: none;
-  }
-
-  /* user badge */
-  .user-badge {
-    font-size: 11px;
+  .sonnet-input-row {
     display: flex;
+    gap: 8px;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    margin-bottom: 8px;
   }
-  .user-badge img {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1px solid #808080;
+  #sonnet-password-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    color: var(--text);
+    outline: none;
   }
-  .user-badge .signout-btn {
-    font-size: 10px;
-    padding: 0px 4px;
-    background: #c0c0c0;
-    border: 1px outset #ffffff;
-    cursor: pointer;
-    color: #000;
+  #sonnet-password-input:focus { border-color: var(--primary); }
+  .sonnet-contact {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 12px;
   }
-  .user-badge .signout-btn:active { border-style: inset; }
+  .sonnet-contact a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
 
   /* === MODAL === */
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(44, 62, 80, 0.5);
+    backdrop-filter: blur(2px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9998;
   }
   .modal-box {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
+    background: var(--surface);
+    border-radius: 12px;
     max-width: 700px;
     width: 90%;
     max-height: 80vh;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
   .modal-titlebar {
-    background: linear-gradient(to right, #000080, #1084d0);
+    background: var(--primary);
     color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 3px 6px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   .modal-close {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    font-size: 10px;
-    font-weight: bold;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
     cursor: pointer;
-    padding: 0 4px;
-    line-height: 14px;
-    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    line-height: 1;
   }
-  .modal-close:active { border-style: inset; }
+  .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
   .modal-content {
-    padding: 12px;
+    padding: 20px 24px;
     overflow-y: auto;
     flex: 1;
-    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .modal-content h1, .modal-content h2, .modal-content h3 {
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+  }
+  .modal-content h1 { font-size: 20px; margin: 16px 0 8px 0; }
+  .modal-content h2 { font-size: 17px; margin: 14px 0 6px 0; }
+  .modal-content h3 { font-size: 15px; margin: 12px 0 4px 0; }
+  .modal-content table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+  .modal-content th, .modal-content td {
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    text-align: left;
     font-size: 13px;
-    line-height: 1.5;
-    background: #fff;
-    border: 2px inset #ffffff;
-    margin: 3px;
   }
-  .modal-content h1, .modal-content h2, .modal-content h3 { color: #000080; font-family: 'Comic Sans MS', 'Arial', sans-serif; }
-  .modal-content table { border-collapse: collapse; width: 100%; }
-  .modal-content th, .modal-content td { border: 1px solid #999; padding: 3px 6px; text-align: left; font-size: 12px; }
-  .modal-content th { background: #e0e0f8; }
+  .modal-content th { background: var(--bg); font-weight: 600; }
+  .modal-content ul, .modal-content ol { padding-left: 24px; margin: 6px 0; }
+  .modal-content li { margin-bottom: 4px; }
+  .modal-content p { margin: 6px 0; }
+  .modal-content a { color: var(--accent); }
+  .modal-content code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #F0EDE8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
 
-  /* === BLINK === */
-  .blink { animation: blink90s 1s steps(1) infinite; }
-  @keyframes blink90s {
-    0%, 49% { visibility: visible; }
-    50%, 100% { visibility: hidden; }
+  /* === SIDEBAR OVERLAY (mobile) === */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 56px; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 90;
   }
+  .sidebar-overlay.visible { display: block; }
 
   /* === RESPONSIVE === */
-  @media (max-width: 700px) {
-    .sidebar { display: none; }
-    body { padding: 0; }
-    .mirc-window { height: 100vh; border: none; }
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      bottom: 0;
+      z-index: 95;
+      transform: translateX(-100%);
+      box-shadow: 4px 0 16px rgba(0,0,0,0.1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .hamburger-btn { display: block; }
+    .nav-links { display: none; }
+    .input-bar { padding: 10px 12px; gap: 8px; }
+    .chat-frame { padding: 16px 12px; }
+    .msg-user .bubble { max-width: 85%; }
+    .msg-agent .bubble { max-width: 95%; }
+    .citation-panel { max-width: 95%; }
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 13px; }
+    .top-nav-brand { font-size: 17px; }
+    .welcome-block h1 { font-size: 22px; }
+    .welcome-block .welcome-subtitle { font-size: 13px; }
+    .mode-toggle { display: none; }
+    #user-input { font-size: 13px; padding: 8px 12px; }
+    #send-btn { padding: 0 14px; font-size: 13px; }
+    .statusbar { padding: 5px 12px; font-size: 11px; }
   }
 </style>
 </head>
@@ -624,82 +876,58 @@
 <!-- Auth overlay -->
 <div id="auth-overlay" class="auth-overlay" style="display:none">
   <div class="auth-box">
-    <div class="auth-box-titlebar">
-      <span>Iniciar Sesion</span>
+    <div class="auth-box-header">
+      <h2>ActuarialClaude</h2>
+      <p>Consultor de regulación aseguradora</p>
     </div>
     <div class="auth-box-content">
-      <h2>LISF Agent</h2>
-      <p>Inicia sesion para acceder al consultor.</p>
-      <div id="g-signin-btn" style="display:none; margin-bottom:12px"></div>
-      <div id="code-section" style="display:none">
-        <div id="code-divider" style="font-size:11px; color:#666; margin:8px 0; display:none">-- o ingresa un codigo --</div>
-        <div style="display:flex; gap:4px; align-items:center; justify-content:center">
-          <input type="text" id="access-code-input" placeholder="Codigo de acceso"
-            style="font-family:'Courier New',monospace; font-size:13px; padding:4px 8px; border:2px inset #fff; width:160px; text-align:center">
-          <button onclick="submitAccessCode()" class="tool-btn" style="padding:4px 10px">Entrar</button>
-        </div>
+      <div class="auth-label">Código de acceso</div>
+      <div class="auth-input-row">
+        <input type="text" id="access-code-input" placeholder="Ingresa tu código">
+        <button class="auth-enter-btn" onclick="submitAccessCode()">Entrar</button>
       </div>
-      <div id="auth-error" class="auth-error">Acceso denegado. Verifica tu cuenta o codigo.</div>
+      <div id="auth-error" class="auth-error">Acceso denegado. Verifica tu código.</div>
     </div>
   </div>
 </div>
 
-<!-- Main mIRC window -->
-<div class="mirc-window">
+<!-- App shell -->
+<div class="app-shell">
 
-  <!-- Title bar -->
-  <div class="titlebar">
-    <span class="titlebar-text">LISF Agent v1.0 - #lisf @ LISF-Network</span>
-    <div class="titlebar-buttons">
-      <button class="titlebar-btn">_</button>
-      <button class="titlebar-btn">o</button>
-      <button class="titlebar-btn">x</button>
+  <!-- Top nav -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()">&#9776;</button>
+      <span class="top-nav-brand">ActuarialClaude</span>
     </div>
-  </div>
+    <div class="top-nav-right">
+      <div class="nav-links">
+        <button class="nav-link-btn" onclick="showIndice()">Índice LISF</button>
+        <button class="nav-link-btn" onclick="showAyuda()">Ayuda</button>
+        <button class="nav-link-btn" onclick="clearChat()">Limpiar</button>
+      </div>
+      <span class="nav-user-label" id="nav-user-label"></span>
+      <button class="nav-signout-btn" id="nav-signout-btn" onclick="signOut()">Salir</button>
+    </div>
+  </nav>
 
-  <!-- Menu bar -->
-  <div class="menubar">
-    <button class="menu-item" onclick="showAyuda()"><span class="underline">A</span>rchivo</button>
-    <button class="menu-item" onclick="showIndice()"><span class="underline">I</span>ndice</button>
-    <button class="menu-item" onclick="showAyuda()">A<span class="underline">y</span>uda</button>
-  </div>
+  <!-- Main content -->
+  <div class="main-content">
 
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <button class="tool-btn active">#lisf</button>
-    <div class="toolbar-sep"></div>
-    <button class="tool-btn" onclick="showIndice()">Indice LISF</button>
-    <button class="tool-btn" onclick="showAyuda()">Ayuda</button>
-    <div class="toolbar-sep"></div>
-    <button class="tool-btn" onclick="clearChat()">Limpiar</button>
-    <div style="flex:1"></div>
-    <span style="font-size:11px; color:#666; padding-right:4px;">Powered by Claude</span>
-  </div>
-
-  <!-- Main body: sidebar + chat -->
-  <div class="main-body">
+    <!-- Sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-scroll">
 
-        <!-- Channels -->
+        <!-- Estructura LISF -->
         <div class="sidebar-section">
-          <div class="sidebar-header">Canales</div>
-          <div class="sidebar-body">
-            <ul class="channel-list">
-              <li class="active">#lisf</li>
-              <li class="section-head">-- Links --</li>
-              <li onclick="window.open('https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf')">LISF PDF</li>
-              <li onclick="window.open('https://lisfcusf.cnsf.gob.mx/')">CNSF Interactiva</li>
-            </ul>
+          <div class="sidebar-header" onclick="toggleSection(this)">
+            <span>Estructura LISF</span>
+            <span class="toggle-arrow">&#9662;</span>
           </div>
-        </div>
-
-        <!-- LISF chapters tree -->
-        <div class="sidebar-section">
-          <div class="sidebar-header">Titulos LISF</div>
-          <div class="sidebar-body" style="padding:2px; max-height:280px; overflow-y:auto">
+          <div class="sidebar-body">
             <ul class="chapter-tree" id="chapter-tree">
               <li onclick="askAbout('Titulo Primero')">T.I - Cap. Unico</li>
               <li onclick="askAbout('Titulo Segundo Capitulo Primero')">T.II - Cap.1</li>
@@ -716,54 +944,76 @@
               <li onclick="askAbout('Titulo Decimo Primero')">T.XI - Cap.1-2</li>
               <li onclick="askAbout('Titulo Decimo Segundo')">T.XII - Cap.1-3</li>
               <li onclick="askAbout('Titulo Decimo Tercero')">T.XIII - Cap.1-3</li>
-              <li onclick="askAbout('Articulos Transitorios')">Transitorios</li>
+              <li onclick="askAbout('Artículos Transitorios')">Transitorios</li>
             </ul>
           </div>
         </div>
 
-        <!-- FAQ -->
+        <!-- Estructura CUSF -->
         <div class="sidebar-section">
-          <div class="sidebar-header">FAQ Rapido</div>
+          <div class="sidebar-header" onclick="toggleSection(this)">
+            <span>Estructura CUSF</span>
+            <span class="toggle-arrow">&#9662;</span>
+          </div>
+          <div class="sidebar-body">
+            <ul class="chapter-tree">
+              <li style="color:var(--text-light); cursor:default; font-style:italic">Proximamente</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FAQ Rápido -->
+        <div class="sidebar-section">
+          <div class="sidebar-header" onclick="toggleSection(this)">
+            <span>FAQ Rápido</span>
+            <span class="toggle-arrow">&#9662;</span>
+          </div>
           <div class="sidebar-body" style="padding:0">
             <ul class="faq-list" id="faq-grid"></ul>
           </div>
         </div>
 
+        <!-- Enlaces -->
+        <div class="sidebar-section">
+          <div class="sidebar-header" onclick="toggleSection(this)">
+            <span>Enlaces</span>
+            <span class="toggle-arrow">&#9662;</span>
+          </div>
+          <div class="sidebar-body" style="padding:0">
+            <a class="resource-link" href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf" target="_blank" rel="noopener">LISF (PDF Oficial)</a>
+            <a class="resource-link" href="https://lisfcusf.cnsf.gob.mx/" target="_blank" rel="noopener">CNSF Interactiva</a>
+            <a class="resource-link" href="https://www.cnsf.gob.mx/" target="_blank" rel="noopener">CNSF Portal</a>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </aside>
 
     <!-- Chat area -->
     <div class="chat-area">
 
-      <!-- Topic bar -->
-      <div class="topic-bar">
-        <b>#lisf</b> -- Consultor de la Ley de Instituciones de Seguros y de Fianzas | Pregunta sobre cualquier articulo
-      </div>
-
       <!-- Chat messages -->
       <div class="chat-frame" id="chat-container">
-        <div id="welcome" class="motd">
-          <span class="motd-divider">***</span> Bienvenido al canal <b>#lisf</b><br>
-          <span class="motd-divider">***</span> Tema: <b>Consultor de la Ley de Instituciones de Seguros y de Fianzas</b><br>
-          <span class="motd-divider">***</span> Pregunta sobre cualquier articulo de la LISF<br>
-          <span class="motd-divider">***</span> Usa las preguntas del panel izquierdo o escribe tu consulta abajo<br>
-          <br>
-          <span class="motd-divider">-</span> <span class="motd-title">LISF Agent</span> <span class="motd-divider">-</span> Message of the Day <span class="motd-divider">-</span><br>
-          <span class="motd-info">-  Este chatbot consulta directamente el texto de la LISF</span><br>
-          <span class="motd-info">-  Respuestas con fundamento legal y citas de articulos</span><br>
-          <span class="motd-info">-  Historial de conversacion activo en esta sesion</span><br>
-          <span class="motd-divider">-</span> End of MOTD <span class="motd-divider">-</span><br>
-          <br>
-          <span class="motd-divider">***</span> <span class="motd-highlight">AVISO:</span> Referencia de estudio. No sustituye asesoria legal.
+        <div id="welcome" class="welcome-block">
+          <h1>Bienvenido a ActuarialClaude</h1>
+          <p class="welcome-subtitle">
+            Tu consultor de regulación aseguradora mexicana.<br>
+            Consulta la LISF, la CUSF, y la interaccion entre ambas normativas.
+          </p>
+          <div class="welcome-disclaimer">
+            Aviso: Referencia de estudio. No sustituye asesoría legal.
+          </div>
         </div>
       </div>
 
       <!-- Input bar -->
       <div class="input-bar">
-        <div class="input-nick" id="nick-display">[@Usuario]</div>
         <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aqui..."></textarea>
-        <button class="tool-btn" id="btn-rapido" title="Respuesta rapida (~20s, menos detalle)" onclick="setMode('rapido')" style="font-size:11px;padding:2px 6px">Rapido</button>
-        <button class="tool-btn active" id="btn-detallado" title="Respuesta detallada (~60s, mas precisa)" onclick="setMode('detallado')" style="font-size:11px;padding:2px 6px">Detallado</button>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="btn-rapido" title="Respuesta rápida (~20s, concisa)" onclick="setMode('rapido')">Rápido</button>
+          <button class="mode-btn" id="btn-intuitivo" title="Explicación con casos prácticos (~40s)" onclick="setMode('intuitivo')">Intuitivo</button>
+          <button class="mode-btn" id="btn-detallado" title="Análisis detallado (~60s, exhaustivo)" onclick="setMode('detallado')">Detallado</button>
+        </div>
         <button id="send-btn" onclick="sendMessage()">Enviar &gt;&gt;</button>
       </div>
 
@@ -772,23 +1022,14 @@
 
   <!-- Status bar -->
   <div class="statusbar">
-    <span class="status-section">
-      <span class="status-led" id="status-led"></span>
-      <span id="status-text">Conectado</span>
-    </span>
-    <span class="status-section">
-      Msgs: <b id="msg-count">0</b>
-    </span>
-    <span class="status-section" id="user-section" style="display:none">
-      <span class="user-badge">
-        <img id="user-avatar" src="" alt="">
-        <span id="user-email"></span>
-        <button class="signout-btn" onclick="signOut()">Salir</button>
+    <div class="status-left">
+      <span>
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Conectado</span>
       </span>
-    </span>
-    <span class="status-section" style="margin-left:auto">
-      LISF Agent v1.0
-    </span>
+      <span>Msgs: <strong id="msg-count">0</strong></span>
+    </div>
+    <span>ActuarialClaude v2.0</span>
   </div>
 
 </div>
@@ -797,7 +1038,7 @@
 const chatContainer = document.getElementById('chat-container');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
-const statusLed = document.getElementById('status-led');
+const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const msgCount = document.getElementById('msg-count');
 
@@ -807,60 +1048,144 @@ let authToken = null;
 let accessCode = null;
 let authRequired = false;
 let conversationHistory = [];
-let chatMode = 'detallado'; // 'rapido' or 'detallado'
+let chatMode = 'rapido';
+let sonnetPassword = null;
+let sonnetLocked = false;
 
+// --- Textarea auto-resize ---
 userInput.addEventListener('input', () => {
   userInput.style.height = 'auto';
-  userInput.style.height = Math.min(userInput.scrollHeight, 80) + 'px';
+  userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
 });
 
 userInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
+// --- Sidebar toggle (mobile) ---
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('visible');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+  const body = header.nextElementSibling;
+  body.classList.toggle('hidden');
+}
+
+// --- Mode toggle ---
 function setMode(mode) {
+  if ((mode === 'intuitivo' || mode === 'detallado') && sonnetLocked && !sonnetPassword) {
+    showSonnetPrompt(mode);
+    return;
+  }
   chatMode = mode;
   document.getElementById('btn-rapido').classList.toggle('active', mode === 'rapido');
+  document.getElementById('btn-intuitivo').classList.toggle('active', mode === 'intuitivo');
   document.getElementById('btn-detallado').classList.toggle('active', mode === 'detallado');
 }
 
+function showSonnetPrompt(targetMode) {
+  const existing = document.querySelector('.sonnet-overlay');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.className = 'sonnet-overlay';
+  overlay.innerHTML =
+    '<div class="sonnet-box">' +
+      '<div class="sonnet-box-header">' +
+        '<h3>Acceso premium</h3>' +
+        '<button class="modal-close" onclick="this.closest(\'.sonnet-overlay\').remove()">X</button>' +
+      '</div>' +
+      '<div class="sonnet-box-content">' +
+        '<p>Los modos <b>Intuitivo</b> y <b>Detallado</b> utilizan un modelo avanzado que requiere acceso premium.</p>' +
+        '<div class="sonnet-input-row">' +
+          '<input type="password" id="sonnet-password-input" placeholder="Contraseña premium">' +
+          '<button class="auth-enter-btn" onclick="submitSonnetPassword(\'' + targetMode + '\')">Acceder</button>' +
+        '</div>' +
+        '<div id="sonnet-error" class="auth-error"></div>' +
+        '<p class="sonnet-contact">Solicita acceso a <a href="mailto:gonorandres@ciencias.unam.mx">gonorandres@ciencias.unam.mx</a></p>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  overlay.querySelector('#sonnet-password-input').focus();
+  overlay.querySelector('#sonnet-password-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitSonnetPassword(targetMode);
+  });
+}
+
+function submitSonnetPassword(targetMode) {
+  const input = document.getElementById('sonnet-password-input');
+  const pw = input.value.trim();
+  if (!pw) return;
+  fetch('/api/verify-sonnet', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pw }),
+  })
+    .then(r => {
+      if (r.ok) {
+        sonnetPassword = pw;
+        document.querySelector('.sonnet-overlay').remove();
+        setMode(targetMode);
+      } else {
+        document.getElementById('sonnet-error').textContent = 'Contraseña incorrecta.';
+        document.getElementById('sonnet-error').style.display = 'block';
+      }
+    })
+    .catch(() => {
+      document.getElementById('sonnet-error').textContent = 'Error de conexión.';
+      document.getElementById('sonnet-error').style.display = 'block';
+    });
+}
+
+// --- Ask about a topic ---
 function askAbout(topic) {
+  closeSidebar();
   userInput.value = 'Explicame el ' + topic + ' de la LISF';
   sendMessage();
 }
 
+// --- Clear chat ---
 function clearChat() {
-  if (confirm('Limpiar todas las conversaciones?')) {
+  if (confirm('¿Limpiar todas las conversaciones?')) {
     chatContainer.innerHTML = '';
     messageCounter = 0;
     msgCount.textContent = '0';
     conversationHistory = [];
-    // Restore MOTD
-    const motd = document.createElement('div');
-    motd.id = 'welcome';
-    motd.className = 'motd';
-    motd.innerHTML =
-      '<span class="motd-divider">***</span> Bienvenido al canal <b>#lisf</b><br>' +
-      '<span class="motd-divider">***</span> Tema: <b>Consultor de la Ley de Instituciones de Seguros y de Fianzas</b><br>' +
-      '<span class="motd-divider">***</span> Historial limpiado. Escribe tu consulta abajo.<br>' +
-      '<span class="motd-divider">-</span> End of MOTD <span class="motd-divider">-</span>';
-    chatContainer.appendChild(motd);
+    const welcome = document.createElement('div');
+    welcome.id = 'welcome';
+    welcome.className = 'welcome-block';
+    welcome.innerHTML =
+      '<h1>Bienvenido a ActuarialClaude</h1>' +
+      '<p class="welcome-subtitle">Historial limpiado. Escribe tu consulta abajo.</p>';
+    chatContainer.appendChild(welcome);
   }
 }
 
 function updateMsgCount() { messageCounter++; msgCount.textContent = messageCounter; }
 
+// --- Add message to chat ---
 function addMessage(role, content) {
   const div = document.createElement('div');
   if (role === 'user') {
     div.className = 'msg msg-user';
-    div.innerHTML = '<span class="nick">&lt;Usuario&gt;</span> ' + content;
+    div.innerHTML = '<div class="bubble">' + content + '</div>';
   } else if (role === 'error') {
     div.className = 'msg msg-error';
-    div.innerHTML = '*** ERROR: ' + content;
+    div.innerHTML = '<span class="error-icon">!</span><span class="error-text">' + content + '</span>';
   } else {
     div.className = 'msg msg-agent';
-    div.innerHTML = '<span class="nick">&lt;LISF_Bot&gt;</span><span class="agent-content">' + content + '</span>';
+    div.innerHTML =
+      '<div class="agent-label">ActuarialClaude</div>' +
+      '<div class="bubble"></div>';
   }
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -868,13 +1193,13 @@ function addMessage(role, content) {
   return div;
 }
 
+// --- Typing indicator ---
 const _statusPhrases = [
-  'pensando',
-  'revisando la ley',
-  'buscando articulos',
-  'leyendo la LISF',
-  'consultando',
-  'analizando',
+  'Consultando normativa...',
+  'Analizando fundamento legal...',
+  'Revisando disposiciones...',
+  'Buscando artículos...',
+  'Procesando consulta...',
 ];
 let _statusIdx = 0;
 let _statusInterval = null;
@@ -882,17 +1207,22 @@ let _statusInterval = null;
 function showTyping() {
   _statusIdx = 0;
   const div = document.createElement('div');
-  div.className = 'msg';
+  div.className = 'typing-indicator';
   div.id = 'typing-msg';
-  const modeLabel = chatMode === 'rapido' ? ' (rapido)' : '';
-  div.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta pensando' + modeLabel + '</span>';
+  div.innerHTML =
+    '<div class="agent-label">ActuarialClaude</div>' +
+    '<div class="typing-bubble">' +
+      '<div class="typing-dots"><span></span><span></span><span></span></div>' +
+      '<span class="typing-text">' + _statusPhrases[0] + '</span>' +
+    '</div>';
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
   _statusInterval = setInterval(() => {
     const el = document.getElementById('typing-msg');
     if (!el) { clearInterval(_statusInterval); return; }
     _statusIdx = (_statusIdx + 1) % _statusPhrases.length;
-    el.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta ' + _statusPhrases[_statusIdx] + '</span>';
+    const txt = el.querySelector('.typing-text');
+    if (txt) txt.textContent = _statusPhrases[_statusIdx];
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }, 3000);
 }
@@ -903,6 +1233,7 @@ function removeTyping() {
   if (el) el.remove();
 }
 
+// --- Markdown formatting ---
 function formatText(text) {
   if (typeof marked !== 'undefined') {
     marked.setOptions({ breaks: true, gfm: true });
@@ -914,17 +1245,37 @@ function formatText(text) {
     .replace(/\n/g, '<br>');
 }
 
-// --- Auth ---
-
-function handleCredentialResponse(response) {
-  authToken = response.credential;
-  accessCode = null;
-  const payload = JSON.parse(atob(authToken.split('.')[1]));
-  showSignedIn(payload.email, payload.picture);
-  document.getElementById('auth-overlay').style.display = 'none';
-  document.getElementById('auth-error').style.display = 'none';
+// --- Citation panel ---
+function addCitationPanel(agentDiv, items) {
+  if (!agentDiv || !items || !items.length) return;
+  // Filter out citations with empty cited_text
+  const validItems = items.filter(item => {
+    const text = item.cited_text || item.text || item.content || '';
+    return text.trim().length > 0;
+  });
+  if (!validItems.length) return;
+  const panel = document.createElement('div');
+  panel.className = 'citation-panel';
+  let html = '<div class="citation-header">Fundamento legal</div>';
+  validItems.forEach((item, idx) => {
+    const text = item.cited_text || item.text || item.content || '';
+    const source = item.document_title || item.source || item.document || item.title || '';
+    html += '<div class="citation-item">[' + (idx + 1) + '] "' + escapeHtml(text) + '"';
+    if (source) html += ' -- ' + escapeHtml(source);
+    html += '</div>';
+  });
+  panel.innerHTML = html;
+  agentDiv.appendChild(panel);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// --- Auth ---
 function submitAccessCode() {
   const code = document.getElementById('access-code-input').value.trim();
   if (!code) return;
@@ -937,7 +1288,7 @@ function submitAccessCode() {
       if (r.ok) {
         accessCode = code;
         authToken = null;
-        showSignedIn('Invitado', '');
+        showSignedIn('Invitado');
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('auth-error').style.display = 'none';
       } else {
@@ -949,18 +1300,12 @@ function submitAccessCode() {
     });
 }
 
-function showSignedIn(email, picture) {
-  const section = document.getElementById('user-section');
-  const avatar = document.getElementById('user-avatar');
-  if (picture) {
-    avatar.src = picture;
-    avatar.style.display = '';
-  } else {
-    avatar.style.display = 'none';
-  }
-  document.getElementById('user-email').textContent = email;
-  document.getElementById('nick-display').textContent = '[@' + email.split('@')[0] + ']';
-  section.style.display = '';
+function showSignedIn(email) {
+  const label = document.getElementById('nav-user-label');
+  const btn = document.getElementById('nav-signout-btn');
+  label.textContent = email;
+  label.style.display = '';
+  btn.style.display = '';
   userInput.disabled = false;
   sendBtn.disabled = false;
 }
@@ -968,11 +1313,8 @@ function showSignedIn(email, picture) {
 function signOut() {
   authToken = null;
   accessCode = null;
-  if (typeof google !== 'undefined' && google.accounts) {
-    google.accounts.id.disableAutoSelect();
-  }
-  document.getElementById('user-section').style.display = 'none';
-  document.getElementById('nick-display').textContent = '[@Usuario]';
+  document.getElementById('nav-user-label').style.display = 'none';
+  document.getElementById('nav-signout-btn').style.display = 'none';
   if (authRequired) {
     userInput.disabled = true;
     sendBtn.disabled = true;
@@ -993,30 +1335,7 @@ function initAuth(config) {
   userInput.disabled = true;
   sendBtn.disabled = true;
 
-  if (config.has_google && config.google_client_id) {
-    document.getElementById('g-signin-btn').style.display = 'block';
-    const waitForGsi = setInterval(() => {
-      if (typeof google !== 'undefined' && google.accounts) {
-        clearInterval(waitForGsi);
-        google.accounts.id.initialize({
-          client_id: config.google_client_id,
-          callback: handleCredentialResponse,
-          auto_select: true,
-        });
-        google.accounts.id.renderButton(
-          document.getElementById('g-signin-btn'),
-          { theme: 'outline', size: 'large', text: 'signin_with', locale: 'es' }
-        );
-        google.accounts.id.prompt();
-      }
-    }, 100);
-  }
-
   if (config.has_access_code) {
-    document.getElementById('code-section').style.display = 'block';
-    if (config.has_google) {
-      document.getElementById('code-divider').style.display = 'block';
-    }
     document.getElementById('access-code-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submitAccessCode();
     });
@@ -1024,7 +1343,6 @@ function initAuth(config) {
 }
 
 // --- Chat ---
-
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text || isStreaming) return;
@@ -1038,14 +1356,15 @@ async function sendMessage() {
 
   isStreaming = true;
   sendBtn.disabled = true;
-  statusText.textContent = chatMode === 'rapido' ? 'Rapido...' : 'Detallado...';
-  statusLed.classList.add('working');
+  statusText.textContent = 'Consultando...';
+  statusDot.classList.add('working');
   showTyping();
 
   try {
     const headers = { 'Content-Type': 'application/json' };
     if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
     if (accessCode) headers['X-Access-Code'] = accessCode;
+    if (sonnetPassword) headers['X-Sonnet-Password'] = sonnetPassword;
 
     conversationHistory.push({ role: 'user', content: text });
 
@@ -1055,19 +1374,34 @@ async function sendMessage() {
       body: JSON.stringify({ message: text, history: conversationHistory, mode: chatMode }),
     });
 
+    if (response.status === 403) {
+      removeTyping();
+      // Sonnet password invalid/expired -- re-prompt
+      sonnetPassword = null;
+      showSonnetPrompt(chatMode);
+      conversationHistory.pop();
+      return;
+    }
+
     if (response.status === 401) {
       removeTyping();
       if (authRequired) {
         showAuthError();
         document.getElementById('auth-overlay').style.display = 'flex';
       }
-      addMessage('error', 'Sesion expirada o no autorizada. Inicia sesion de nuevo.');
+      addMessage('error', 'Sesión expirada o no autorizada. Inicia sesión de nuevo.');
+      return;
+    }
+
+    if (response.status === 429) {
+      removeTyping();
+      addMessage('error', 'Demasiadas consultas. Espera un momento.');
       return;
     }
 
     if (!response.ok) {
       removeTyping();
-      addMessage('error', 'HTTP Error: ' + response.status + ' ' + response.statusText);
+      addMessage('error', 'Error HTTP: ' + response.status + ' ' + response.statusText);
       return;
     }
 
@@ -1094,17 +1428,23 @@ async function sendMessage() {
             if (!typingRemoved) { removeTyping(); typingRemoved = true; }
             if (!agentDiv) agentDiv = addMessage('agent', '');
             currentText += data.content;
-            const contentEl = agentDiv.querySelector('.agent-content');
-            if (contentEl) contentEl.innerHTML = formatText(currentText);
+            const bubble = agentDiv.querySelector('.bubble');
+            if (bubble) bubble.innerHTML = formatText(currentText);
             chatContainer.scrollTop = chatContainer.scrollHeight;
           }
           else if (data.type === 'tool_use') {
-            // Just bump the typing status phrase, no visible tool tag
             const el = document.getElementById('typing-msg');
             if (el) {
               _statusIdx = (_statusIdx + 1) % _statusPhrases.length;
-              el.innerHTML = '<span class="typing90s" style="color:#808080">* LISF_Bot esta ' + _statusPhrases[_statusIdx] + '</span>';
+              const txt = el.querySelector('.typing-text');
+              if (txt) txt.textContent = _statusPhrases[_statusIdx];
               chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+          }
+          else if (data.type === 'citations') {
+            if (!typingRemoved) { removeTyping(); typingRemoved = true; }
+            if (agentDiv) {
+              addCitationPanel(agentDiv, data.items || []);
             }
           }
           else if (data.type === 'error') {
@@ -1117,7 +1457,9 @@ async function sendMessage() {
     if (!typingRemoved) removeTyping();
 
     if (!agentDiv) {
-      addMessage('agent', '<i>Sin respuesta del agente.</i>');
+      addMessage('agent', '');
+      const lastBubble = chatContainer.querySelector('.msg-agent:last-child .bubble');
+      if (lastBubble) lastBubble.innerHTML = '<em>Sin respuesta del agente.</em>';
     } else if (currentText) {
       conversationHistory.push({ role: 'assistant', content: currentText });
     }
@@ -1129,13 +1471,12 @@ async function sendMessage() {
     isStreaming = false;
     sendBtn.disabled = false;
     statusText.textContent = 'Conectado';
-    statusLed.classList.remove('working');
+    statusDot.classList.remove('working');
     userInput.focus();
   }
 }
 
 // --- Modals ---
-
 function showModal(title, htmlContent) {
   const existing = document.querySelector('.modal-overlay');
   if (existing) existing.remove();
@@ -1154,49 +1495,49 @@ function showModal(title, htmlContent) {
 }
 
 function showIndice() {
-  showModal('Indice LISF', '<p style="color:#808080">Cargando indice...</p>');
+  showModal('Índice LISF', '<p style="color:var(--text-light)">Cargando índice...</p>');
   fetch('/api/indice')
     .then(r => r.json())
     .then(data => {
       const content = document.querySelector('.modal-content');
       if (content && typeof marked !== 'undefined') {
-        content.innerHTML = marked.parse(data.content || 'Indice no disponible.');
+        content.innerHTML = marked.parse(data.content || 'Índice no disponible.');
       } else if (content) {
-        content.textContent = data.content || 'Indice no disponible.';
+        content.textContent = data.content || 'Índice no disponible.';
       }
     })
     .catch(() => {
       const content = document.querySelector('.modal-content');
-      if (content) content.textContent = 'Error al cargar el indice.';
+      if (content) content.textContent = 'Error al cargar el índice.';
     });
 }
 
 function showAyuda() {
   const helpHtml =
-    '<h2>Como usar el Consultor LISF</h2>' +
-    '<p>Este chatbot te ayuda a consultar la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b>.</p>' +
-    '<h3>Ejemplos de preguntas</h3>' +
+    '<h2>Como usar ActuarialClaude</h2>' +
+    '<p>Este consultor te ayuda con la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b> y regulación aseguradora mexicana.</p>' +
+    '<h3>Ejemplos de consultas</h3>' +
     '<ul>' +
-      '<li>"Que dice el articulo 201 sobre las notas tecnicas?"</li>' +
+      '<li>"¿Qué dice el artículo 201 sobre las notas técnicas?"</li>' +
       '<li>"Cuales son los requisitos para operar como institucion de seguros?"</li>' +
-      '<li>"Que son las reservas tecnicas?"</li>' +
+      '<li>"¿Qué son las reservas técnicas?"</li>' +
       '<li>"Explicame el Titulo Tercero de la LISF"</li>' +
     '</ul>' +
     '<h3>Consejos</h3>' +
     '<ul>' +
-      '<li>Puedes hacer preguntas de seguimiento -- el chatbot recuerda la conversacion.</li>' +
-      '<li>Menciona articulos especificos para obtener respuestas mas rapidas.</li>' +
-      '<li>Haz clic en los titulos de la barra lateral para explorar secciones.</li>' +
-      '<li>Las preguntas del panel FAQ dan respuestas instantaneas.</li>' +
-      '<li>Usa <b>Limpiar</b> para iniciar una nueva conversacion.</li>' +
+      '<li>Puedes hacer preguntas de seguimiento -- el consultor recuerda la conversación.</li>' +
+      '<li>Menciona artículos específicos para obtener respuestas más rápidas.</li>' +
+      '<li>Haz clic en los titulos del panel lateral para explorar secciones.</li>' +
+      '<li>Las preguntas del panel FAQ dan respuestas instantáneas.</li>' +
+      '<li>Usa "Limpiar" para iniciar una nueva conversación.</li>' +
+      '<li>Selecciona "Rápido" para respuestas breves o "Detallado" para análisis completo.</li>' +
     '</ul>' +
     '<h3>Aviso</h3>' +
-    '<p>Esta herramienta es una referencia de estudio. No sustituye la lectura completa de la LISF ni constituye asesoria legal.</p>';
+    '<p>Esta herramienta es una referencia de estudio. No sustituye la lectura completa de la LISF ni constituye asesoría legal.</p>';
   showModal('Ayuda', helpHtml);
 }
 
 // --- Init ---
-
 function loadFaqButtons() {
   fetch('/api/faq')
     .then(r => r.json())
@@ -1208,7 +1549,7 @@ function loadFaqButtons() {
           const li = document.createElement('li');
           li.textContent = f.q;
           li.title = f.q;
-          li.onclick = () => { userInput.value = f.q; sendMessage(); };
+          li.onclick = () => { closeSidebar(); userInput.value = f.q; sendMessage(); };
           grid.appendChild(li);
         });
       }
@@ -1221,15 +1562,14 @@ fetch('/api/health')
   .then(r => r.json())
   .then(data => {
     if (!data.auth_configured) {
-      statusLed.classList.add('offline');
+      statusDot.classList.add('offline');
       statusText.textContent = 'Sin autenticacion';
     } else {
-      const modeLabel = data.mode === 'api_key' ? 'API' : 'OAuth';
-      statusText.textContent = 'Conectado (' + modeLabel + ')';
+      statusText.textContent = 'Conectado';
     }
   })
   .catch(() => {
-    statusLed.classList.add('offline');
+    statusDot.classList.add('offline');
     statusText.textContent = 'Desconectado';
   });
 
@@ -1240,6 +1580,13 @@ fetch('/api/auth-config')
       authRequired = true;
       initAuth(config);
     }
+  })
+  .catch(() => {});
+
+fetch('/api/sonnet-config')
+  .then(r => r.json())
+  .then(config => {
+    sonnetLocked = config.sonnet_locked || false;
   })
   .catch(() => {});
 </script>

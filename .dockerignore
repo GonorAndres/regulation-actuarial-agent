@@ -5,7 +5,14 @@
 __pycache__/
 *.pyc
 docs/LISF.pdf
+docs/CUSF.pdf
+docs/CUSF_gob_2024.docx
 docs/lisf_md/full_lisf.md
 convert_pdf.py
+convert_cusf.py
+benchmark.py
+cat
+subagents_outputs/
+!subagents_outputs/lisf_faq.json
 Dockerfile
 Dockerfile.oauth
