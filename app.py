@@ -1074,69 +1074,69 @@ async def faq():
     return [{"q": e["q"]} for e in FAQ_ENTRIES]
 
 
-_LISF_INDICE = """# Indice de la LISF
+_LISF_INDICE = """# Índice de la LISF
 
 **Ley de Instituciones de Seguros y de Fianzas**
-510 articulos organizados en 13 Titulos
+510 artículos organizados en 13 Títulos
 
-| Titulo | Tema | Articulos |
+| Título | Tema | Artículos |
 |--------|------|-----------|
 | **I** | Disposiciones preliminares | Arts. 1 - 18 |
 | **II** | De las operaciones de seguros y fianzas | Arts. 19 - 40 |
-| **III** | De la organizacion de las instituciones | Arts. 41 - 89 |
+| **III** | De la organización de las instituciones | Arts. 41 - 89 |
 | **IV** | De los intermediarios, agentes y ajustadores | Arts. 90 - 117 |
-| **V** | Reservas tecnicas, inversiones y solvencia | Arts. 118 - 275 |
+| **V** | Reservas técnicas, inversiones y solvencia | Arts. 118 - 275 |
 | **VI** | De los procedimientos de seguros y fianzas | Arts. 276 - 293 |
 | **VII** | De las operaciones prohibidas | Arts. 294 - 295 |
-| **VIII** | Contabilidad, estados financieros y auditoria | Arts. 296 - 319 |
-| **IX** | Planes de regularizacion e intervencion | Arts. 320 - 335 |
+| **VIII** | Contabilidad, estados financieros y auditoría | Arts. 296 - 319 |
+| **IX** | Planes de regularización e intervención | Arts. 320 - 335 |
 | **X** | De las sociedades mutualistas de seguros | Arts. 336 - 365 |
-| **XI** | De la CNSF: facultades e inspeccion | Arts. 366 - 392 |
-| **XII** | Liquidacion administrativa y concurso mercantil | Arts. 393 - 458 |
+| **XI** | De la CNSF: facultades e inspección | Arts. 366 - 392 |
+| **XII** | Liquidación administrativa y concurso mercantil | Arts. 393 - 458 |
 | **XIII** | Sanciones, infracciones y delitos | Arts. 459 - 510 |
 
-Publicada en el DOF el 4 de abril de 2013. Ultima reforma: 14 de noviembre de 2025.
+Publicada en el DOF el 4 de abril de 2013. Última reforma: 14 de noviembre de 2025.
 """
 
-_CUSF_INDICE = """# Indice de la CUSF
+_CUSF_INDICE = """# Índice de la CUSF
 
-**Circular Unica de Seguros y Fianzas**
+**Circular Única de Seguros y Fianzas**
 Normativa secundaria que reglamenta la LISF, emitida por la CNSF.
-Mas de 1,700 disposiciones organizadas en 41 Titulos.
+Más de 1,700 disposiciones organizadas en 41 Títulos.
 
-| Titulo | Tema | Disposiciones |
+| Título | Tema | Disposiciones |
 |--------|------|---------------|
 | **1** | Disposiciones preliminares | 1.1.1 - 1.1.3 |
-| **2** | Autorizaciones y modificacion de estatutos | 2.1.1 - 2.3.7 |
+| **2** | Autorizaciones y modificación de estatutos | 2.1.1 - 2.3.7 |
 | **3** | Gobierno corporativo | 3.1.1 - 3.11.11 |
 | **4** | Productos de seguros y fianzas | 4.1.1 - 4.12.3 |
-| **5** | Reservas tecnicas | 5.1.1 - 5.20.6 |
+| **5** | Reservas técnicas | 5.1.1 - 5.20.6 |
 | **6** | Requerimiento de capital de solvencia (RCS) | 6.1.1 - 6.10.7 |
 | **7** | Fondos propios admisibles y prueba de solvencia | 7.1.1 - 7.4.3 |
-| **8** | Regimen de inversiones | 8.1.1 - 8.23.7 |
+| **8** | Régimen de inversiones | 8.1.1 - 8.23.7 |
 | **9** | Reaseguro y reafianzamiento | 9.1.1 - 9.7.12 |
-| **10** | Obligaciones subordinadas y titulos de credito | 10.1.1 - 10.6.4 |
-| **11** | Garantias de recuperacion para fianzas | 11.1.1 - 11.7.4 |
-| **12** | Contratacion de servicios con terceros | 12.1.1 - 12.3.5 |
-| **13** | Operacion fisica y dias inhabiles | 13.1.1 - 13.4.1 |
+| **10** | Obligaciones subordinadas y títulos de crédito | 10.1.1 - 10.6.4 |
+| **11** | Garantías de recuperación para fianzas | 11.1.1 - 11.7.4 |
+| **12** | Contratación de servicios con terceros | 12.1.1 - 12.3.5 |
+| **13** | Operación física y días inhábiles | 13.1.1 - 13.4.1 |
 | **14** | Seguros de pensiones | 14.1.1 - 14.6.4 |
 | **15** | Seguros de salud | 15.1.1 - 15.9.10 |
-| **16** | Seguros de credito y caucion | 16.1.1 - 16.3.1 |
-| **17** | Seguros de credito a la vivienda | 17.1.1 - 17.3.5 |
-| **18** | Seguros de garantia financiera | 18.1.1 - 18.3.13 |
+| **16** | Seguros de crédito y caución | 16.1.1 - 16.3.1 |
+| **17** | Seguros de crédito a la vivienda | 17.1.1 - 17.3.5 |
+| **18** | Seguros de garantía financiera | 18.1.1 - 18.3.13 |
 | **19** | Fianzas especializadas | 19.1.1 - 19.2.3 |
 | **20** | Fondos especiales de seguros y pensiones | 20.1.1 - 20.3.2 |
-| **21** | Operaciones analogas y conexas | 21.1.1 - 21.1.5 |
+| **21** | Operaciones análogas y conexas | 21.1.1 - 21.1.5 |
 | **22** | Contabilidad | 22.1.1 - 22.7.7 |
 | **23** | Auditores externos y actuarios independientes | 23.1.1 - 23.3.1 |
-| **24** | Publicacion de estados financieros | 24.1.1 - 24.4.4 |
+| **24** | Publicación de estados financieros | 24.1.1 - 24.4.4 |
 | **25** | Estados financieros de grupos financieros | 25.1.1 - 25.2.1 |
-| **26** | Sistema estadistico del sector | 26.1.1 - 26.3.1 |
-| **27** | Prevencion de lavado de dinero | 27.1.1 - 27.2.1 |
-| **28** | Planes de regularizacion y autocorreccion | 28.1.1 - 28.3.5 |
-| **29** | Liquidacion administrativa y convencional | 29.1.1 - 29.4.6 |
+| **26** | Sistema estadístico del sector | 26.1.1 - 26.3.1 |
+| **27** | Prevención de lavado de dinero | 27.1.1 - 27.2.1 |
+| **28** | Planes de regularización y autocorrección | 28.1.1 - 28.3.5 |
+| **29** | Liquidación administrativa y convencional | 29.1.1 - 29.4.6 |
 | **30** | Registro de auditores y actuarios | 30.1.1 - 30.6.11 |
-| **31** | Acreditacion de actuarios | 31.1.1 - 31.2.21 |
+| **31** | Acreditación de actuarios | 31.1.1 - 31.2.21 |
 | **32** | Agentes de seguros y fianzas | 32.1.1 - 32.13.2 |
 | **33** | Personas morales intermediarias | 33.1.1 - 33.5.2 |
 | **34** | Reaseguradoras extranjeras | 34.1.1 - 34.4.21 |
@@ -1144,11 +1144,11 @@ Mas de 1,700 disposiciones organizadas en 41 Titulos.
 | **36** | Ajustadores de seguros y fianzas | 36.1.1 - 36.2.3 |
 | **37** | Organizaciones aseguradoras y afianzadoras | 37.1.1 - 37.3.4 |
 | **38** | Reportes regulatorios (RR-1 a RR-13) | 38.1.1 - 38.1.14 |
-| **39** | Entrega electronica de informacion | 39.1.1 - 39.6.3 |
+| **39** | Entrega electrónica de información | 39.1.1 - 39.6.3 |
 | **40** | Fondos de aseguramiento agropecuario | 40.1.1 - 40.3.2 |
 | **41** | Modelos novedosos (fintech sandbox) | 41.1.1 - 41.6.2 |
 
-Incluye ademas disposiciones transitorias con mas de 100 articulos transitorios.
+Incluye además disposiciones transitorias con más de 100 artículos transitorios.
 """
 
 @app.get("/api/indice")

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<title>ActuarialClaude - Consultor de Regulacion Aseguradora</title>
+<title>ActuarialClaude - Consultor de Regulación Aseguradora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -994,15 +994,15 @@
   <div class="auth-box">
     <div class="auth-box-header">
       <h2>ActuarialClaude</h2>
-      <p>Consultor de regulacion aseguradora</p>
+      <p>Consultor de regulación aseguradora</p>
     </div>
     <div class="auth-box-content">
-      <div class="auth-label">Codigo de acceso</div>
+      <div class="auth-label">Código de acceso</div>
       <div class="auth-input-row">
-        <input type="text" id="access-code-input" placeholder="Ingresa tu codigo">
+        <input type="text" id="access-code-input" placeholder="Ingresa tu código">
         <button class="auth-enter-btn" onclick="submitAccessCode()">Entrar</button>
       </div>
-      <div id="auth-error" class="auth-error">Acceso denegado. Verifica tu codigo.</div>
+      <div id="auth-error" class="auth-error">Acceso denegado. Verifica tu código.</div>
     </div>
   </div>
 </div>
@@ -1023,8 +1023,8 @@
   <!-- Menu bar -->
   <div class="menu-bar">
     <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()">&#9776;</button>
-    <button class="menu-item" onclick="showIndice('lisf')">Indice LISF</button>
-    <button class="menu-item" onclick="showIndice('cusf')">Indice CUSF</button>
+    <button class="menu-item" onclick="showIndice('lisf')">Índice LISF</button>
+    <button class="menu-item" onclick="showIndice('cusf')">Índice CUSF</button>
     <button class="menu-item" onclick="showAyuda()">Ayuda</button>
     <button class="menu-item" onclick="clearChat()">Limpiar</button>
     <div class="menu-item-right">
@@ -1126,7 +1126,7 @@
         <!-- FAQ Rapido -->
         <div class="sidebar-section">
           <div class="sidebar-header" onclick="toggleSection(this)">
-            <span>FAQ Rapido</span>
+            <span>FAQ Rápido</span>
             <span class="toggle-arrow">&#9662;</span>
           </div>
           <div class="sidebar-body" style="padding:0">
@@ -1158,22 +1158,22 @@
         <div id="welcome" class="welcome-block">
           <h1>Bienvenido a ActuarialClaude</h1>
           <p class="welcome-subtitle">
-            Tu consultor de regulacion aseguradora mexicana.<br>
-            Consulta la LISF, la CUSF, y la interaccion entre ambas normativas.
+            Tu consultor de regulación aseguradora mexicana.<br>
+            Consulta la LISF, la CUSF, y la interacción entre ambas normativas.
           </p>
           <div class="welcome-disclaimer">
-            Aviso: Referencia de estudio. No sustituye asesoria legal.
+            Aviso: Referencia de estudio. No sustituye asesoría legal.
           </div>
         </div>
       </div>
 
       <!-- Input bar -->
       <div class="input-bar">
-        <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aqui..."></textarea>
+        <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aquí..."></textarea>
         <div class="mode-toggle">
-          <button class="mode-btn active" id="btn-rapido" title="Respuesta rapida (~20s, concisa)" onclick="setMode('rapido')">Rapido</button>
-          <button class="mode-btn" id="btn-intuitivo" title="Explicacion con casos practicos (~40s)" onclick="setMode('intuitivo')">Intuitivo</button>
-          <button class="mode-btn" id="btn-detallado" title="Analisis detallado (~60s, exhaustivo)" onclick="setMode('detallado')">Detallado</button>
+          <button class="mode-btn active" id="btn-rapido" title="Respuesta rápida (~20s, concisa)" onclick="setMode('rapido')">Rápido</button>
+          <button class="mode-btn" id="btn-intuitivo" title="Explicación con casos prácticos (~40s)" onclick="setMode('intuitivo')">Intuitivo</button>
+          <button class="mode-btn" id="btn-detallado" title="Análisis detallado (~60s, exhaustivo)" onclick="setMode('detallado')">Detallado</button>
         </div>
         <button id="send-btn" onclick="sendMessage()">Enviar &gt;&gt;</button>
       </div>
@@ -1268,9 +1268,9 @@ function showSonnetPrompt(targetMode) {
         '<button class="modal-close" onclick="this.closest(\'.sonnet-overlay\').remove()">X</button>' +
       '</div>' +
       '<div class="sonnet-box-content">' +
-        '<p>Los modos <b>Intuitivo</b> y <b>Detallado</b> utilizan un modelo avanzado que requiere acceso premium.</p>' +
+        '<p>Los modos <b>Intuitivo</b> y <b>Detallado</b> utilizan un modelo avanzado que requiere acceso pr\u00e9mium.</p>' +
         '<div class="sonnet-input-row">' +
-          '<input type="password" id="sonnet-password-input" placeholder="Contrasena premium">' +
+          '<input type="password" id="sonnet-password-input" placeholder="Contraseña premium">' +
           '<button class="auth-enter-btn" onclick="submitSonnetPassword(\'' + targetMode + '\')">Acceder</button>' +
         '</div>' +
         '<div id="sonnet-error" class="auth-error"></div>' +
@@ -1299,12 +1299,12 @@ function submitSonnetPassword(targetMode) {
         document.querySelector('.sonnet-overlay').remove();
         setMode(targetMode);
       } else {
-        document.getElementById('sonnet-error').textContent = 'Contrasena incorrecta.';
+        document.getElementById('sonnet-error').textContent = 'Contraseña incorrecta.';
         document.getElementById('sonnet-error').style.display = 'block';
       }
     })
     .catch(() => {
-      document.getElementById('sonnet-error').textContent = 'Error de conexion.';
+      document.getElementById('sonnet-error').textContent = 'Error de conexión.';
       document.getElementById('sonnet-error').style.display = 'block';
     });
 }
@@ -1312,13 +1312,13 @@ function submitSonnetPassword(targetMode) {
 // --- Ask about a topic ---
 function askAbout(topic) {
   closeSidebar();
-  userInput.value = 'Explicame el ' + topic;
+  userInput.value = 'Explícame el ' + topic;
   sendMessage();
 }
 
 // --- Clear chat ---
 function clearChat() {
-  if (confirm('Limpiar todas las conversaciones?')) {
+  if (confirm('\u00bfLimpiar todas las conversaciones?')) {
     chatContainer.innerHTML = '';
     messageCounter = 0;
     msgCount.textContent = '0';
@@ -1328,7 +1328,7 @@ function clearChat() {
     welcome.className = 'welcome-block';
     welcome.innerHTML =
       '<h1>Bienvenido a ActuarialClaude</h1>' +
-      '<p class="welcome-subtitle">Historial limpiado. Escribe tu consulta abajo.</p>';
+      '<p class="welcome-subtitle">Historial limpio. Escribe tu consulta abajo.</p>';
     chatContainer.appendChild(welcome);
   }
 }
@@ -1361,7 +1361,7 @@ const _statusPhrases = [
   'Consultando normativa...',
   'Analizando fundamento legal...',
   'Revisando disposiciones...',
-  'Buscando articulos...',
+  'Buscando art\u00edculos...',
   'Procesando consulta...',
 ];
 let _statusIdx = 0;
@@ -1550,7 +1550,7 @@ async function sendMessage() {
         showAuthError();
         document.getElementById('auth-overlay').style.display = 'flex';
       }
-      addMessage('error', 'Sesion expirada o no autorizada. Inicia sesion de nuevo.');
+      addMessage('error', 'Sesión expirada o no autorizada. Inicia sesión de nuevo.');
       return;
     }
 
@@ -1627,7 +1627,7 @@ async function sendMessage() {
 
   } catch (err) {
     removeTyping();
-    addMessage('error', 'Error de conexion: ' + err.message);
+    addMessage('error', 'Error de conexión: ' + err.message);
   } finally {
     isStreaming = false;
     sendBtn.disabled = false;
@@ -1656,16 +1656,16 @@ function showModal(title, htmlContent) {
 }
 
 function showIndice(law) {
-  var title = law === 'cusf' ? 'Indice CUSF' : 'Indice LISF';
+  var title = law === 'cusf' ? '\u00cdndice CUSF' : '\u00cdndice LISF';
   showModal(title, '<p style="color:var(--text-light)">Cargando indice...</p>');
   fetch('/api/indice?law=' + law)
     .then(r => r.json())
     .then(data => {
       const content = document.querySelector('.modal-content');
       if (content && typeof marked !== 'undefined') {
-        content.innerHTML = marked.parse(data.content || 'Indice no disponible.');
+        content.innerHTML = marked.parse(data.content || 'Índice no disponible.');
       } else if (content) {
-        content.textContent = data.content || 'Indice no disponible.';
+        content.textContent = data.content || 'Índice no disponible.';
       }
     })
     .catch(() => {
@@ -1676,26 +1676,26 @@ function showIndice(law) {
 
 function showAyuda() {
   const helpHtml =
-    '<h2>Como usar ActuarialClaude</h2>' +
-    '<p>Este consultor te ayuda con la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b> y regulacion aseguradora mexicana.</p>' +
+    '<h2>Cómo usar ActuarialClaude</h2>' +
+    '<p>Este consultor te ayuda con la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b> y regulación aseguradora mexicana.</p>' +
     '<h3>Ejemplos de consultas</h3>' +
     '<ul>' +
-      '<li>"Que dice el articulo 201 sobre las notas tecnicas?"</li>' +
-      '<li>"Cuales son los requisitos para operar como institucion de seguros?"</li>' +
-      '<li>"Que son las reservas tecnicas?"</li>' +
-      '<li>"Explicame el Titulo Tercero de la LISF"</li>' +
+      '<li>"\u00bfQué dice el artículo 201 sobre las notas técnicas?"</li>' +
+      '<li>"\u00bfCuáles son los requisitos para operar como institución de seguros?"</li>' +
+      '<li>"\u00bfQué son las reservas técnicas?"</li>' +
+      '<li>"Explícame el Título Tercero de la LISF"</li>' +
     '</ul>' +
     '<h3>Consejos</h3>' +
     '<ul>' +
-      '<li>Puedes hacer preguntas de seguimiento -- el consultor recuerda la conversacion.</li>' +
-      '<li>Menciona articulos especificos para obtener respuestas mas rapidas.</li>' +
-      '<li>Haz clic en los titulos del panel lateral para explorar secciones.</li>' +
-      '<li>Las preguntas del panel FAQ dan respuestas instantaneas.</li>' +
-      '<li>Usa "Limpiar" para iniciar una nueva conversacion.</li>' +
-      '<li>Selecciona "Rapido" para respuestas breves o "Detallado" para analisis completo.</li>' +
+      '<li>Puedes hacer preguntas de seguimiento -- el consultor recuerda la conversación.</li>' +
+      '<li>Menciona artículos específicos para obtener respuestas más rápidas.</li>' +
+      '<li>Haz clic en los títulos del panel lateral para explorar secciones.</li>' +
+      '<li>Las preguntas del panel FAQ dan respuestas instantáneas.</li>' +
+      '<li>Usa "Limpiar" para iniciar una nueva conversación.</li>' +
+      '<li>Selecciona "Rápido" para respuestas breves o "Detallado" para análisis completo.</li>' +
     '</ul>' +
     '<h3>Aviso</h3>' +
-    '<p>Esta herramienta es una referencia de estudio. No sustituye la lectura completa de la LISF ni constituye asesoria legal.</p>';
+    '<p>Esta herramienta es una referencia de estudio. No sustituye la lectura completa de la LISF ni constituye asesoría legal.</p>';
   showModal('Ayuda', helpHtml);
 }
 
@@ -1725,7 +1725,7 @@ fetch('/api/health')
   .then(data => {
     if (!data.auth_configured) {
       statusDot.classList.add('offline');
-      statusText.textContent = 'Sin autenticacion';
+      statusText.textContent = 'Sin autenticación';
     } else {
       statusText.textContent = 'Conectado';
     }
