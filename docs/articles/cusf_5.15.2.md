@@ -1,0 +1,67 @@
+---
+ley: cusf
+numero: "5.15.2"
+titulo: "TÍTULO 5 - CAPÍTULO 5.15"
+capitulo: "042"
+tema: "DE LA CONSTITUCIÓN, INCREMENTO, VALUACIÓN Y REGISTRO DE LA RESERVA DE FIANZAS EN VIGOR DE LAS INSTITUCIONES POR LAS OPERACIONES DE FIANZAS"
+categoria: fianzas
+palabras_clave: reserva de fianzas en vigor, indices de proyeccion de reclamaciones, montos afianzados suscritos, reclamaciones pagadas, ano de origen, ano de desarrollo, factor de proyeccion, simulacion estocastica, nivel de confianza 99.5%, prima de reserva, reafianzamiento, indice de gasto de administracion, afianzamiento directo
+resumen: "Establece el procedimiento estadistico actuarial detallado para constituir la reserva de fianzas en vigor, basado en la construccion de indices de proyeccion de reclamaciones por ano de origen y desarrollo mediante simulacion estocastica con confianza del 99.5%, y su aplicacion a los montos afianzados suscritos de cada poliza en vigor."
+refs_internas: []
+refs_cruzadas: []
+---
+**DISPOSICIÓN 5.15.2.-** .	La constitución, incremento y valuación de la reserva de fianzas en vigor de las Instituciones para los contratos de afianzamiento directo, se realizará aplicando el siguiente procedimiento:
+
+I.	Para cada ramo, subramo o tipo de fianzas (), conforme a la agrupación establecida en el Anexo 5.15.2, se determinarán los índices de proyección de reclamaciones pagadas esperadas futuras, mediante la metodología siguiente:
+
+a)	Se identificarán y clasificarán los montos afianzados suscritos por cada año de origen  (), entendiendo que un determinado monto afianzado corresponde a un año de origen , cuando corresponda a las pólizas de fianzas que iniciaron su vigencia en el año calendario ;
+
+b)	Se identificarán y clasificarán los montos brutos de las reclamaciones pagadas por año de origen , y año de desarrollo , (), entendiendo como año de origen de una reclamación, el año calendario en que inició la vigencia de la póliza de la cual proviene dicha reclamación, y por año de desarrollo, el número de años transcurridos desde el año de origen hasta el año calendario en que se pagó ésta;
+
+c)	Se calcularán los factores de proyección de reclamaciones pagadas por año de origen  y año de desarrollo  (), como el cociente que resulte de dividir el monto de las reclamaciones pagadas en el año de desarrollo , proveniente del año de origen  (), entre el monto afianzado suscrito en el año de origen  ():
+
+d)	Los factores de proyección de reclamaciones a que se refiere el inciso c) anterior, se determinarán de manera separada para cada Institución que cuente con información oportuna, homogénea, confiable y suficiente, obteniendo de esta manera un conjunto de índices de proyección de reclamaciones que serán utilizados para la simulación de reclamaciones futuras de fianzas, conforme a lo indicado en la fracción II de la presente Disposición;
+
+II.	Mediante los factores de proyección de reclamaciones, se realizará la estimación de las reclamaciones futuras de la Institución provenientes de cada uno de los años de origen  y años de desarrollo , simulando las reclamaciones futuras , como el producto del factor de reclamación elegido aleatoriamente del conjunto de índices de reclamaciones del mercado, , por el monto afianzado suscrito en el año . Esto es:
+
+Para estos efectos se utilizará la experiencia de reclamaciones de la Institución correspondiente a los últimos 10 años de operación. En los casos en que, por el comportamiento particular de las reclamaciones, sea necesario tomar un periodo mayor o menor, la Institución deberá solicitar la autorización de la Comisión;
+
+III.	Para cada año de origen, se calculará el valor total de las reclamaciones provenientes de dicho año de origen, como la suma de los valores de las reclamaciones, tanto estimadas como pagadas, en los años de desarrollo , provenientes de dicho año de origen:
+
+IV.	Se dividirá el valor total de las reclamaciones estimadas conforme a la fracción III anterior provenientes de cada año de origen, entre el monto afianzado correspondiente a dicho año de origen, determinando de esta manera el índice de reclamaciones pagadas de cada año de origen  ():
+
+Los índices de reclamaciones pagadas  se revisarán durante el primer trimestre de cada año y se actualizarán cuando se observe un cambio significativo en el valor de los mismos.
+
+Los índices de reclamaciones pagadas , serán calculados por parte de la Comisión y serán asignados a cada Institución durante el primer trimestre de cada año. Estos valores deberán ser proporcionados por las propias Instituciones a aquellas Instituciones con las cuales tengan contratos de reafianzamiento que cubran responsabilidades de pólizas en vigor, para efectos de que se calcule la reserva de fianzas en vigor de la parte correspondiente al reafianzamiento tomado;
+
+V.	El procedimiento señalado en las fracciones III y IV anteriores se repetirá el número de veces necesario para asegurar que el valor medio estimado del índice de reclamaciones pagadas no difiera en más del 1.0% de su verdadero valor, con un nivel de confianza del 99.5%. Con dicha muestra, se estimará, para cada ramo, el índice de reclamaciones pagadas del ramo  () como el valor medio de los índices de reclamaciones pagadas  simulados para cada año de origen ;
+
+VI.	Se calculará la prima de reserva de cada una de las pólizas  de afianzamiento directo del ramo , que se encuentren en vigor al cierre del mes de que se trate (), como el producto del monto afianzado de dichas pólizas (), por el índice de reclamaciones pagadas del ramo, subramo o tipo de fianza de que se trate para el ejercicio en cuestión (), calculado conforme a lo previsto en esta Disposición:
+
+VII.	Se determinará, con base en la información del mercado, el índice anual de gasto de administración de cada ramo  (), como el porcentaje que resulte de dividir los gastos anuales de administración, entre los montos afianzados de pólizas en vigor. El índice anual de gasto de administración será calculado por la Comisión y será asignado a cada Institución durante el primer trimestre de cada año;
+
+VIII.	La reserva de fianzas en vigor por cada póliza en vigor , correspondiente al ramo, subramo o tipo de fianzas  (), se calculará como se indica a continuación:
+
+a)	Para pólizas del ramo de fianzas de fidelidad, o fianzas judiciales que amparen a conductores de vehículos automotores, con vigencia definida menor o igual a un año:
+
+donde:
+
+es el factor de devengamiento de la póliza  al momento de vigencia , y
+
+es el gasto anual de administración de la póliza
+
+El factor de devengamiento al que se refiere la presente Disposición, se obtendrá dividiendo el número de días que constituyen el período que falta para concluir el plazo de vigencia de la póliza (, entre el número total de días que constituyen dicho plazo ():
+
+b)	Para pólizas del ramo de fianzas de fidelidad, o fianzas judiciales que amparen a conductores de vehículos automotores, con vigencia definida, pero mayor a un año:
+
+La reserva de cada póliza , con plazo de vigencia , que se encuentra en el día  del año de vigencia , se calculará con el siguiente procedimiento:
+
+c)	Para las pólizas de los ramos de fianzas judiciales, fianzas administrativas y fianzas de crédito, el monto de la reserva de fianzas en vigor, en el año  de vigencia de la póliza, se determinará como:
+
+IX.	La reserva de fianzas en vigor para las operaciones de reafianzamiento tomado de las Instituciones, deberá constituirse conforme a lo establecido en las fracciones VI y VIII de la presente Disposición, utilizando como base el índice de reclamaciones pagadas  de cada una de las Instituciones con las que se tengan contratos de reafianzamiento tomado que cubran responsabilidades de pólizas en vigor. Para tales efectos, las Instituciones que realicen contratos de reafianzamiento tomado, deberán solicitar a las Instituciones cedentes, los índices de reclamaciones pagadas correspondientes.
+
+En el caso de operaciones de reafianzamiento tomado de entidades de seguros o de fianzas del extranjero, o bien de operaciones de reafianzamiento no proporcional, la reserva de fianzas en vigor deberá constituirse conforme al procedimiento establecido en la presente Disposición, utilizando como prima de reserva, la prima de reafianzamiento tomado, y como gastos de administración, el recargo por gastos de administración que, en su caso, se hayan incluido en la prima de reafianzamiento tomado.
+
+Para estos efectos, la reserva de fianzas en vigor deberá constituirse en tanto la obligación cubierta proveniente de la operación directa se encuentre en vigor. En el caso de contratos de reafianzamiento tomado en los cuales la obligación de dicho contrato se limite a cubrir las reclamaciones que se hagan o se originen durante el periodo establecido en el mismo, la reserva de fianzas en vigor deberá constituirse únicamente durante el periodo de vigencia del contrato de reafianzamiento.
+
+En caso de que en una operación de reafianzamiento tomado la Institución que toma el riesgo no cuente con información que le permita conocer si las obligaciones de la operación directa que fueron cubiertas por el contrato de reafianzamiento se encuentran en vigor, deberá mantener constituida la reserva de fianzas en vigor durante un periodo de 10 años, contados a partir de la fecha en que entró en vigor el contrato de reafianzamiento.

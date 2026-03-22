@@ -1,0 +1,37 @@
+---
+ley: cusf
+numero: "39.5.2"
+titulo: "TÍTULO 39 - CAPÍTULO 39.5"
+capitulo: "214"
+tema: "DEL SISTEMA DE NOTIFICACIÓN DE OFICIOS DE REQUERIMIENTO Y DEL SISTEMA DE PLANES DE REGULARIZACIÓN Y PROGRAMAS DE AUTOCORRECCIÓN"
+categoria: vigilancia
+palabras_clave: requisitos previos implementacion snor, designacion cinco personas responsables requerimientos, oficial cumplimiento designacion snor, director general poder notarial snor, clave usuario contrasena apartado electronico, identificacion oficial credencial votar snor, domicilio convencional snor escritos papel
+resumen: "Establece los requisitos previos que deben cumplir instituciones y sociedades mutualistas para implementar el procedimiento especial de notificacion via SNOR, incluyendo presentacion de escritos en papel, designacion de hasta cinco personas responsables de responder requerimientos y designacion del oficial de cumplimiento."
+refs_internas: [39.5.1, 39.5.14]
+refs_cruzadas: [lisf:492]
+---
+**DISPOSICIÓN 39.5.2.-** .	Las Instituciones y Sociedades Mutualistas, en forma previa a la implementación del procedimiento especial de notificación previsto en el presente Capítulo, por conducto de su director general o equivalente, o de directivos que se encuentren dentro de las dos jerarquías inferiores a la de aquél, acompañando, en el caso de directivos de las Instituciones que ocupen cargos con la segunda jerarquía inferior a la de director general o equivalente y en los casos del director general o equivalente de las Sociedades Mutualistas y directivos de las dos jerarquías inferiores a la de aquél, testimonio notarial o copia certificada del documento que acredite que están facultados, deberán presentar a la Comisión lo siguiente:
+
+I.	Un escrito, en papel, con membrete de la Institución o Sociedad Mutualista, ajustado al formato que se señala en el Anexo39.5.2-a, manifestando plena conformidad con dicho procedimiento especial y señalando como domicilio convencional para recibir notificaciones el Apartado Electrónico que la Comisión habilite en el SNOR respecto de cada Institución y Sociedad Mutualista;
+
+II.	Un escrito, en papel, con membrete de la Institución o Sociedad Mutualista, ajustado al formato que se señala en el Anexo 39.5.2-b, designando hasta cinco personas que tendrán acceso al SNOR y que serán responsables de proporcionar a la Comisión la información y documentación a que se refiere el presente Capítulo. Estas designaciones deberán recaer en personas que cuenten con poderes suficientes para obligar con sus actos a la Institución o Sociedad Mutualista, acompañando testimonio notarial o copia certificada del documento que acredite esas facultades así como copia certificada íntegra y legible, en el caso de mexicanos, de la credencial para votar vigente expedida por la autoridad electoral competente a las personas designadas o de otro documento de identificación oficial vigente expedido por autoridad competente y, en el caso de extranjeros, de la tarjeta de residencia permanente o temporal vigente, con fotografía, que acredite su condición de estancia en el país, en atención a su actividad, expedida por el Instituto Nacional 
+de Migración;
+
+III.	Un escrito, en papel, con membrete de la Institución o Sociedad Mutualista, ajustado al formato que se señala en el Anexo 39.5.2-c, designando hasta cinco personas que tendrán acceso, sólo para lectura, al Apartado Electrónico respectivo en el SNOR. Este escrito sólo deberá presentarse en caso de que la Institución o Sociedad Mutualista lo considere necesario, acompañando copia certificada íntegra y legible, en el caso de mexicanos, de la credencial para votar vigente expedida por la autoridad electoral competente a las personas designadas o de otro documento 
+de identificación oficial vigente expedido por autoridad competente y, en el caso de extranjeros, de la tarjeta de residencia permanente o temporal vigente, con fotografía, que acredite su condición de estancia en el país, en atención a su actividad, expedida por el Instituto Nacional de Migración, y
+
+IV.	Para el caso de Requerimientos formulados por autoridad competente relacionados con la información a que se refiere el artículo 492 de la LISF, las Instituciones y Sociedades Mutualistas únicamente deberán informar a la Comisión los datos del oficial de cumplimiento conforme al formato establecido en el Anexo 39.5.2-d para tener acceso al Apartado Electrónico del SNOR específico para estos efectos y para proporcionar la información y documentación correspondiente.
+
+La presentación de los escritos y documentos a que se refiere esta Disposición deberá efectuarse apegándose al procedimiento señalado en los Capítulos 39.1 y 39.6 de las presentes Disposiciones.
+
+Las personas de las Instituciones y Sociedades Mutualistas responsables de proporcionar la información y documentación solicitada en los Oficios de Requerimiento, así como las personas que tendrán acceso, solo para lectura, al Apartado Electrónico, utilizarán su Clave de Usuario y Contraseña para acceder al Apartado Electrónico de la Institución o Sociedad Mutualista que las hubiere designado. Las personas designadas como responsables de proporcionar la información y documentación solicitada en los Oficios de Requerimiento, incluidos los oficiales de cumplimiento, enviarán a la Comisión las Respuestas Negativas y, en su caso, las solicitudes de prórroga, utilizando en sustitución de su firma autógrafa, un conjunto de datos electrónicos personales no repetibles asociados con dichos documentos, generados por el SNOR, utilizando su Clave de Usuario y Contraseña, y apegándose a lo establecido en las Disposiciones 39.1.3 y 39.1.4.
+
+Las personas designadas generarán su Clave de Usuario y Contraseña, conforme al procedimiento previsto en el “Instructivo de Uso del Sistema de Notificación de Oficios de Requerimiento” a que se refiere la Disposición 39.5.1.
+
+Las Instituciones y Sociedades Mutualistas serán responsables en términos de la legislación aplicable, de los actos realizados por las personas físicas designadas, de conformidad con lo previsto en la presente Disposición, sin perjuicio de las responsabilidades en que dichas personas físicas incurran con motivo de su actuación.
+
+La Comisión notificará a la dirección de correo electrónico señalada en el Anexo 39.5.2-a, las respectivas habilitaciones de Apartados Electrónicos en el SNOR.
+
+La Comisión notificará la alta de personas designadas para proporcionar la información y documentación a que se refiere el presente Capítulo, así como las altas de personas para tener acceso, sólo para lectura, al Apartado Electrónico en el SNOR, a la dirección de correo electrónico de quien haya designado a esas personas, señalada en los Anexos 39.5.2-b, 39.5.2-c y 39.5.2-d.
+
+La Comisión notificará a las personas designadas sus altas, así como la información para que generen las Claves de Usuario y Contraseñas que utilizarán en el SNOR, mediante correo electrónico dirigido a la dirección electrónica que señalaron en los Anexos 39.5.2-b, 39.5.2-c y 39.5.2-d. En el supuesto de que las personas designadas no generen sus Claves de Usuario y Contraseñas dentro de los dos días hábiles siguientes a la fecha en que reciban el referido correo electrónico, deberán comunicarse a la Mesa de Ayuda de la Comisión, a la dirección de correo electrónico o al número telefónico establecido en la Disposición 39.5.14, a efecto de que reciban la información que les permita generar las Claves de Usuario y Contraseñas respectivas.
