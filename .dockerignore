@@ -12,7 +12,9 @@ convert_pdf.py
 convert_cusf.py
 benchmark.py
 cat
-subagents_outputs/
+subagents_outputs/*
 !subagents_outputs/lisf_faq.json
+!subagents_outputs/titulo_answers.json
+!subagents_outputs/casos_practicos.json
 Dockerfile
 Dockerfile.oauth
