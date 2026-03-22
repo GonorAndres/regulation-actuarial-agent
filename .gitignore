@@ -7,7 +7,10 @@ docs/lisf_md/full_lisf.md
 
 # Audit 2026-03-21
 CLAUDE.md
-subagents_outputs/
+subagents_outputs/*
+!subagents_outputs/lisf_faq.json
+!subagents_outputs/titulo_answers.json
+!subagents_outputs/casos_practicos.json
 cat
 *.png
 .playwright-mcp/
