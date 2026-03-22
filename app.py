@@ -18,7 +18,7 @@ logger = logging.getLogger("actuarial-claude")
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
 
 load_dotenv()
 
@@ -946,6 +946,14 @@ if _agent_sdk_available:
 async def serve_frontend():
     html_path = PROJECT_DIR / "index.html"
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
+
+
+@app.get("/favicon.svg")
+async def favicon():
+    favicon_path = PROJECT_DIR / "favicon.svg"
+    if favicon_path.exists():
+        return FileResponse(favicon_path, media_type="image/svg+xml")
+    return JSONResponse(status_code=404, content={"error": "not found"})
 
 
 @app.get("/api/auth-config")
