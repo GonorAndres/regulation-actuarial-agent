@@ -24,9 +24,13 @@ RUN pip install --no-cache-dir -r requirements.txt -r requirements-oauth.txt
 RUN useradd -m -s /bin/bash appuser
 
 # Copy application
-COPY app.py index.html ./
+COPY app.py index.html favicon.svg build_index.py generic_keywords.txt ./
 COPY docs/ docs/
 COPY subagents_outputs/lisf_faq.json subagents_outputs/lisf_faq.json
+COPY subagents_outputs/titulo_answers.json subagents_outputs/titulo_answers.json
+
+# Build search index from per-article files
+RUN python build_index.py
 
 # Prepare credentials mount point and set ownership
 RUN mkdir -p /home/appuser/.claude && chown -R appuser:appuser /app /home/appuser/.claude

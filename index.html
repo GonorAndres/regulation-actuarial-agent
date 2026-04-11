@@ -3,181 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-098V02NCB0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-098V02NCB0');</script>
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing identify alias people.set people.set_once set_config reset get_distinct_id getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onFeatureFlags onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_DYrSznvPeJuXPHgj2Nw9BIluiGdwkbuSSih3lu6PtmH',{api_host:'https://us.i.posthog.com',autocapture:false,capture_pageview:true});
+</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <title>ActuarialClaude - Consultor de Regulación Aseguradora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   :root {
-    --bg: #F5F0EB;
-    --surface: #FFFFFF;
-    --primary: #2D5F5D;
-    --accent: #D4956A;
-    --text: #2C3E50;
-    --text-light: #7F8C8D;
-    --border: #E0D5CC;
-    --chat-user: #F0E6DC;
-    --chat-bot: #FFFFFF;
-    --error: #C0392B;
-    --success: #27AE60;
+    --bg: #C0C0C0;
+    --surface: #DFDFDF;
+    --titlebar: #000080;
+    --titlebar-inactive: #808080;
+    --accent: #FF0000;
+    --text: #000000;
+    --text-light: #4A4A4A;
+    --border: #000000;
+    --border-light: #808080;
+    --inset-dark: #808080;
+    --inset-light: #FFFFFF;
+    --chat-user: #E8E8E8;
+    --chat-bot: #F5F5F5;
+    --error: #CC0000;
+    --success: #008000;
+    --shadow: 4px 4px 0 #000;
+    --shadow-sm: 2px 2px 0 #000;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-family: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
     color: var(--text);
     background: var(--bg);
     height: 100vh;
     overflow: hidden;
+    /* Subtle tiled pattern for desktop feel */
+    background-image:
+      linear-gradient(45deg, #B8B8B8 25%, transparent 25%),
+      linear-gradient(-45deg, #B8B8B8 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #B8B8B8 75%),
+      linear-gradient(-45deg, transparent 75%, #B8B8B8 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 0 2px, 2px -2px, -2px 0;
   }
 
   /* === SCROLLBARS === */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #c4b8ad; }
+  ::-webkit-scrollbar { width: 16px; }
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+    border-left: 2px solid var(--border);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface);
+    border: 2px solid var(--border);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #CCCCCC; }
+  ::-webkit-scrollbar-button {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    height: 16px;
+  }
 
-  /* === LAYOUT SHELL === */
-  .app-shell {
+  /* === WINDOW SHELL === */
+  .window-shell {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    max-height: 100vh;
+    border: 3px solid var(--border);
+    background: var(--surface);
   }
 
-  /* === TOP NAV === */
-  .top-nav {
-    height: 56px;
-    background: var(--primary);
+  /* === TITLE BAR === */
+  .title-bar {
+    height: 32px;
+    background: var(--titlebar);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 4px;
     flex-shrink: 0;
-    z-index: 100;
+    user-select: none;
   }
-  .top-nav-left {
+  .title-bar-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #FFFFFF;
+    padding-left: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .title-bar-controls {
+    display: flex;
+    gap: 2px;
+  }
+  .title-bar-controls button {
+    width: 22px;
+    height: 22px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    font-family: system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
   }
-  .hamburger-btn {
-    display: none;
+  .title-bar-controls button:hover { background: #EEEEEE; }
+  .title-bar-controls button:active {
+    border-style: inset;
+  }
+
+  /* === MENU BAR === */
+  .menu-bar {
+    height: 28px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .menu-item {
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    padding: 4px 10px;
     background: none;
     border: none;
-    color: #fff;
-    font-size: 22px;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: background 0.2s ease;
+    color: var(--text);
   }
-  .hamburger-btn:hover { background: rgba(255,255,255,0.15); }
-  .top-nav-brand {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 20px;
-    color: #fff;
-    letter-spacing: 0.3px;
+  .menu-item:hover {
+    background: var(--titlebar);
+    color: #FFFFFF;
   }
-  .top-nav-right {
+  .menu-item-right {
+    margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 4px;
   }
   .nav-user-label {
-    font-size: 13px;
-    color: rgba(255,255,255,0.85);
+    font-size: 12px;
+    color: var(--text-light);
     display: none;
   }
   .nav-signout-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 6px 14px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 6px;
-    color: #fff;
+    font-family: system-ui, sans-serif;
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--surface);
+    border: 2px solid var(--border);
     cursor: pointer;
     display: none;
-    transition: background 0.2s ease;
   }
-  .nav-signout-btn:hover { background: rgba(255,255,255,0.25); }
-  .nav-links {
-    display: flex;
-    gap: 6px;
-  }
-  .nav-link-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 6px 12px;
-    background: none;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 6px;
-    color: rgba(255,255,255,0.85);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .nav-link-btn:hover {
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-  }
+  .nav-signout-btn:hover { background: #EEEEEE; }
+  .nav-signout-btn:active { border-style: inset; }
 
-  /* === MAIN CONTENT (sidebar + chat) === */
+  /* === MAIN CONTENT === */
   .main-content {
     flex: 1;
     display: flex;
     overflow: hidden;
     min-height: 0;
+    border-top: 1px solid var(--inset-light);
   }
 
   /* === SIDEBAR === */
   .sidebar {
-    width: 260px;
-    min-width: 260px;
+    width: 240px;
+    min-width: 240px;
     background: var(--surface);
-    border-right: 1px solid var(--border);
+    border-right: 2px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
   }
   .sidebar-scroll {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 12px;
   }
   .sidebar-section {
-    margin-bottom: 2px;
+    border-bottom: 2px solid var(--border);
   }
+  .sidebar-section:last-child { border-bottom: none; }
   .sidebar-header {
-    background: var(--primary);
-    color: #fff;
+    background: var(--titlebar);
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 10px 16px;
+    letter-spacing: 1px;
+    padding: 6px 10px;
     cursor: pointer;
     user-select: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: background 0.2s ease;
   }
-  .sidebar-header:hover { background: #245250; }
+  .sidebar-header:hover { background: #0000A0; }
   .sidebar-header .toggle-arrow {
     font-size: 10px;
-    transition: transform 0.2s ease;
+    transition: transform 0.15s ease;
   }
   .sidebar-header.collapsed .toggle-arrow { transform: rotate(-90deg); }
   .sidebar-body {
-    padding: 6px 8px;
-    background: var(--surface);
+    padding: 2px 0;
+    background: #FFFFFF;
+    border: 2px inset var(--bg);
+    margin: 4px;
   }
   .sidebar-body.hidden { display: none; }
 
@@ -188,19 +239,19 @@
     margin: 0;
   }
   .chapter-tree li {
-    padding: 6px 12px;
+    padding: 4px 10px;
     cursor: pointer;
     font-size: 12px;
     color: var(--text);
-    border-radius: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: all 0.15s ease;
+    border-bottom: 1px solid #E0E0E0;
   }
+  .chapter-tree li:last-child { border-bottom: none; }
   .chapter-tree li:hover {
-    background: var(--bg);
-    color: var(--primary);
+    background: var(--titlebar);
+    color: #FFFFFF;
   }
 
   /* FAQ list */
@@ -210,36 +261,34 @@
     margin: 0;
   }
   .faq-list li {
-    padding: 8px 12px;
+    padding: 5px 10px;
     cursor: pointer;
     font-size: 12px;
-    color: var(--primary);
-    border-bottom: 1px solid var(--border);
+    color: var(--titlebar);
+    border-bottom: 1px solid #E0E0E0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    transition: all 0.15s ease;
   }
   .faq-list li:last-child { border-bottom: none; }
   .faq-list li:hover {
-    background: var(--bg);
-    color: var(--accent);
+    background: var(--titlebar);
+    color: #FFFFFF;
   }
 
   /* resource links */
   .resource-link {
     display: block;
     font-size: 12px;
-    color: var(--primary);
-    padding: 8px 12px;
-    text-decoration: none;
-    border-bottom: 1px solid var(--border);
-    transition: all 0.15s ease;
+    color: var(--titlebar);
+    padding: 5px 10px;
+    text-decoration: underline;
+    border-bottom: 1px solid #E0E0E0;
   }
   .resource-link:last-child { border-bottom: none; }
   .resource-link:hover {
-    background: var(--bg);
-    color: var(--accent);
+    background: var(--titlebar);
+    color: #FFFFFF;
   }
 
   /* === CHAT AREA === */
@@ -254,43 +303,48 @@
   .chat-frame {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 24px;
+    padding: 12px 16px;
     min-height: 0;
+    background: #FFFFFF;
+    border: 2px inset var(--bg);
+    margin: 4px;
   }
 
   /* === WELCOME === */
   .welcome-block {
-    max-width: 540px;
-    margin: 60px auto 0 auto;
+    max-width: 520px;
+    margin: 40px auto 0 auto;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 16px;
   }
   .welcome-block h1 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 28px;
-    color: var(--primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--titlebar);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 12px;
   }
   .welcome-block .welcome-subtitle {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-light);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .welcome-block .welcome-disclaimer {
     font-size: 12px;
-    color: var(--text-light);
-    background: #FFF9F2;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
+    color: var(--text);
+    background: var(--surface);
+    border: 2px solid var(--border);
+    padding: 8px 14px;
     display: inline-block;
+    box-shadow: var(--shadow-sm);
   }
 
   /* === CHAT MESSAGES === */
   .msg {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     max-width: 780px;
   }
 
@@ -301,12 +355,13 @@
   }
   .msg-user .bubble {
     background: var(--chat-user);
-    border-radius: 12px 12px 2px 12px;
-    padding: 10px 16px;
+    border: 2px solid var(--border);
+    padding: 8px 14px;
     max-width: 70%;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     word-wrap: break-word;
+    box-shadow: var(--shadow-sm);
   }
 
   /* Bot messages */
@@ -316,104 +371,114 @@
     align-items: flex-start;
   }
   .msg-agent .agent-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 4px;
-    padding-left: 4px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--titlebar);
+    margin-bottom: 3px;
+    padding-left: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .msg-agent .bubble {
     background: var(--chat-bot);
-    border-radius: 12px 12px 12px 2px;
-    padding: 14px 18px;
+    border: 2px solid var(--border);
+    padding: 12px 16px;
     max-width: 85%;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    font-size: 14px;
+    box-shadow: var(--shadow);
+    font-size: 13px;
     line-height: 1.65;
     word-wrap: break-word;
   }
 
   /* markdown inside bot messages */
-  .msg-agent .bubble strong, .msg-agent .bubble b { color: var(--primary); }
+  .msg-agent .bubble strong, .msg-agent .bubble b { color: var(--titlebar); }
   .msg-agent .bubble code {
-    font-family: 'JetBrains Mono', monospace;
-    background: #F0EDE8;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background: var(--bg);
+    padding: 1px 5px;
+    border: 1px solid var(--border-light);
     font-size: 12px;
   }
   .msg-agent .bubble pre {
-    background: #1E2D2C;
-    color: #E0E8E7;
-    padding: 12px 14px;
-    border-radius: 8px;
+    background: #1A1A2E;
+    color: #E0E0E0;
+    padding: 10px 12px;
+    border: 2px solid var(--border);
     overflow-x: auto;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 12px;
     line-height: 1.5;
     margin: 8px 0;
+    box-shadow: var(--shadow-sm);
   }
   .msg-agent .bubble pre code {
     background: none;
     padding: 0;
     color: inherit;
-    border-radius: 0;
+    border: none;
   }
   .msg-agent .bubble h1, .msg-agent .bubble h2, .msg-agent .bubble h3, .msg-agent .bubble h4 {
-    color: var(--primary);
-    font-family: 'Playfair Display', serif;
-    margin: 14px 0 6px 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--titlebar);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 12px 0 6px 0;
   }
-  .msg-agent .bubble h1 { font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  .msg-agent .bubble h2 { font-size: 16px; }
-  .msg-agent .bubble h3 { font-size: 15px; }
-  .msg-agent .bubble h4 { font-size: 14px; }
-  .msg-agent .bubble ul, .msg-agent .bubble ol { padding-left: 24px; margin: 6px 0; }
-  .msg-agent .bubble li { margin-bottom: 4px; }
-  .msg-agent .bubble a { color: var(--accent); text-decoration: underline; }
+  .msg-agent .bubble h1 { font-size: 17px; border-bottom: 2px solid var(--border); padding-bottom: 4px; }
+  .msg-agent .bubble h2 { font-size: 15px; }
+  .msg-agent .bubble h3 { font-size: 14px; }
+  .msg-agent .bubble h4 { font-size: 13px; }
+  .msg-agent .bubble ul, .msg-agent .bubble ol { padding-left: 22px; margin: 6px 0; }
+  .msg-agent .bubble li { margin-bottom: 3px; }
+  .msg-agent .bubble a { color: var(--titlebar); text-decoration: underline; font-weight: 600; }
+  .msg-agent .bubble a:hover { color: var(--accent); }
   .msg-agent .bubble blockquote {
-    border-left: 3px solid var(--primary);
+    border-left: 4px solid var(--titlebar);
     margin: 8px 0;
-    padding: 6px 14px;
-    background: #F5F0EB;
+    padding: 6px 12px;
+    background: var(--surface);
     color: var(--text);
-    border-radius: 0 6px 6px 0;
+    border: 2px solid var(--border);
+    border-left: 4px solid var(--titlebar);
   }
   .msg-agent .bubble table { border-collapse: collapse; margin: 8px 0; width: 100%; }
   .msg-agent .bubble th, .msg-agent .bubble td {
-    border: 1px solid var(--border);
-    padding: 6px 10px;
+    border: 2px solid var(--border);
+    padding: 4px 8px;
     text-align: left;
-    font-size: 13px;
+    font-size: 12px;
   }
-  .msg-agent .bubble th { background: var(--bg); font-weight: 600; }
-  .msg-agent .bubble hr { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+  .msg-agent .bubble th { background: var(--titlebar); color: #FFFFFF; font-weight: 700; }
+  .msg-agent .bubble hr { border: none; border-top: 2px solid var(--border); margin: 10px 0; }
   .msg-agent .bubble p { margin: 6px 0; }
 
   /* citation panel */
   .citation-panel {
-    background: #FFFBF0;
-    border: 1px solid #E8DCC8;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-top: 8px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    padding: 8px 12px;
+    margin-top: 6px;
     max-width: 85%;
     font-size: 12px;
+    box-shadow: var(--shadow-sm);
   }
   .citation-header {
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 6px;
-    font-size: 11px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    color: var(--titlebar);
+    margin-bottom: 4px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
   }
   .citation-item {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     color: var(--text);
-    padding: 4px 0;
+    padding: 3px 0;
     line-height: 1.5;
-    border-bottom: 1px solid #F0E8DA;
+    border-bottom: 1px solid var(--bg);
+    font-size: 11px;
   }
   .citation-item:last-child { border-bottom: none; }
 
@@ -421,18 +486,19 @@
   .msg-error {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
   }
   .msg-error .error-icon {
     color: var(--error);
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 900;
     flex-shrink: 0;
     margin-top: 1px;
   }
   .msg-error .error-text {
     color: var(--error);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 700;
   }
 
   /* typing indicator */
@@ -440,35 +506,37 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .typing-indicator .agent-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 4px;
-    padding-left: 4px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--titlebar);
+    margin-bottom: 3px;
+    padding-left: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .typing-bubble {
     background: var(--chat-bot);
-    border-radius: 12px 12px 12px 2px;
-    padding: 12px 18px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 2px solid var(--border);
+    padding: 8px 14px;
+    box-shadow: var(--shadow-sm);
     color: var(--text-light);
-    font-size: 13px;
+    font-size: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   .typing-dots {
     display: flex;
-    gap: 4px;
+    gap: 3px;
   }
   .typing-dots span {
     width: 6px;
     height: 6px;
     background: var(--border);
-    border-radius: 50%;
     animation: dotpulse 1.2s ease-in-out infinite;
   }
   .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -481,104 +549,121 @@
   /* === INPUT BAR === */
   .input-bar {
     background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 12px 16px;
+    border-top: 2px solid var(--border);
+    padding: 6px 8px;
     display: flex;
-    gap: 10px;
+    gap: 6px;
     align-items: flex-end;
     flex-shrink: 0;
   }
 
   #user-input {
     flex: 1;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface);
+    font-family: system-ui, 'Segoe UI', Tahoma, sans-serif;
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 2px inset var(--bg);
+    background: #FFFFFF;
     resize: none;
-    min-height: 40px;
-    max-height: 120px;
+    min-height: 32px;
+    max-height: 100px;
     outline: none;
     color: var(--text);
-    transition: border-color 0.2s ease;
     line-height: 1.4;
   }
-  #user-input:focus { border-color: var(--primary); }
-  #user-input::placeholder { color: var(--text-light); }
+  #user-input:focus { border-color: var(--titlebar); }
+  #user-input::placeholder { color: var(--border-light); }
 
   .mode-toggle {
     display: flex;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+    gap: 0;
     flex-shrink: 0;
     align-self: flex-end;
-    height: 40px;
+    height: 32px;
   }
   .mode-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 0 14px;
+    font-family: system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 10px;
     background: var(--surface);
-    border: none;
+    border: 2px solid var(--border);
+    border-right: none;
     cursor: pointer;
-    color: var(--text-light);
-    transition: all 0.2s ease;
+    color: var(--text);
     height: 100%;
   }
-  .mode-btn:first-child { border-right: 1px solid var(--border); }
+  .mode-btn:last-child { border-right: 2px solid var(--border); }
   .mode-btn.active {
-    background: var(--primary);
-    color: #fff;
+    background: var(--titlebar);
+    color: #FFFFFF;
   }
-  .mode-btn:hover:not(.active) { background: var(--bg); }
+  .mode-btn:hover:not(.active) { background: #EEEEEE; }
+  .mode-btn:active { border-style: inset; }
 
   #send-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 0 20px;
-    height: 40px;
-    background: var(--accent);
-    border: none;
-    border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0 16px;
+    height: 32px;
+    background: var(--surface);
+    border: 2px solid var(--border);
     cursor: pointer;
-    color: #fff;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
   }
-  #send-btn:hover { background: #C4854F; }
-  #send-btn:active { transform: scale(0.97); }
-  #send-btn:disabled { background: var(--border); color: var(--text-light); cursor: default; transform: none; }
+  #send-btn:hover { background: #EEEEEE; }
+  #send-btn:active {
+    border-style: inset;
+    box-shadow: none;
+    transform: translate(2px, 2px);
+  }
+  #send-btn:disabled {
+    background: var(--bg);
+    color: var(--border-light);
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+  }
 
   /* === STATUS BAR === */
   .statusbar {
     background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 6px 20px;
+    border-top: 2px solid var(--border);
+    padding: 3px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    color: var(--text-light);
+    color: var(--text);
     flex-shrink: 0;
+    gap: 2px;
   }
+  .status-section {
+    flex: 1;
+    padding: 2px 6px;
+    border: 1px inset var(--bg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .status-section:first-child { flex: 2; }
   .status-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
   }
   .status-dot {
     display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
+    width: 8px;
+    height: 8px;
     background: var(--success);
-    margin-right: 6px;
+    margin-right: 4px;
     vertical-align: middle;
   }
   .status-dot.offline { background: var(--error); }
@@ -595,8 +680,14 @@
   .auth-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(44, 62, 80, 0.6);
-    backdrop-filter: blur(4px);
+    background: var(--bg);
+    background-image:
+      linear-gradient(45deg, #B8B8B8 25%, transparent 25%),
+      linear-gradient(-45deg, #B8B8B8 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #B8B8B8 75%),
+      linear-gradient(-45deg, transparent 75%, #B8B8B8 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 0 2px, 2px -2px, -2px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -604,77 +695,85 @@
   }
   .auth-box {
     background: var(--surface);
-    border-radius: 16px;
-    max-width: 380px;
+    border: 3px solid var(--border);
+    max-width: 360px;
     width: 90%;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    box-shadow: 6px 6px 0 #000;
     overflow: hidden;
   }
   .auth-box-header {
-    background: var(--primary);
-    padding: 24px 28px;
-    text-align: center;
+    background: var(--titlebar);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
   }
   .auth-box-header h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 700;
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-  .auth-box-header p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.75);
-  }
-  .auth-box-content {
-    padding: 28px;
-    text-align: center;
-  }
-  .auth-box-content .auth-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-light);
+    font-size: 14px;
+    color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+  .auth-box-header p {
+    display: none;
+  }
+  .auth-box-content {
+    padding: 24px 20px;
+    text-align: center;
+    background: var(--surface);
+  }
+  .auth-box-content .auth-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 10px;
   }
   .auth-input-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     justify-content: center;
   }
   #access-code-input {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 180px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 2px inset var(--bg);
+    width: 160px;
     text-align: center;
     color: var(--text);
     outline: none;
-    transition: border-color 0.2s ease;
+    background: #FFFFFF;
   }
-  #access-code-input:focus { border-color: var(--primary); }
-  #access-code-input::placeholder { color: var(--text-light); }
+  #access-code-input:focus { border-color: var(--titlebar); }
+  #access-code-input::placeholder { color: var(--border-light); }
   .auth-enter-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 22px;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--text);
     cursor: pointer;
-    transition: background 0.2s ease;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-sm);
   }
-  .auth-enter-btn:hover { background: #C4854F; }
+  .auth-enter-btn:hover { background: #EEEEEE; }
+  .auth-enter-btn:active {
+    border-style: inset;
+    box-shadow: none;
+    transform: translate(2px, 2px);
+  }
   .auth-error {
     color: var(--error);
     font-size: 12px;
-    margin-top: 12px;
+    font-weight: 700;
+    margin-top: 10px;
     display: none;
   }
 
@@ -682,8 +781,7 @@
   .sonnet-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(44, 62, 80, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -691,61 +789,63 @@
   }
   .sonnet-box {
     background: var(--surface);
-    border-radius: 16px;
-    max-width: 400px;
+    border: 3px solid var(--border);
+    max-width: 380px;
     width: 90%;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    box-shadow: 6px 6px 0 #000;
     overflow: hidden;
   }
   .sonnet-box-header {
-    background: var(--primary);
-    padding: 16px 20px;
+    background: var(--titlebar);
+    padding: 6px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   .sonnet-box-header h3 {
-    font-family: 'Playfair Display', serif;
-    color: #fff;
-    font-size: 18px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 13px;
+    text-transform: uppercase;
     margin: 0;
   }
   .sonnet-box-content {
-    padding: 24px;
+    padding: 20px;
     text-align: center;
   }
   .sonnet-box-content p {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     line-height: 1.5;
   }
   .sonnet-input-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     justify-content: center;
     margin-bottom: 8px;
   }
   #sonnet-password-input {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 200px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 2px inset var(--bg);
+    width: 180px;
     text-align: center;
     color: var(--text);
     outline: none;
+    background: #FFFFFF;
   }
-  #sonnet-password-input:focus { border-color: var(--primary); }
+  #sonnet-password-input:focus { border-color: var(--titlebar); }
   .sonnet-contact {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-light);
-    margin-top: 12px;
+    margin-top: 10px;
   }
   .sonnet-contact a {
-    color: var(--primary);
+    color: var(--titlebar);
     text-decoration: underline;
   }
 
@@ -753,8 +853,7 @@
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(44, 62, 80, 0.5);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -762,77 +861,100 @@
   }
   .modal-box {
     background: var(--surface);
-    border-radius: 12px;
-    max-width: 700px;
+    border: 3px solid var(--border);
+    max-width: 680px;
     width: 90%;
     max-height: 80vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    box-shadow: 6px 6px 0 #000;
     overflow: hidden;
   }
   .modal-titlebar {
-    background: var(--primary);
-    color: #fff;
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 14px 20px;
+    background: var(--titlebar);
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .modal-close {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.7);
-    font-size: 18px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    padding: 2px 8px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     line-height: 1;
   }
-  .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .modal-close:hover { background: #EEEEEE; }
+  .modal-close:active { border-style: inset; }
   .modal-content {
-    padding: 20px 24px;
+    padding: 16px 20px;
     overflow-y: auto;
     flex: 1;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
+    background: #FFFFFF;
+    margin: 4px;
+    border: 2px inset var(--bg);
   }
   .modal-content h1, .modal-content h2, .modal-content h3 {
-    color: var(--primary);
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--titlebar);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-  .modal-content h1 { font-size: 20px; margin: 16px 0 8px 0; }
-  .modal-content h2 { font-size: 17px; margin: 14px 0 6px 0; }
-  .modal-content h3 { font-size: 15px; margin: 12px 0 4px 0; }
+  .modal-content h1 { font-size: 18px; margin: 14px 0 6px 0; }
+  .modal-content h2 { font-size: 15px; margin: 12px 0 4px 0; }
+  .modal-content h3 { font-size: 14px; margin: 10px 0 4px 0; }
   .modal-content table { border-collapse: collapse; width: 100%; margin: 8px 0; }
   .modal-content th, .modal-content td {
-    border: 1px solid var(--border);
-    padding: 6px 10px;
+    border: 2px solid var(--border);
+    padding: 4px 8px;
     text-align: left;
-    font-size: 13px;
-  }
-  .modal-content th { background: var(--bg); font-weight: 600; }
-  .modal-content ul, .modal-content ol { padding-left: 24px; margin: 6px 0; }
-  .modal-content li { margin-bottom: 4px; }
-  .modal-content p { margin: 6px 0; }
-  .modal-content a { color: var(--accent); }
-  .modal-content code {
-    font-family: 'JetBrains Mono', monospace;
-    background: #F0EDE8;
-    padding: 2px 6px;
-    border-radius: 4px;
     font-size: 12px;
+  }
+  .modal-content th { background: var(--titlebar); color: #FFFFFF; font-weight: 700; }
+  .modal-content ul, .modal-content ol { padding-left: 22px; margin: 6px 0; }
+  .modal-content li { margin-bottom: 3px; }
+  .modal-content p { margin: 6px 0; }
+  .modal-content a { color: var(--titlebar); text-decoration: underline; }
+  .modal-content code {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background: var(--bg);
+    padding: 1px 5px;
+    border: 1px solid var(--border-light);
+    font-size: 12px;
+  }
+
+  /* === HAMBURGER (mobile) === */
+  .hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 2px 6px;
   }
 
   /* === SIDEBAR OVERLAY (mobile) === */
   .sidebar-overlay {
     display: none;
     position: fixed;
-    top: 56px; left: 0; right: 0; bottom: 0;
+    top: 60px; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.3);
     z-index: 90;
   }
@@ -842,32 +964,33 @@
   @media (max-width: 768px) {
     .sidebar {
       position: fixed;
-      top: 56px;
+      top: 60px;
       left: 0;
       bottom: 0;
       z-index: 95;
       transform: translateX(-100%);
-      box-shadow: 4px 0 16px rgba(0,0,0,0.1);
+      box-shadow: 4px 0 0 var(--border);
     }
     .sidebar.open { transform: translateX(0); }
     .hamburger-btn { display: block; }
-    .nav-links { display: none; }
-    .input-bar { padding: 10px 12px; gap: 8px; }
-    .chat-frame { padding: 16px 12px; }
+    .menu-bar .menu-item:not(.hamburger-btn) { display: none; }
+    .menu-item-right { display: none !important; }
+    .input-bar { padding: 6px; gap: 4px; }
+    .chat-frame { padding: 10px 8px; margin: 2px; }
     .msg-user .bubble { max-width: 85%; }
     .msg-agent .bubble { max-width: 95%; }
     .citation-panel { max-width: 95%; }
   }
 
   @media (max-width: 480px) {
-    body { font-size: 13px; }
-    .top-nav-brand { font-size: 17px; }
-    .welcome-block h1 { font-size: 22px; }
-    .welcome-block .welcome-subtitle { font-size: 13px; }
+    body { font-size: 12px; }
+    .title-bar-text { font-size: 12px; }
+    .welcome-block h1 { font-size: 20px; }
+    .welcome-block .welcome-subtitle { font-size: 12px; }
     .mode-toggle { display: none; }
-    #user-input { font-size: 13px; padding: 8px 12px; }
-    #send-btn { padding: 0 14px; font-size: 13px; }
-    .statusbar { padding: 5px 12px; font-size: 11px; }
+    #user-input { font-size: 12px; padding: 5px 8px; }
+    #send-btn { padding: 0 10px; font-size: 11px; }
+    .statusbar { font-size: 11px; }
   }
 </style>
 </head>
@@ -891,25 +1014,31 @@
   </div>
 </div>
 
-<!-- App shell -->
-<div class="app-shell">
+<!-- Window shell -->
+<div class="window-shell">
 
-  <!-- Top nav -->
-  <nav class="top-nav">
-    <div class="top-nav-left">
-      <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()">&#9776;</button>
-      <span class="top-nav-brand">ActuarialClaude</span>
+  <!-- Title bar -->
+  <div class="title-bar">
+    <span class="title-bar-text">ActuarialClaude - Consultor LISF</span>
+    <div class="title-bar-controls">
+      <button title="Minimizar">_</button>
+      <button title="Maximizar">[]</button>
+      <button title="Cerrar" onclick="if(confirm('Cerrar aplicacion?')) window.close()">X</button>
     </div>
-    <div class="top-nav-right">
-      <div class="nav-links">
-        <button class="nav-link-btn" onclick="showIndice()">Índice LISF</button>
-        <button class="nav-link-btn" onclick="showAyuda()">Ayuda</button>
-        <button class="nav-link-btn" onclick="clearChat()">Limpiar</button>
-      </div>
+  </div>
+
+  <!-- Menu bar -->
+  <div class="menu-bar">
+    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()">&#9776;</button>
+    <button class="menu-item" onclick="showIndice('lisf')">Índice LISF</button>
+    <button class="menu-item" onclick="showIndice('cusf')">Índice CUSF</button>
+    <button class="menu-item" onclick="showAyuda()">Ayuda</button>
+    <button class="menu-item" onclick="clearChat()">Limpiar</button>
+    <div class="menu-item-right">
       <span class="nav-user-label" id="nav-user-label"></span>
       <button class="nav-signout-btn" id="nav-signout-btn" onclick="signOut()">Salir</button>
     </div>
-  </nav>
+  </div>
 
   <!-- Main content -->
   <div class="main-content">
@@ -923,46 +1052,85 @@
 
         <!-- Estructura LISF -->
         <div class="sidebar-section">
-          <div class="sidebar-header" onclick="toggleSection(this)">
+          <div class="sidebar-header collapsed" onclick="toggleSection(this)">
             <span>Estructura LISF</span>
             <span class="toggle-arrow">&#9662;</span>
           </div>
-          <div class="sidebar-body">
+          <div class="sidebar-body hidden">
             <ul class="chapter-tree" id="chapter-tree">
-              <li onclick="askAbout('Titulo Primero')">T.I - Cap. Unico</li>
-              <li onclick="askAbout('Titulo Segundo Capitulo Primero')">T.II - Cap.1</li>
-              <li onclick="askAbout('Titulo Segundo Capitulo Segundo')">T.II - Cap.2</li>
-              <li onclick="askAbout('Titulo Segundo Capitulo Tercero')">T.II - Cap.3</li>
-              <li onclick="askAbout('Titulo Tercero')">T.III - Cap.1-3</li>
-              <li onclick="askAbout('Titulo Cuarto')">T.IV - Cap.1-5</li>
-              <li onclick="askAbout('Titulo Quinto')">T.V - Cap.1-11</li>
-              <li onclick="askAbout('Titulo Sexto')">T.VI - Cap.1-3</li>
-              <li onclick="askAbout('Titulo Septimo')">T.VII - Cap.1-2</li>
-              <li onclick="askAbout('Titulo Octavo')">T.VIII - Cap.1-3</li>
-              <li onclick="askAbout('Titulo Noveno')">T.IX - Cap.1-4</li>
-              <li onclick="askAbout('Titulo Decimo')">T.X - Cap.1-4</li>
-              <li onclick="askAbout('Titulo Decimo Primero')">T.XI - Cap.1-2</li>
-              <li onclick="askAbout('Titulo Decimo Segundo')">T.XII - Cap.1-3</li>
-              <li onclick="askAbout('Titulo Decimo Tercero')">T.XIII - Cap.1-3</li>
-              <li onclick="askAbout('Artículos Transitorios')">Transitorios</li>
+              <li onclick="askAbout('Titulo Primero de la LISF')">T.I - Disposiciones preliminares</li>
+              <li onclick="askAbout('Titulo Segundo de la LISF')">T.II - Operaciones de seguros y fianzas</li>
+              <li onclick="askAbout('Titulo Tercero de la LISF')">T.III - Organizacion de instituciones</li>
+              <li onclick="askAbout('Titulo Cuarto de la LISF')">T.IV - Intermediarios y agentes</li>
+              <li onclick="askAbout('Titulo Quinto de la LISF')">T.V - Reservas, inversiones, solvencia</li>
+              <li onclick="askAbout('Titulo Sexto de la LISF')">T.VI - Procedimientos de seguros y fianzas</li>
+              <li onclick="askAbout('Titulo Septimo de la LISF')">T.VII - Operaciones prohibidas</li>
+              <li onclick="askAbout('Titulo Octavo de la LISF')">T.VIII - Contabilidad y auditoria</li>
+              <li onclick="askAbout('Titulo Noveno de la LISF')">T.IX - Fondos especiales y fianzas</li>
+              <li onclick="askAbout('Titulo Decimo de la LISF')">T.X - Sociedades mutualistas</li>
+              <li onclick="askAbout('Titulo Decimo Primero de la LISF')">T.XI - CNSF: facultades y vigilancia</li>
+              <li onclick="askAbout('Titulo Decimo Segundo de la LISF')">T.XII - Liquidacion y concurso mercantil</li>
+              <li onclick="askAbout('Titulo Decimo Tercero de la LISF')">T.XIII - Sanciones, infracciones, delitos</li>
+              <li onclick="askAbout('Articulos Transitorios de la LISF')">Transitorios</li>
             </ul>
           </div>
         </div>
 
         <!-- Estructura CUSF -->
         <div class="sidebar-section">
-          <div class="sidebar-header" onclick="toggleSection(this)">
+          <div class="sidebar-header collapsed" onclick="toggleSection(this)">
             <span>Estructura CUSF</span>
             <span class="toggle-arrow">&#9662;</span>
           </div>
-          <div class="sidebar-body">
+          <div class="sidebar-body hidden">
             <ul class="chapter-tree">
-              <li style="color:var(--text-light); cursor:default; font-style:italic">Proximamente</li>
+              <li onclick="askAbout('Titulo 1 de la CUSF')">T.1 - Disposiciones preliminares</li>
+              <li onclick="askAbout('Titulo 2 de la CUSF')">T.2 - Autorizaciones</li>
+              <li onclick="askAbout('Titulo 3 de la CUSF')">T.3 - Gobierno corporativo</li>
+              <li onclick="askAbout('Titulo 4 de la CUSF')">T.4 - Productos de seguros y fianzas</li>
+              <li onclick="askAbout('Titulo 5 de la CUSF')">T.5 - Reservas tecnicas</li>
+              <li onclick="askAbout('Titulo 6 de la CUSF')">T.6 - Requerimiento de capital (RCS)</li>
+              <li onclick="askAbout('Titulo 7 de la CUSF')">T.7 - Fondos propios y solvencia</li>
+              <li onclick="askAbout('Titulo 8 de la CUSF')">T.8 - Inversiones</li>
+              <li onclick="askAbout('Titulo 9 de la CUSF')">T.9 - Reaseguro y reafianzamiento</li>
+              <li onclick="askAbout('Titulo 10 de la CUSF')">T.10 - Obligaciones subordinadas</li>
+              <li onclick="askAbout('Titulo 11 de la CUSF')">T.11 - Garantias de recuperacion</li>
+              <li onclick="askAbout('Titulo 12 de la CUSF')">T.12 - Servicios con terceros</li>
+              <li onclick="askAbout('Titulo 13 de la CUSF')">T.13 - Operacion fisica</li>
+              <li onclick="askAbout('Titulo 14 de la CUSF')">T.14 - Seguros de pensiones</li>
+              <li onclick="askAbout('Titulo 15 de la CUSF')">T.15 - Seguros de salud</li>
+              <li onclick="askAbout('Titulo 16 de la CUSF')">T.16 - Seguros de credito y caucion</li>
+              <li onclick="askAbout('Titulo 17 de la CUSF')">T.17 - Credito a la vivienda</li>
+              <li onclick="askAbout('Titulo 18 de la CUSF')">T.18 - Garantia financiera</li>
+              <li onclick="askAbout('Titulo 19 de la CUSF')">T.19 - Fianzas especializadas</li>
+              <li onclick="askAbout('Titulo 20 de la CUSF')">T.20 - Fondos especiales</li>
+              <li onclick="askAbout('Titulo 21 de la CUSF')">T.21 - Operaciones analogas</li>
+              <li onclick="askAbout('Titulo 22 de la CUSF')">T.22 - Contabilidad</li>
+              <li onclick="askAbout('Titulo 23 de la CUSF')">T.23 - Auditores y actuarios independientes</li>
+              <li onclick="askAbout('Titulo 24 de la CUSF')">T.24 - Estados financieros</li>
+              <li onclick="askAbout('Titulo 25 de la CUSF')">T.25 - Grupos financieros</li>
+              <li onclick="askAbout('Titulo 26 de la CUSF')">T.26 - Sistema estadistico</li>
+              <li onclick="askAbout('Titulo 27 de la CUSF')">T.27 - Prevencion de lavado</li>
+              <li onclick="askAbout('Titulo 28 de la CUSF')">T.28 - Planes de regularizacion</li>
+              <li onclick="askAbout('Titulo 29 de la CUSF')">T.29 - Liquidacion</li>
+              <li onclick="askAbout('Titulo 30 de la CUSF')">T.30 - Registro de auditores y actuarios</li>
+              <li onclick="askAbout('Titulo 31 de la CUSF')">T.31 - Acreditacion de actuarios</li>
+              <li onclick="askAbout('Titulo 32 de la CUSF')">T.32 - Agentes de seguros y fianzas</li>
+              <li onclick="askAbout('Titulo 33 de la CUSF')">T.33 - Personas morales intermediarias</li>
+              <li onclick="askAbout('Titulo 34 de la CUSF')">T.34 - Reaseguradoras extranjeras</li>
+              <li onclick="askAbout('Titulo 35 de la CUSF')">T.35 - Intermediarios de reaseguro</li>
+              <li onclick="askAbout('Titulo 36 de la CUSF')">T.36 - Ajustadores</li>
+              <li onclick="askAbout('Titulo 37 de la CUSF')">T.37 - Organizaciones aseguradoras</li>
+              <li onclick="askAbout('Titulo 38 de la CUSF')">T.38 - Reportes regulatorios</li>
+              <li onclick="askAbout('Titulo 39 de la CUSF')">T.39 - Entrega electronica</li>
+              <li onclick="askAbout('Titulo 40 de la CUSF')">T.40 - Fondos agropecuarios</li>
+              <li onclick="askAbout('Titulo 41 de la CUSF')">T.41 - Modelos novedosos (fintech)</li>
+              <li onclick="askAbout('Transitorias de la CUSF')">Transitorias</li>
             </ul>
           </div>
         </div>
 
-        <!-- FAQ Rápido -->
+        <!-- FAQ Rapido -->
         <div class="sidebar-section">
           <div class="sidebar-header" onclick="toggleSection(this)">
             <span>FAQ Rápido</span>
@@ -975,11 +1143,11 @@
 
         <!-- Enlaces -->
         <div class="sidebar-section">
-          <div class="sidebar-header" onclick="toggleSection(this)">
+          <div class="sidebar-header collapsed" onclick="toggleSection(this)">
             <span>Enlaces</span>
             <span class="toggle-arrow">&#9662;</span>
           </div>
-          <div class="sidebar-body" style="padding:0">
+          <div class="sidebar-body hidden" style="padding:0">
             <a class="resource-link" href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LISF.pdf" target="_blank" rel="noopener">LISF (PDF Oficial)</a>
             <a class="resource-link" href="https://lisfcusf.cnsf.gob.mx/" target="_blank" rel="noopener">CNSF Interactiva</a>
             <a class="resource-link" href="https://www.cnsf.gob.mx/" target="_blank" rel="noopener">CNSF Portal</a>
@@ -998,7 +1166,7 @@
           <h1>Bienvenido a ActuarialClaude</h1>
           <p class="welcome-subtitle">
             Tu consultor de regulación aseguradora mexicana.<br>
-            Consulta la LISF, la CUSF, y la interaccion entre ambas normativas.
+            Consulta la LISF, la CUSF, y la interacción entre ambas normativas.
           </p>
           <div class="welcome-disclaimer">
             Aviso: Referencia de estudio. No sustituye asesoría legal.
@@ -1008,7 +1176,7 @@
 
       <!-- Input bar -->
       <div class="input-bar">
-        <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aqui..."></textarea>
+        <textarea id="user-input" rows="1" placeholder="Escribe tu consulta aquí..."></textarea>
         <div class="mode-toggle">
           <button class="mode-btn active" id="btn-rapido" title="Respuesta rápida (~20s, concisa)" onclick="setMode('rapido')">Rápido</button>
           <button class="mode-btn" id="btn-intuitivo" title="Explicación con casos prácticos (~40s)" onclick="setMode('intuitivo')">Intuitivo</button>
@@ -1022,14 +1190,16 @@
 
   <!-- Status bar -->
   <div class="statusbar">
-    <div class="status-left">
-      <span>
-        <span class="status-dot" id="status-dot"></span>
-        <span id="status-text">Conectado</span>
-      </span>
-      <span>Msgs: <strong id="msg-count">0</strong></span>
+    <div class="status-section">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Conectado</span>
     </div>
-    <span>ActuarialClaude v2.0</span>
+    <div class="status-section" style="text-align:center">
+      Msgs: <strong id="msg-count">0</strong>
+    </div>
+    <div class="status-section" style="text-align:right">
+      ActuarialClaude v2.0
+    </div>
   </div>
 
 </div>
@@ -1055,7 +1225,7 @@ let sonnetLocked = false;
 // --- Textarea auto-resize ---
 userInput.addEventListener('input', () => {
   userInput.style.height = 'auto';
-  userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+  userInput.style.height = Math.min(userInput.scrollHeight, 100) + 'px';
 });
 
 userInput.addEventListener('keydown', (e) => {
@@ -1105,7 +1275,7 @@ function showSonnetPrompt(targetMode) {
         '<button class="modal-close" onclick="this.closest(\'.sonnet-overlay\').remove()">X</button>' +
       '</div>' +
       '<div class="sonnet-box-content">' +
-        '<p>Los modos <b>Intuitivo</b> y <b>Detallado</b> utilizan un modelo avanzado que requiere acceso premium.</p>' +
+        '<p>Los modos <b>Intuitivo</b> y <b>Detallado</b> utilizan un modelo avanzado que requiere acceso pr\u00e9mium.</p>' +
         '<div class="sonnet-input-row">' +
           '<input type="password" id="sonnet-password-input" placeholder="Contraseña premium">' +
           '<button class="auth-enter-btn" onclick="submitSonnetPassword(\'' + targetMode + '\')">Acceder</button>' +
@@ -1149,13 +1319,13 @@ function submitSonnetPassword(targetMode) {
 // --- Ask about a topic ---
 function askAbout(topic) {
   closeSidebar();
-  userInput.value = 'Explicame el ' + topic + ' de la LISF';
+  userInput.value = 'Explícame el ' + topic;
   sendMessage();
 }
 
 // --- Clear chat ---
 function clearChat() {
-  if (confirm('¿Limpiar todas las conversaciones?')) {
+  if (confirm('\u00bfLimpiar todas las conversaciones?')) {
     chatContainer.innerHTML = '';
     messageCounter = 0;
     msgCount.textContent = '0';
@@ -1165,7 +1335,7 @@ function clearChat() {
     welcome.className = 'welcome-block';
     welcome.innerHTML =
       '<h1>Bienvenido a ActuarialClaude</h1>' +
-      '<p class="welcome-subtitle">Historial limpiado. Escribe tu consulta abajo.</p>';
+      '<p class="welcome-subtitle">Historial limpio. Escribe tu consulta abajo.</p>';
     chatContainer.appendChild(welcome);
   }
 }
@@ -1180,7 +1350,7 @@ function addMessage(role, content) {
     div.innerHTML = '<div class="bubble">' + content + '</div>';
   } else if (role === 'error') {
     div.className = 'msg msg-error';
-    div.innerHTML = '<span class="error-icon">!</span><span class="error-text">' + content + '</span>';
+    div.innerHTML = '<span class="error-icon">[!]</span><span class="error-text">' + content + '</span>';
   } else {
     div.className = 'msg msg-agent';
     div.innerHTML =
@@ -1198,7 +1368,7 @@ const _statusPhrases = [
   'Consultando normativa...',
   'Analizando fundamento legal...',
   'Revisando disposiciones...',
-  'Buscando artículos...',
+  'Buscando art\u00edculos...',
   'Procesando consulta...',
 ];
 let _statusIdx = 0;
@@ -1248,7 +1418,6 @@ function formatText(text) {
 // --- Citation panel ---
 function addCitationPanel(agentDiv, items) {
   if (!agentDiv || !items || !items.length) return;
-  // Filter out citations with empty cited_text
   const validItems = items.filter(item => {
     const text = item.cited_text || item.text || item.content || '';
     return text.trim().length > 0;
@@ -1376,7 +1545,6 @@ async function sendMessage() {
 
     if (response.status === 403) {
       removeTyping();
-      // Sonnet password invalid/expired -- re-prompt
       sonnetPassword = null;
       showSonnetPrompt(chatMode);
       conversationHistory.pop();
@@ -1466,7 +1634,7 @@ async function sendMessage() {
 
   } catch (err) {
     removeTyping();
-    addMessage('error', 'Error de conexion: ' + err.message);
+    addMessage('error', 'Error de conexión: ' + err.message);
   } finally {
     isStreaming = false;
     sendBtn.disabled = false;
@@ -1494,9 +1662,10 @@ function showModal(title, htmlContent) {
   document.body.appendChild(overlay);
 }
 
-function showIndice() {
-  showModal('Índice LISF', '<p style="color:var(--text-light)">Cargando índice...</p>');
-  fetch('/api/indice')
+function showIndice(law) {
+  var title = law === 'cusf' ? '\u00cdndice CUSF' : '\u00cdndice LISF';
+  showModal(title, '<p style="color:var(--text-light)">Cargando indice...</p>');
+  fetch('/api/indice?law=' + law)
     .then(r => r.json())
     .then(data => {
       const content = document.querySelector('.modal-content');
@@ -1508,26 +1677,26 @@ function showIndice() {
     })
     .catch(() => {
       const content = document.querySelector('.modal-content');
-      if (content) content.textContent = 'Error al cargar el índice.';
+      if (content) content.textContent = 'Error al cargar el indice.';
     });
 }
 
 function showAyuda() {
   const helpHtml =
-    '<h2>Como usar ActuarialClaude</h2>' +
+    '<h2>Cómo usar ActuarialClaude</h2>' +
     '<p>Este consultor te ayuda con la <b>Ley de Instituciones de Seguros y de Fianzas (LISF)</b> y regulación aseguradora mexicana.</p>' +
     '<h3>Ejemplos de consultas</h3>' +
     '<ul>' +
-      '<li>"¿Qué dice el artículo 201 sobre las notas técnicas?"</li>' +
-      '<li>"Cuales son los requisitos para operar como institucion de seguros?"</li>' +
-      '<li>"¿Qué son las reservas técnicas?"</li>' +
-      '<li>"Explicame el Titulo Tercero de la LISF"</li>' +
+      '<li>"\u00bfQué dice el artículo 201 sobre las notas técnicas?"</li>' +
+      '<li>"\u00bfCuáles son los requisitos para operar como institución de seguros?"</li>' +
+      '<li>"\u00bfQué son las reservas técnicas?"</li>' +
+      '<li>"Explícame el Título Tercero de la LISF"</li>' +
     '</ul>' +
     '<h3>Consejos</h3>' +
     '<ul>' +
       '<li>Puedes hacer preguntas de seguimiento -- el consultor recuerda la conversación.</li>' +
       '<li>Menciona artículos específicos para obtener respuestas más rápidas.</li>' +
-      '<li>Haz clic en los titulos del panel lateral para explorar secciones.</li>' +
+      '<li>Haz clic en los títulos del panel lateral para explorar secciones.</li>' +
       '<li>Las preguntas del panel FAQ dan respuestas instantáneas.</li>' +
       '<li>Usa "Limpiar" para iniciar una nueva conversación.</li>' +
       '<li>Selecciona "Rápido" para respuestas breves o "Detallado" para análisis completo.</li>' +
@@ -1563,7 +1732,7 @@ fetch('/api/health')
   .then(data => {
     if (!data.auth_configured) {
       statusDot.classList.add('offline');
-      statusText.textContent = 'Sin autenticacion';
+      statusText.textContent = 'Sin autenticación';
     } else {
       statusText.textContent = 'Conectado';
     }

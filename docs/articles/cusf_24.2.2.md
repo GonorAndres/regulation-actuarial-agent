@@ -1,0 +1,317 @@
+---
+ley: cusf
+numero: "24.2.2"
+titulo: "TÍTULO 24 - CAPÍTULO 24.2"
+capitulo: "153"
+tema: "DEL REPORTE SOBRE LA SOLVENCIA Y CONDICIÓN FINANCIERA"
+categoria: solvencia
+palabras_clave: contenido rscf, resumen ejecutivo, descripcion general del negocio, gobierno corporativo, perfil de riesgos, evaluacion de solvencia, gestion de capital, modelo interno, anexo cuantitativo 24.2.2, arsi autoevaluacion riesgos solvencia, fondos propios admisibles, reservas tecnicas mejor estimacion, criterios asg
+resumen: "Detalla los apartados que debe contener el RSCF: resumen ejecutivo, descripcion general del negocio y resultados (suscripcion, inversiones, ingresos), gobierno corporativo (administracion de riesgos, ARSI, auditoria interna, funcion actuarial), perfil de riesgos, evaluacion de la solvencia (activos, reservas tecnicas, pasivos), gestion de capital (Fondos Propios Admisibles, RCS, insuficiencias) y modelo interno, con anexo cuantitativo conforme al Anexo 24.2.2."
+refs_internas: [3.2.10]
+refs_cruzadas: [cusf:3.2.10]
+---
+**DISPOSICIÓN 24.2.2.-** .	El RSCF de las Instituciones se integrará por los siguientes apartados:
+
+I.	Resumen ejecutivo.
+
+Breve resumen del contenido del RSCF, el cual mostrará cualquier cambio significativo que haya ocurrido en la suscripción de negocios, perfil de riesgos, posición de solvencia o en el sistema de gobierno corporativo desde el último período reportado;
+
+II.	Descripción general del negocio y resultados.
+
+Las Instituciones deberán proporcionar una descripción general del negocio y sus resultados, relativa a los siguientes aspectos:
+
+a)	Del negocio y su entorno. Se deberá describir la información general y naturaleza del negocio de la Institución y el ámbito externo a ésta, es decir, asuntos o eventos externos relevantes para su operación que hayan ocurrido en el año. La descripción a que se refiere este inciso debe incluir, cuando menos, lo siguiente:
+
+1)	La situación jurídica y el domicilio fiscal;
+
+2)	Principales accionistas de la Institución, su porcentaje de participación y, en su caso, la ubicación de la casa matriz;
+
+3)	Las operaciones, ramos y subramos para los cuales se encuentre autorizada la Institución, así como la cobertura geográfica y, en su caso, los países en los que mantiene operaciones, directamente o a través de subsidiarias, resaltando específicamente cualquier cambio importante ocurrido durante el año;
+
+4)	Los principales factores que hayan contribuido positiva o negativamente en el desarrollo, resultados y posición de la Institución desde el cierre del ejercicio anterior;
+
+5)	Información sobre cualquier partida o transacción que sea significativa realizada con personas o Grupos de Personas con las que la Institución mantenga Vínculos de Negocio o Vínculos Patrimoniales;
+
+6)	Información sobre transacciones significativas con los accionistas, miembros del consejo de administración y Directivos Relevantes, así como transacciones con entidades que formen parte del mismo Grupo Empresarial, pago de dividendos a los accionistas y participación de dividendos a los asegurados, y
+
+7)	Para las Instituciones pertenecientes a un Grupo Empresarial, se deberá incluir una descripción de la estructura legal y organizacional del grupo y demás asuntos importantes de la participación, operación y resultados de las subsidiarias y filiales;
+
+b)	Del desempeño de las actividades de suscripción. Las Instituciones describirán, de manera general, las actividades de suscripción durante el año, indicando:
+
+1)	Información del comportamiento de la emisión por operaciones, ramos, subramos y área geográfica;
+
+2)	Información sobre los costos de adquisición y siniestralidad o reclamaciones del ejercicio de que se trate, comparados con los del ejercicio anterior, por operaciones, ramos, subramos y área geográfica;
+
+3)	Información sobre el importe total de comisiones contingentes pagadas, entendiéndose por éstas los pagos o compensaciones efectuados por una Institución a personas físicas o morales que participen en la intermediación o que intervengan en la contratación de los productos de seguros o en la celebración de contratos de fianzas, adicionales a las Comisiones o Compensaciones Directas consideradas en el diseño de los productos, y
+
+4)	Para las Instituciones pertenecientes a un Grupo Empresarial, se deberán presentar las operaciones y transacciones relevantes dentro del mismo, el desempeño financiero de las actividades de suscripción, incluyendo transacciones relevantes con otras filiales, transferencias derivadas de contratos financieros, incluyendo préstamos y aportaciones de capital en efectivo o en especie, y programas de Reaseguro o Reafianzamiento;
+
+c)	Del desempeño de las actividades de inversión. Se describirá, de manera general, el desempeño financiero de las inversiones de la Institución durante el año del reporte, de conformidad con los criterios de contabilidad establecidos en las presentes Disposiciones, revelando:
+
+1)	Información sobre los criterios de valuación empleados, así como sobre las ganancias o pérdidas de inversiones, y cuando proceda, de sus componentes;
+
+2)	Información acerca de transacciones significativas con accionistas y Directivos Relevantes, transacciones con entidades que formen parte del mismo Grupo Empresarial, reparto de dividendos a los accionistas y la participación de dividendos a los asegurados;
+
+3)	El impacto de la amortización y deterioro del valor de los activos tangibles e intangibles, así como de los instrumentos financieros;
+
+4)	Información sobre las inversiones realizadas en el año en proyectos y desarrollo de sistemas para la administración de las actividades de inversión de la Institución, y
+
+5)	Para las Instituciones pertenecientes a un Grupo Empresarial, los ingresos y pérdidas de inversiones significativas en las entidades del grupo, así como las operaciones y transacciones relevantes dentro
+del grupo para el rendimiento de las inversiones de la Institución. Esto podría incluir las transacciones con entidades que formen parte del mismo Grupo Empresarial y saldos pendientes necesarios para comprender el impacto potencial sobre los estados financieros de
+la Institución;
+
+6)	Información respecto a los criterios ASG considerados conforme a su sistema de gobierno corporativo en términos de las políticas aprobadas para tal efecto y, en su caso, la aplicación de la “Taxonomía Sostenible de México” emitida por la Secretaría de Hacienda y Crédito Público, para el ejercicio de su política y decisiones de inversión.
+
+*Adicionado DOF 05-06-24
+
+d)	De los ingresos y gastos de la operación. Se deberá incluir información general en materia de los ingresos y gastos de operación realizados en el año, separados por asunto, tipo o función.
+
+Para las Instituciones pertenecientes a un Grupo Empresarial, se requerirá mostrar la separación de dichos conceptos señalando los que se deriven de operaciones con las entidades del Grupo Empresarial, y
+
+e)	Otra información. Con independencia de la información a que se refiere esta fracción, las Instituciones podrán poner a disposición del público en general cualquier otra información respecto del desempeño del negocio cuya relevancia lo amerite;
+
+III.	Gobierno corporativo.
+
+Las Instituciones describirán, de manera general, la estructura de su gobierno corporativo, para facilitar la comprensión de su negocio. Dicha descripción incluirá información relativa a los siguientes aspectos:
+
+a)	Del sistema de gobierno corporativo:
+
+1)	La descripción del sistema de gobierno corporativo de la Institución, vinculándolo a su perfil de riesgo;
+
+2)	Cualquier cambio en el sistema de gobierno corporativo que hubiera ocurrido durante el año;
+
+3)	La estructura del consejo de administración, señalando a quienes fungen como consejeros independientes y su participación en los comités existentes;
+
+4)	Si la Institución es parte de un Grupo Empresarial, deberá integrar una descripción general de la estructura corporativa del Grupo Empresarial, y
+
+5)	La explicación general de la forma en que el consejo de administración ha establecido la política de remuneraciones de Directivos Relevantes;
+
+6)	Los criterios ASG y la implementación de los mismos, en términos de sus políticas establecidas para ello.
+
+*Adicionado 05-06-24
+
+b)	De los requisitos de idoneidad. La Institución deberá proporcionar información general sobre el proceso que sigue para evaluar la idoneidad de los Directivos Relevantes de la Institución y de quienes desempeñen otras funciones trascendentes de la Institución;
+
+c)	Del sistema de administración integral de riesgos. Se revelará la información general que describa el funcionamiento del sistema de administración integral de riesgos, incluyendo los objetivos y políticas de la administración de riesgos en la Institución, para cada uno de los riesgos previstos en el cálculo del RCS, así como lo siguiente:
+
+1)	Visión general de la estructura y la organización del sistema de administración integral de riesgos;
+
+2)	Visión general de su estrategia de riesgo y las políticas para garantizar el cumplimiento de sus límites de tolerancia al riesgo;
+
+3)	Descripción de otros riesgos no contemplados en el cálculo del RCS;
+
+4)	Información sobre el alcance, frecuencia y tipo de requerimientos de información presentados al consejo de administración y Directivos Relevantes, y
+
+5)	Para las Instituciones pertenecientes a un Grupo Empresarial, la información deberá ser proporcionada de manera independiente y mostrar en dónde se manejan y supervisan los riesgos dentro del Grupo Empresarial;
+
+6)	Descripción de la incorporación de criterios ASG en la administración de los riesgos en la Institución, en términos de las políticas aprobadas para tal efecto.
+
+*Adicionado DOF 05-06-24
+
+d)	De la Autoevaluación de Riesgos y Solvencia Institucionales (ARSI). Las Instituciones deberán proporcionar información general sobre el proceso que se ha implementado para cumplir con la ARSI como parte de su sistema
+de administración integral de riesgos. La revelación de este rubro deberá al menos incluir lo siguiente:
+
+1)	Descripción general de la forma en que el proceso de elaboración de la ARSI se integra en los procesos en la Institución;
+
+2)	Descripción general de revisión y aprobación de la ARSI, por el consejo de administración de la Institución;
+
+3)	Descripción general de la forma en que la Institución ha determinado sus necesidades de solvencia, dado su perfil de riesgo y cómo su gestión de capital es tomada en cuenta para el sistema de administración integral de riesgos, y
+
+4)	Descripción general de la forma en que el proceso de elaboración de la ARSI y su resultado es documentado internamente y revisado de manera independiente;
+
+e)	Del sistema de contraloría interna. La Institución proporcionará una visión general de su sistema de contraloría interna;
+
+f)	De la función de auditoría interna. Se describirá el funcionamiento del Área de Auditoría Interna, incluyendo la manera en que ésta garantiza la eficacia
+de los controles internos dentro de la Institución y cómo mantiene su independencia y objetividad con respecto a las actividades que se examinan;
+
+g)	De la función actuarial. Se señalará la forma en que se implementa la función actuarial, exponiendo sus principales áreas de responsabilidad, así como una descripción de cómo se asegura que la función actuarial sea efectiva
+y permanente;
+
+h)	De la contratación de servicios con terceros. La Institución dará una visión general de los procesos, controles y justificación en la contratación externa de cualquier función crítica o actividad importante;
+
+i)	Otra información. Con independencia de la información a que se refiere esta fracción, las Instituciones podrán poner a disposición del público en general cualquier otra información respecto de su sistema de gobierno corporativo, cuya relevancia lo amerite;
+
+IV.	Perfil de riesgos.
+
+Las Instituciones proporcionarán una descripción por separado, para cada categoría de riesgo, de la exposición, la concentración, la reducción y la sensibilidad al riesgo, tomando en cuenta la categorización empleada para el cálculo del RCS, así como en el manual de administración de riesgos de la Institución a que se refiere la fracción III de la Disposición 3.2.10, y que incluya por lo menos la siguiente información:
+
+a)	De la exposición al riesgo. Se dará a conocer información en materia de la exposición al riesgo, incluyendo al menos:
+
+1)	Información general sobre la naturaleza de las medidas utilizadas para evaluar el riesgo dentro de la Institución, incluidos los cambios importantes desde el período anterior de reporte. Para los riesgos que no sean cuantificables, se presentarán las medidas cualitativas integradas al sistema de control interno;
+
+2)	Información general sobre la desagregación de los riesgos previstos en el cálculo del RCS;
+
+3)	Información general sobre la naturaleza de la exposición al riesgo de la Institución y la forma en que ésta se ha comportado con respecto al año anterior;
+
+4)	Información general sobre la forma en la que la Institución administra las actividades que pueden originar riesgo operativo, y
+
+5)	Para las Instituciones que participen mayoritariamente en el capital social de entidades aseguradoras en el extranjero, se deberá proporcionar información general respecto de los riesgos de dichas entidades , así como una descripción de las principales fuentes de diversificación;
+
+b)	De la concentración del riesgo. Se deberá proporcionar información general sobre la concentración de riesgo de la Institución, que refiera:
+
+1)	Los tipos de concentración del riesgo a que está expuesta y su importancia, y
+
+2)	La concentración de riesgos de suscripción;
+
+c)	De la mitigación del riesgo. La Institución deberá presentar una descripción general de sus prácticas de mitigación de riesgo, incluyendo la forma en que se emplean el Reaseguro, Reafianzamiento u otros métodos de transferencia de riesgo para ayudar a controlar su exposición;
+
+d)	De la sensibilidad al riesgo. La Institución proporcionará información general acerca de la sensibilidad en su posición de solvencia a los cambios en las principales variables que pueden tener un efecto significativo sobre su negocio, y
+
+e)	Los conceptos del capital social, prima en acciones, utilidades retenidas y dividendos pagados, el monto de los valores históricos y, en su caso, el efecto en la actualización. Asimismo, la Institución que haya capitalizado parte del superávit por valuación de inmuebles, deberá revelarlo indicando el monto originado por la capitalización parcial del superávit que se hubiere incluido en el capital pagado;
+
+f)	Otra información. Con independencia de la información a que se refiere esta fracción, las Instituciones podrán poner a disposición del público en general cualquier otra información respecto de la gestión del capital cuya relevancia lo amerite;
+
+V.	Evaluación de la solvencia.
+
+Las Instituciones deberán presentar información sobre su Balance General para fines del cálculo del RCS, incluyendo una descripción general por separado
+para los activos, las reservas técnicas y otros pasivos, de las bases y los métodos empleados para su valuación, junto con una explicación de las diferencias significativas existentes, en su caso, entre las bases y los métodos para la valuación de los mismos y la empleada en los estados financieros básicos consolidados anuales:
+
+a)	De los activos. La revelación en materia de activos, contendrá al menos:
+
+1)	Los tipos de activos, así como una descripción general de las bases, los métodos y los supuestos utilizados para su valuación, incluyendo una explicación cuantitativa y cualitativa de las diferencias con la valuación contable utilizada por la Institución;
+
+2)	Los activos que no se comercializan regularmente en los mercados financieros y la forma en que éstos han sido valorados para fines
+de solvencia;
+
+3)	La descripción de instrumentos financieros y cómo se ha determinado su valor económico, y
+
+4)	Las Instituciones pertenecientes a un Grupo Empresarial deberán indicar si los métodos de valuación aplicados a nivel individual son seguidos a nivel del Grupo Empresarial;
+
+b)	De las reservas técnicas. Las Instituciones deberán proveer, cuando menos, la información que a continuación se indica:
+
+1)	El importe de las reservas técnicas, separando la mejor estimación y el margen de riesgo, ambos por operaciones, ramos, subramos o, en su caso, tipo de seguro o fianza;
+
+2)	La información sobre la determinación de las reservas técnicas, así como una descripción general de los supuestos y las metodologías utilizadas en la medición de los pasivos relacionados con la actividad aseguradora o afianzadora;
+
+3)	Cualquier cambio significativo en el nivel de las reservas técnicas desde el último período de presentación del RSCF;
+
+4)	El impacto del Reaseguro y Reafianzamiento en la cobertura de las reservas técnicas, y
+
+5)	Para las Instituciones que operan seguros de vida, la información por grupos homogéneos de riesgo, sobre el efecto de las acciones tomadas por la administración y el comportamiento de los asegurados;
+
+c)	De otros pasivos. Las Instituciones deberán proveer información general sobre las bases y los supuestos con los que son valuados.
+
+Las Instituciones pertenecientes a un Grupo Empresarial, deberán indicar si los métodos de valuación aplicados a nivel individual son seguidos a nivel del grupo, y
+
+d)	Otra información. Con independencia de la información a que se refiere esta fracción, las Instituciones podrán poner a disposición del público en general cualquier otra información respecto de su evaluación de solvencia ;
+
+VI.	Gestión de capital.
+
+Institución deberá proporcionar una descripción general de la gestión de capital y la interacción con la función de administración de riesgos, que refiera información sobre el horizonte de planeación utilizado y los métodos de gestión del capital empleados, incluyendo cualquier cambio importante respecto al período anterior:
+
+a)	De los Fondos Propios Admisibles. Se deberá incluir:
+
+1)	Información sobre la estructura, importe y calidad de los Fondos Propios Admisibles, por nivel;
+
+2)	Información sobre los objetivos, políticas y procedimientos empleados por la Institución en la gestión de sus Fondos Propios Admisibles;
+
+3)	Cualquier cambio significativo de los Fondos Propios Admisibles en relación al período anterior, por nivel, y
+
+4)	Información sobre la disponibilidad de los Fondos Propios Admisibles, señalando cualquier restricción sobre la misma;
+
+b)	De los requerimientos de capital. Las Instituciones deben proporcionar información sobre los importes de capital mínimo pagado y del RCS, incluyendo al menos:
+
+1)	Información cuantitativa sobre los resultados del RCS. La descripción debe indicar si la Institución está utilizando la fórmula general o un modelo interno completo o parcial, así como los parámetros específicos que esté empleando, y
+
+2)	Las razones de los cambios significativos en el nivel del RCS desde la última fecha de RSCF, señalando al menos, el impacto de nuevos negocios, la liberación de capital de negocios existentes y el impacto de los parámetros de la Institución utilizados en el cálculo del RCS;
+
+c)	De las diferencias entre la fórmula general y los modelos internos utilizados. Se deberá presentar información que permita entender las principales diferencias entre los supuestos e hipótesis de la fórmula general y los del modelo interno utilizado, en su caso, por la Institución para calcular su RCS;
+
+d)	De la insuficiencia de los Fondos Propios Admisibles para cubrir el RCS. El importe de cualquier insuficiencia de los Fondos Propios Admisibles que respalden el RCS durante el período de referencia, aun cuando se haya corregido posteriormente, junto con una explicación de su origen y sus consecuencias, así como las medidas de corrección adoptadas, incluyendo, al menos, lo siguiente:
+
+1)	Monto máximo de la insuficiencia durante el período del reporte;
+
+2)	Monto de la insuficiencia a la fecha del reporte;
+
+3)	Período en que se mantuvo la insuficiencia;
+
+4)	Si la Institución mantiene la insuficiencia a la fecha del RSCF, deberá señalar la fecha de inicio del incumplimiento, y
+
+5)	Medidas consideradas dentro del plan de regularización previsto para subsanar la insuficiencia, señalando los efectos esperados de dichas medidas, así como las medidas contempladas para evitar futuros incumplimientos, y
+
+e)	Otra información. Con independencia de la información a que se refiere esta fracción, las Instituciones podrán poner a disposición del público en general cualquier otra información respecto de la gestión del capital cuya relevancia lo amerite;
+
+VII.	Modelo interno.
+
+Si la Institución tiene un modelo interno total o parcial aprobado por la Comisión para el cálculo del RCS, revelará la siguiente información cualitativa:
+
+a)	Del gobierno corporativo y administración de riesgos. Si la Institución emplea un modelo interno total o parcial para el cálculo del RCS, deberá revelar información general respecto de lo siguiente:
+
+1)	Comités específicos de la Institución involucrados en el diseño, uso y evaluación del modelo interno;
+
+2)	Principales procesos de administración de riesgos para cada tipo
+de riesgo;
+
+3)	Descripción general de los mecanismos empleados por la Institución para dar seguimiento a los niveles de riesgo asumidos, respecto a los niveles de tolerancia al riesgo;
+
+4)	El proceso mediante el cual la Institución verifica la pertinencia del modelo interno, así como que éste sigue reflejando apropiadamente el perfil de riesgo de la Institución, y
+
+5)	Cambios relevantes al sistema de administración integral de riesgos de la Institución durante el período del RSCF;
+
+b)	Del uso del modelo interno. La información pública del uso del modelo interno referirá, al menos, una descripción general de:
+
+1)	El uso del modelo interno dentro del sistema de gobierno corporativo de la Institución, y en particular dentro del sistema de administración integral de riesgos;
+
+2)	El uso del modelo interno como parte de los procesos de evaluación del capital económico y de solvencia, así como de asignación de capital dentro de la Institución;
+
+3)	El uso del modelo interno como parte de la elaboración de la ARSI, y
+
+4)	El posible uso del modelo interno en otras áreas o procesos de
+la Institución;
+
+c)	Del alcance y cobertura. La información pública del alcance y cobertura
+del modelo interno referirá, al menos, una descripción general de:
+
+1)	Los riesgos y operaciones, ramos o subramos cubiertos;
+
+2)	Definición de las categorías de riesgo empleadas para el cálculo del RCS, así como en el manual de administración de riesgos de la Institución, a que se refiere la fracción III de la Disposición 3.2.10;
+
+3)	Para aquellas Instituciones que tengan subsidiarias, la descripción de aquellas cubiertas por el modelo interno;
+
+4)	El diseño general del modelo, y
+
+5)	Las principales diferencias en alcance, cobertura y diseño general entre la fórmula general y el modelo interno utilizado para el cálculo del RCS;
+
+d)	De la medición de riesgos, nivel de confianza y horizonte de tiempo. El RSCF deberá incluir información relacionada con la medición del riesgo, su nivel de confianza y horizonte de tiempo relativos al modelo interno, incluyendo, al menos, una descripción de:
+
+1)	La medición de riesgos, el nivel de confianza y el horizonte de tiempo utilizado, si éste no es igual al de la fórmula general, y
+
+2)	Descripción y justificación de las diferencias en la medición de riesgos, el nivel de confianza o el horizonte de tiempo respecto de la fórmula general;
+
+e)	De la metodología, supuestos y métodos de agregación. Descripción general sobre las metodologías, supuestos y métodos de identificación y agregación de riesgos empleados en el modelo interno;
+
+f)	De los datos. La descripción general de los procedimientos empleados para validar la suficiencia, confiabilidad, consistencia, oportunidad y relevancia de los datos utilizados en el modelo interno;
+
+g)	De las actividades de mitigación de riesgos. Una descripción general de las técnicas o instrumentos de mitigación de riesgo considerados en el modelo interno;
+
+h)	Del desempeño operativo. La información pública sobre desempeño operativo del modelo interno referirá una descripción general de la infraestructura tecnológica, de la seguridad, de los planes de contingencia y de los planes de recuperación;
+
+i)	De las actividades de validación. La información pública sobre las actividades de validación del modelo interno, que refieran, de manera general:
+
+1)	Las actividades de validación en el marco del sistema de gobierno corporativo de la Institución;
+
+2)	El propósito, alcance y métodos de validación;
+
+3)	La frecuencia de los procesos de validación;
+
+4)	Las limitaciones de la validación;
+
+5)	El uso y acreditación de revisiones independientes;
+
+6)	El diagnóstico general del trabajo de validación interna y externa desarrollado;
+
+7)	El procedimiento para verificar que el modelo interno sigue reflejando apropiadamente el perfil de riesgo de la Institución, y
+
+8)	Los límites y detonantes relativos a los resultados de la validación, así como el proceso de transmisión de información a los diferentes niveles de la Institución, y
+
+j)	De la documentación. La información pública sobre la documentación del modelo interno deberá incluir:
+
+1)	Las actividades de documentación del diseño, uso y evaluación del modelo interno en el marco del sistema de gobierno corporativo de la Institución, y
+
+2)	Los principios y prácticas de la Institución para asegurar que la documentación del diseño y los detalles operativos del modelo interno están actualizados, y
+
+VIII.	Anexo de información cuantitativa.
+
+El RSCF deberá incluir un anexo cuantitativo relativo a información corporativa, financiera, técnica, de Reaseguro, de Reafianzamiento, de administración de riesgos, regulatoria, administrativa, operacional, económica, de nivel de riesgo, de solvencia y jurídica, de conformidad con los formatos establecidos en el Anexo 24.2.2.
+
+* Modificada DOF 28-01-2016

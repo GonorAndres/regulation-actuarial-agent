@@ -18,7 +18,7 @@ logger = logging.getLogger("actuarial-claude")
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
 
 load_dotenv()
 
@@ -41,6 +41,7 @@ MODEL_MAP = {
 }
 FAQ_PATH = PROJECT_DIR / "subagents_outputs" / "lisf_faq.json"
 CASOS_PATH = PROJECT_DIR / "subagents_outputs" / "casos_practicos.json"
+TITULO_ANSWERS_PATH = PROJECT_DIR / "subagents_outputs" / "titulo_answers.json"
 
 # Auth
 AUTH_ENABLED = os.getenv("AUTH_ENABLED", "true").lower() in ("true", "1", "yes")
@@ -173,10 +174,24 @@ def _load_faq() -> list[dict]:
 FAQ_ENTRIES = _load_faq()
 FAQ_NORMALIZED = [(_normalize(e["q"]), i) for i, e in enumerate(FAQ_ENTRIES)]
 
+def _load_titulo_answers() -> list[dict]:
+    if TITULO_ANSWERS_PATH.exists():
+        try:
+            return json.loads(TITULO_ANSWERS_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            return []
+    return []
+
+TITULO_ENTRIES = _load_titulo_answers()
+TITULO_NORMALIZED = [(_normalize(e["q"]), i) for i, e in enumerate(TITULO_ENTRIES)]
+if TITULO_ENTRIES:
+    logger.info("Titulo quick answers: %d entries loaded", len(TITULO_ENTRIES))
+
 def _match_faq(user_message: str) -> str | None:
     norm = _normalize(user_message)
     if not norm:
         return None
+    # Check FAQ entries
     for nq, idx in FAQ_NORMALIZED:
         if norm == nq:
             return FAQ_ENTRIES[idx]["a"]
@@ -188,6 +203,18 @@ def _match_faq(user_message: str) -> str | None:
         overlap = len(words_user & words_faq) / len(words_faq)
         if overlap >= 0.75 and len(words_user) <= len(words_faq) + 3:
             return FAQ_ENTRIES[idx]["a"]
+    # Check titulo quick answers
+    for nq, idx in TITULO_NORMALIZED:
+        if norm == nq:
+            return TITULO_ENTRIES[idx]["a"]
+    for nq, idx in TITULO_NORMALIZED:
+        words_user = set(norm.split())
+        words_titulo = set(nq.split())
+        if not words_titulo:
+            continue
+        overlap = len(words_user & words_titulo) / len(words_titulo)
+        if overlap >= 0.75 and len(words_user) <= len(words_titulo) + 3:
+            return TITULO_ENTRIES[idx]["a"]
     return None
 
 # =============================================================================
@@ -226,7 +253,7 @@ def _search_db(query: str, law: str = "both", limit: int = 10) -> list[dict]:
             JOIN articles a ON a.id = f.rowid
             WHERE articles_fts MATCH ?
             {law_clause}
-            ORDER BY rank
+            ORDER BY bm25(articles_fts, 0.0, 5.0, 1.0, 10.0, 8.0)
             LIMIT ?
         """, (query, limit)).fetchall()
         return [dict(r) for r in rows]
@@ -245,15 +272,25 @@ def _get_article_db(law: str, number: str) -> dict | None:
     return dict(row) if row else None
 
 def _get_cross_refs_db(law: str, number: str) -> list[dict]:
-    """Find articles that mention this article number."""
+    """Find cross-referenced articles using the cross_refs index table."""
     if not _db:
         return []
-    pattern = f"%artículo {number}%" if law == "lisf" else f"%disposición {number}%"
-    rows = _db.execute(
-        "SELECT law, number, title, filename FROM articles WHERE text LIKE ? AND NOT (law = ? AND number = ?) LIMIT 20",
-        (pattern, law, number),
-    ).fetchall()
-    return [dict(r) for r in rows]
+    try:
+        rows = _db.execute("""
+            SELECT cr.to_law AS law, cr.to_number AS number, a.title, a.filename
+            FROM cross_refs cr
+            JOIN articles a ON a.law = cr.to_law AND a.number = cr.to_number
+            WHERE cr.from_law = ? AND cr.from_number = ?
+            UNION
+            SELECT cr.from_law AS law, cr.from_number AS number, a.title, a.filename
+            FROM cross_refs cr
+            JOIN articles a ON a.law = cr.from_law AND a.number = cr.from_number
+            WHERE cr.to_law = ? AND cr.to_number = ?
+            LIMIT 30
+        """, (law, number, law, number)).fetchall()
+        return [dict(r) for r in rows]
+    except Exception:
+        return []
 
 def _article_to_doc_block(article: dict) -> dict:
     """Convert a database article row to a document block for Citations API."""
@@ -266,23 +303,46 @@ def _article_to_doc_block(article: dict) -> dict:
     }
 
 def _select_documents(user_message: str) -> list[dict]:
-    """Select relevant documents: by specific article refs OR by FTS5 search."""
+    """Select relevant documents: by specific article refs OR by FTS5 search.
+    When specific articles are found, also includes top cross-references."""
     docs = []
+    seen = set()  # (law, number) to avoid duplicates
 
     # First: check for specific article/disposition references
     for num_str in _ARTICLE_REF.findall(user_message):
-        art = _get_article_db("lisf", str(int(num_str)))
-        if art:
+        num = str(int(num_str))
+        art = _get_article_db("lisf", num)
+        if art and ("lisf", num) not in seen:
             docs.append(_article_to_doc_block(art))
+            seen.add(("lisf", num))
     for disp_str in _DISP_REF.findall(user_message):
         art = _get_article_db("cusf", disp_str)
-        if art:
+        if art and ("cusf", disp_str) not in seen:
             docs.append(_article_to_doc_block(art))
+            seen.add(("cusf", disp_str))
+
+    # Auto-include top cross-references for matched articles (max 3 extra)
+    if docs and len(docs) <= 3:
+        xref_docs = []
+        for law, num in list(seen):
+            xrefs = _get_cross_refs_db(law, num)
+            for xref in xrefs[:2]:
+                key = (xref["law"], xref["number"])
+                if key not in seen:
+                    xart = _get_article_db(xref["law"], xref["number"])
+                    if xart:
+                        xref_docs.append(_article_to_doc_block(xart))
+                        seen.add(key)
+                if len(xref_docs) >= 3:
+                    break
+            if len(xref_docs) >= 3:
+                break
+        docs.extend(xref_docs)
 
     # If no specific refs found, do a FTS5 search
     if not docs:
-        results = _search_db(user_message, limit=5)
-        for r in results[:3]:
+        results = _search_db(user_message, limit=8)
+        for r in results[:5]:
             docs.append(_article_to_doc_block(r))
 
     # Add cache_control to last document
@@ -537,38 +597,14 @@ def _execute_tool(name: str, input_data: dict) -> tuple[str, dict | None]:
         law = input_data.get("law", "both")
         if not query:
             return "Error: query vacía", None
-        dirs = []
-        if law in ("lisf", "both"):
-            d = _get_source_dir("lisf")
-            if d:
-                dirs.append(("LISF", d))
-        if law in ("cusf", "both"):
-            d = _get_source_dir("cusf")
-            if d:
-                dirs.append(("CUSF", d))
-        if not dirs:
-            return "No hay archivos disponibles para la búsqueda.", None
-        pattern = re.compile(re.escape(query), re.IGNORECASE)
-        results = []
-        for label, source_dir in dirs:
-            for md_file in sorted(source_dir.glob("*.md")):
-                if md_file.name == "00_indice.md":
-                    continue
-                try:
-                    for i, line in enumerate(md_file.read_text(encoding="utf-8").splitlines(), 1):
-                        if pattern.search(line):
-                            results.append(f"[{label}/{md_file.name}:{i}] {line.strip()}")
-                            if len(results) >= 50:
-                                break
-                except Exception:
-                    continue
-                if len(results) >= 50:
-                    break
-            if len(results) >= 50:
-                break
+        results = _search_db(query, law=law, limit=15)
         if not results:
             return f"No se encontraron resultados para: {query}", None
-        return "\n".join(results), None
+        lines = []
+        for r in results:
+            snippet = r["text"][:300].replace("\n", " ")
+            lines.append(f"[{r['law'].upper()} Art. {r['number']}] ({r['title']}) {snippet}")
+        return "\n".join(lines), None
 
     elif name == "read_chapter":
         filename = input_data.get("filename", "").strip()
@@ -611,9 +647,27 @@ def _execute_tool(name: str, input_data: dict) -> tuple[str, dict | None]:
         art_num = input_data.get("article_number", 0)
         source_law = input_data.get("source_law", "lisf")
         target_law = "cusf" if source_law == "lisf" else "lisf"
-        # Use SQLite to find mentions
-        search_term = f"artículo {art_num}" if source_law == "lisf" else f"disposición {art_num}"
-        results = _search_db(search_term, law=target_law, limit=15)
+        # Use cross_refs table for fast indexed lookup
+        if _db:
+            try:
+                results = _db.execute("""
+                    SELECT DISTINCT cr.to_law AS law, cr.to_number AS number, a.title
+                    FROM cross_refs cr
+                    JOIN articles a ON a.law = cr.to_law AND a.number = cr.to_number
+                    WHERE cr.from_law = ? AND cr.from_number = ? AND cr.to_law = ?
+                    UNION
+                    SELECT DISTINCT cr.from_law AS law, cr.from_number AS number, a.title
+                    FROM cross_refs cr
+                    JOIN articles a ON a.law = cr.from_law AND a.number = cr.from_number
+                    WHERE cr.to_law = ? AND cr.to_number = ? AND cr.from_law = ?
+                    LIMIT 20
+                """, (source_law, str(art_num), target_law,
+                      source_law, str(art_num), target_law)).fetchall()
+                results = [dict(r) for r in results]
+            except Exception:
+                results = []
+        else:
+            results = []
         if not results:
             return f"No se encontraron menciones del Art. {art_num} ({source_law.upper()}) en la {target_law.upper()}.", None
         lines = [f"El Art. {art_num} de la {source_law.upper()} se menciona en {len(results)} artículos de la {target_law.upper()}:"]
@@ -894,6 +948,14 @@ async def serve_frontend():
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
+@app.get("/favicon.svg")
+async def favicon():
+    favicon_path = PROJECT_DIR / "favicon.svg"
+    if favicon_path.exists():
+        return FileResponse(favicon_path, media_type="image/svg+xml")
+    return JSONResponse(status_code=404, content={"error": "not found"})
+
+
 @app.get("/api/auth-config")
 async def auth_config():
     return {
@@ -1012,13 +1074,88 @@ async def faq():
     return [{"q": e["q"]} for e in FAQ_ENTRIES]
 
 
+_LISF_INDICE = """# Índice de la LISF
+
+**Ley de Instituciones de Seguros y de Fianzas**
+510 artículos organizados en 13 Títulos
+
+| Título | Tema | Artículos |
+|--------|------|-----------|
+| **I** | Disposiciones preliminares | Arts. 1 - 18 |
+| **II** | De las operaciones de seguros y fianzas | Arts. 19 - 40 |
+| **III** | De la organización de las instituciones | Arts. 41 - 89 |
+| **IV** | De los intermediarios, agentes y ajustadores | Arts. 90 - 117 |
+| **V** | Reservas técnicas, inversiones y solvencia | Arts. 118 - 275 |
+| **VI** | De los procedimientos de seguros y fianzas | Arts. 276 - 293 |
+| **VII** | De las operaciones prohibidas | Arts. 294 - 295 |
+| **VIII** | Contabilidad, estados financieros y auditoría | Arts. 296 - 319 |
+| **IX** | Planes de regularización e intervención | Arts. 320 - 335 |
+| **X** | De las sociedades mutualistas de seguros | Arts. 336 - 365 |
+| **XI** | De la CNSF: facultades e inspección | Arts. 366 - 392 |
+| **XII** | Liquidación administrativa y concurso mercantil | Arts. 393 - 458 |
+| **XIII** | Sanciones, infracciones y delitos | Arts. 459 - 510 |
+
+Publicada en el DOF el 4 de abril de 2013. Última reforma: 14 de noviembre de 2025.
+"""
+
+_CUSF_INDICE = """# Índice de la CUSF
+
+**Circular Única de Seguros y Fianzas**
+Normativa secundaria que reglamenta la LISF, emitida por la CNSF.
+Más de 1,700 disposiciones organizadas en 41 Títulos.
+
+| Título | Tema | Disposiciones |
+|--------|------|---------------|
+| **1** | Disposiciones preliminares | 1.1.1 - 1.1.3 |
+| **2** | Autorizaciones y modificación de estatutos | 2.1.1 - 2.3.7 |
+| **3** | Gobierno corporativo | 3.1.1 - 3.11.11 |
+| **4** | Productos de seguros y fianzas | 4.1.1 - 4.12.3 |
+| **5** | Reservas técnicas | 5.1.1 - 5.20.6 |
+| **6** | Requerimiento de capital de solvencia (RCS) | 6.1.1 - 6.10.7 |
+| **7** | Fondos propios admisibles y prueba de solvencia | 7.1.1 - 7.4.3 |
+| **8** | Régimen de inversiones | 8.1.1 - 8.23.7 |
+| **9** | Reaseguro y reafianzamiento | 9.1.1 - 9.7.12 |
+| **10** | Obligaciones subordinadas y títulos de crédito | 10.1.1 - 10.6.4 |
+| **11** | Garantías de recuperación para fianzas | 11.1.1 - 11.7.4 |
+| **12** | Contratación de servicios con terceros | 12.1.1 - 12.3.5 |
+| **13** | Operación física y días inhábiles | 13.1.1 - 13.4.1 |
+| **14** | Seguros de pensiones | 14.1.1 - 14.6.4 |
+| **15** | Seguros de salud | 15.1.1 - 15.9.10 |
+| **16** | Seguros de crédito y caución | 16.1.1 - 16.3.1 |
+| **17** | Seguros de crédito a la vivienda | 17.1.1 - 17.3.5 |
+| **18** | Seguros de garantía financiera | 18.1.1 - 18.3.13 |
+| **19** | Fianzas especializadas | 19.1.1 - 19.2.3 |
+| **20** | Fondos especiales de seguros y pensiones | 20.1.1 - 20.3.2 |
+| **21** | Operaciones análogas y conexas | 21.1.1 - 21.1.5 |
+| **22** | Contabilidad | 22.1.1 - 22.7.7 |
+| **23** | Auditores externos y actuarios independientes | 23.1.1 - 23.3.1 |
+| **24** | Publicación de estados financieros | 24.1.1 - 24.4.4 |
+| **25** | Estados financieros de grupos financieros | 25.1.1 - 25.2.1 |
+| **26** | Sistema estadístico del sector | 26.1.1 - 26.3.1 |
+| **27** | Prevención de lavado de dinero | 27.1.1 - 27.2.1 |
+| **28** | Planes de regularización y autocorrección | 28.1.1 - 28.3.5 |
+| **29** | Liquidación administrativa y convencional | 29.1.1 - 29.4.6 |
+| **30** | Registro de auditores y actuarios | 30.1.1 - 30.6.11 |
+| **31** | Acreditación de actuarios | 31.1.1 - 31.2.21 |
+| **32** | Agentes de seguros y fianzas | 32.1.1 - 32.13.2 |
+| **33** | Personas morales intermediarias | 33.1.1 - 33.5.2 |
+| **34** | Reaseguradoras extranjeras | 34.1.1 - 34.4.21 |
+| **35** | Intermediarios de reaseguro | 35.1.1 - 35.5.6 |
+| **36** | Ajustadores de seguros y fianzas | 36.1.1 - 36.2.3 |
+| **37** | Organizaciones aseguradoras y afianzadoras | 37.1.1 - 37.3.4 |
+| **38** | Reportes regulatorios (RR-1 a RR-13) | 38.1.1 - 38.1.14 |
+| **39** | Entrega electrónica de información | 39.1.1 - 39.6.3 |
+| **40** | Fondos de aseguramiento agropecuario | 40.1.1 - 40.3.2 |
+| **41** | Modelos novedosos (fintech sandbox) | 41.1.1 - 41.6.2 |
+
+Incluye además disposiciones transitorias con más de 100 artículos transitorios.
+"""
+
 @app.get("/api/indice")
 async def indice(law: str = "lisf"):
-    source_dir = LISF_MD_DIR if law == "lisf" else CUSF_MD_DIR
-    index_file = source_dir / "00_indice.md"
-    if index_file.exists():
-        return {"content": index_file.read_text(encoding="utf-8")}
-    return {"content": f"Indice de {law.upper()} no disponible."}
+    if law == "cusf":
+        return {"content": _CUSF_INDICE}
+    return {"content": _LISF_INDICE}
 
 
 @app.get("/api/health")
