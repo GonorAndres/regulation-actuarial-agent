@@ -16,5 +16,7 @@ cat
 .playwright-mcp/
 .claude/
 docs/regulation.db
+docs/regulation_baseline.db
+hf-space/data/regulation.db
 docs/CUSF.pdf
 docs/CUSF_gob_2024.docx
