@@ -51,5 +51,5 @@ jobs:
             --max-instances 3 \
             --min-instances 0 \
             --update-env-vars CLAUDE_MODEL=claude-sonnet-4-6,AUTH_ENABLED=true \
-            --update-secrets ANTHROPIC_API_KEY=claude-api:latest,ACCESS_CODE=access-code:latest,SONNET_PASSWORD=sonnet-password:latest \
+            --update-secrets ANTHROPIC_API_KEY=antrophic-api-key:latest,ACCESS_CODE=access-code:latest,SONNET_PASSWORD=sonnet-password:latest \
             --quiet
