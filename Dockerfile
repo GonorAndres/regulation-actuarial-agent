@@ -10,7 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application
-COPY app.py index.html favicon.svg build_index.py generic_keywords.txt ./
+COPY app.py index.html cusf.html favicon.svg build_index.py generic_keywords.txt ./
 COPY docs/lisf_md/ docs/lisf_md/
 COPY docs/cusf_md/ docs/cusf_md/
 COPY docs/articles/ docs/articles/
