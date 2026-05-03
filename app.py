@@ -246,7 +246,12 @@ def _search_db(query: str, law: str = "both", limit: int = 10) -> list[dict]:
     if not _db:
         return []
     try:
-        law_clause = "" if law == "both" else f"AND a.law = '{law}'"
+        params: list = [query]
+        law_clause = ""
+        if law != "both":
+            law_clause = "AND a.law = ?"
+            params.append(law)
+        params.append(limit)
         rows = _db.execute(f"""
             SELECT a.law, a.number, a.title, a.filename, a.text
             FROM articles_fts f
@@ -255,7 +260,7 @@ def _search_db(query: str, law: str = "both", limit: int = 10) -> list[dict]:
             {law_clause}
             ORDER BY bm25(articles_fts, 0.0, 5.0, 1.0, 10.0, 8.0)
             LIMIT ?
-        """, (query, limit)).fetchall()
+        """, params).fetchall()
         return [dict(r) for r in rows]
     except Exception as e:
         logger.warning("FTS5 search error for '%s': %s", query, e)
@@ -1150,6 +1155,223 @@ Más de 1,700 disposiciones organizadas en 41 Títulos.
 
 Incluye además disposiciones transitorias con más de 100 artículos transitorios.
 """
+
+_CUSF_TITULO_NAMES: dict[str, str] = {
+    "1": "Disposiciones preliminares", "2": "Autorizaciones y modificacion de estatutos",
+    "3": "Gobierno corporativo", "4": "Productos de seguros y fianzas",
+    "5": "Reservas tecnicas", "6": "Requerimiento de capital de solvencia (RCS)",
+    "7": "Fondos propios admisibles y prueba de solvencia", "8": "Regimen de inversiones",
+    "9": "Reaseguro y reafianzamiento", "10": "Obligaciones subordinadas y titulos de credito",
+    "11": "Garantias de recuperacion para fianzas", "12": "Contratacion de servicios con terceros",
+    "13": "Operacion fisica y dias inhabiles", "14": "Seguros de pensiones",
+    "15": "Seguros de salud", "16": "Seguros de credito y caucion",
+    "17": "Seguros de credito a la vivienda", "18": "Seguros de garantia financiera",
+    "19": "Fianzas especializadas", "20": "Fondos especiales de seguros y pensiones",
+    "21": "Operaciones analogas y conexas", "22": "Contabilidad",
+    "23": "Auditores externos y actuarios independientes", "24": "Publicacion de estados financieros",
+    "25": "Estados financieros de grupos financieros", "26": "Sistema estadistico del sector",
+    "27": "Prevencion de lavado de dinero", "28": "Planes de regularizacion y autocorreccion",
+    "29": "Liquidacion administrativa y convencional", "30": "Registro de auditores y actuarios",
+    "31": "Acreditacion de actuarios", "32": "Agentes de seguros y fianzas",
+    "33": "Personas morales intermediarias", "34": "Reaseguradoras extranjeras",
+    "35": "Intermediarios de reaseguro", "36": "Ajustadores de seguros y fianzas",
+    "37": "Organizaciones aseguradoras y afianzadoras", "38": "Reportes regulatorios (RR-1 a RR-13)",
+    "39": "Entrega electronica de informacion", "40": "Fondos de aseguramiento agropecuario",
+    "41": "Modelos novedosos (fintech sandbox)",
+}
+
+_LISF_TITULO_NAMES: dict[str, str] = {
+    "I": "Disposiciones preliminares", "II": "De las operaciones de seguros y fianzas",
+    "III": "De la organizacion de las instituciones",
+    "IV": "De los intermediarios, agentes y ajustadores",
+    "V": "Reservas tecnicas, inversiones y solvencia",
+    "VI": "De los procedimientos de seguros y fianzas",
+    "VII": "De las operaciones prohibidas",
+    "VIII": "Contabilidad, estados financieros y auditoria",
+    "IX": "Planes de regularizacion e intervencion",
+    "X": "De las sociedades mutualistas de seguros",
+    "XI": "De la CNSF: facultades e inspeccion",
+    "XII": "Liquidacion administrativa y concurso mercantil",
+    "XIII": "Sanciones, infracciones y delitos",
+}
+
+_TITULO_WORD_TO_ROMAN = {
+    "PRIMERO": "I", "SEGUNDO": "II", "TERCERO": "III", "CUARTO": "IV",
+    "QUINTO": "V", "SEXTO": "VI", "SÉPTIMO": "VII", "SEPTIMO": "VII",
+    "OCTAVO": "VIII", "NOVENO": "IX", "DÉCIMO": "X", "DECIMO": "X",
+}
+_CAP_WORD_TO_NUM = {
+    "ÚNICO": "1", "UNICO": "1", "PRIMERO": "1", "SEGUNDO": "2", "TERCERO": "3",
+    "CUARTO": "4", "QUINTO": "5", "SEXTO": "6", "SÉPTIMO": "7", "SEPTIMO": "7",
+    "OCTAVO": "8", "NOVENO": "9", "DÉCIMO": "10", "DECIMO": "10",
+    "DÉCIMO PRIMERO": "11", "DECIMO PRIMERO": "11",
+}
+
+def _parse_lisf_title(title: str) -> tuple[str, str]:
+    """Parse 'TÍTULO QUINTO - CAPÍTULO SEGUNDO' into ('V', '2')."""
+    parts = title.split(" - ")
+    t_part = parts[0].replace("TÍTULO ", "").strip() if len(parts) >= 1 else ""
+    c_part = parts[1].replace("CAPÍTULO ", "").replace("CAPITULO ", "").strip() if len(parts) >= 2 else ""
+
+    # Handle compound titles like "DÉCIMO PRIMERO"
+    t_roman = _TITULO_WORD_TO_ROMAN.get(t_part, "")
+    if not t_roman and " " in t_part:
+        base = t_part.split()[0]
+        suffix = " ".join(t_part.split()[1:])
+        base_val = _TITULO_WORD_TO_ROMAN.get(base, "")
+        suffix_val = _TITULO_WORD_TO_ROMAN.get(suffix, "")
+        if base_val == "X" and suffix_val:
+            roman_map = {"I": "XI", "II": "XII", "III": "XIII"}
+            t_roman = roman_map.get(suffix_val, base_val)
+
+    c_num = _CAP_WORD_TO_NUM.get(c_part, "")
+    if not c_num and " " in c_part:
+        c_num = _CAP_WORD_TO_NUM.get(c_part, "1")
+
+    return t_roman or t_part, c_num or "1"
+
+_lisf_tree_cache: dict | None = None
+
+def _build_lisf_tree() -> dict:
+    global _lisf_tree_cache
+    if _lisf_tree_cache:
+        return _lisf_tree_cache
+    if not _db:
+        return {"titulos": [], "transitorios": []}
+
+    rows = _db.execute(
+        "SELECT number, title FROM articles WHERE law='lisf' ORDER BY rowid"
+    ).fetchall()
+
+    titulos_map: dict[str, dict] = {}
+    transitorios = []
+    roman_order = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII"]
+
+    for r in rows:
+        num, title = r["number"], r["title"]
+        if num.startswith("trans"):
+            transitorios.append({"numero": num, "titulo": title})
+            continue
+        t_roman, c_num = _parse_lisf_title(title)
+        if not t_roman:
+            continue
+
+        if t_roman not in titulos_map:
+            titulos_map[t_roman] = {
+                "numero": t_roman,
+                "nombre": _LISF_TITULO_NAMES.get(t_roman, f"Titulo {t_roman}"),
+                "capitulos": {},
+            }
+        cap_key = f"{t_roman}.{c_num}"
+        caps = titulos_map[t_roman]["capitulos"]
+        if cap_key not in caps:
+            caps[cap_key] = {"numero": cap_key, "disposiciones": []}
+        caps[cap_key]["disposiciones"].append({"numero": num, "titulo": title})
+
+    titulos = []
+    for t_roman in roman_order:
+        if t_roman not in titulos_map:
+            continue
+        t = titulos_map[t_roman]
+        sorted_caps = sorted(t["capitulos"].values(), key=lambda c: int(c["numero"].split(".")[-1]))
+        for cap in sorted_caps:
+            cap["disposiciones"].sort(key=lambda d: int(d["numero"]) if d["numero"].isdigit() else 0)
+        t["capitulos"] = sorted_caps
+        titulos.append(t)
+
+    _lisf_tree_cache = {"titulos": titulos, "transitorios": transitorios}
+    return _lisf_tree_cache
+
+_cusf_tree_cache: dict | None = None
+
+def _build_cusf_tree() -> dict:
+    global _cusf_tree_cache
+    if _cusf_tree_cache:
+        return _cusf_tree_cache
+    if not _db:
+        return {"titulos": [], "transitorios": []}
+
+    rows = _db.execute(
+        "SELECT number, title FROM articles WHERE law='cusf' ORDER BY rowid"
+    ).fetchall()
+
+    titulos_map: dict[str, dict] = {}
+    transitorios = []
+
+    for r in rows:
+        num, title = r["number"], r["title"]
+        if num.startswith("trans"):
+            transitorios.append({"numero": num, "titulo": title})
+            continue
+        parts = num.split(".")
+        if len(parts) < 3:
+            continue
+        t_num = parts[0]
+        cap_num = f"{parts[0]}.{parts[1]}"
+
+        if t_num not in titulos_map:
+            titulos_map[t_num] = {
+                "numero": t_num,
+                "nombre": _CUSF_TITULO_NAMES.get(t_num, f"Titulo {t_num}"),
+                "capitulos": {},
+            }
+        caps = titulos_map[t_num]["capitulos"]
+        if cap_num not in caps:
+            caps[cap_num] = {"numero": cap_num, "disposiciones": []}
+        caps[cap_num]["disposiciones"].append({"numero": num, "titulo": title})
+
+    def _sort_key(n: str) -> list[int]:
+        try:
+            return [int(x) for x in n.split(".")]
+        except ValueError:
+            return [0]
+
+    titulos = []
+    for t_num in sorted(titulos_map, key=lambda x: _sort_key(x)):
+        t = titulos_map[t_num]
+        sorted_caps = []
+        for c_num in sorted(t["capitulos"], key=lambda x: _sort_key(x)):
+            cap = t["capitulos"][c_num]
+            cap["disposiciones"].sort(key=lambda d: _sort_key(d["numero"]))
+            sorted_caps.append(cap)
+        t["capitulos"] = sorted_caps
+        titulos.append(t)
+
+    _cusf_tree_cache = {"titulos": titulos, "transitorios": transitorios}
+    return _cusf_tree_cache
+
+
+@app.get("/explorer", response_class=HTMLResponse)
+@app.get("/cusf", response_class=HTMLResponse)
+@app.get("/lisf", response_class=HTMLResponse)
+async def serve_explorer():
+    html_path = PROJECT_DIR / "cusf.html"
+    return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
+
+
+@app.get("/api/explorer/tree/{law}")
+async def explorer_tree(law: str):
+    if law == "lisf":
+        return _build_lisf_tree()
+    return _build_cusf_tree()
+
+
+@app.get("/api/explorer/article/{law}/{number:path}")
+async def explorer_article(law: str, number: str):
+    if law not in ("lisf", "cusf"):
+        return JSONResponse(status_code=400, content={"error": "law must be lisf or cusf"})
+    article = _get_article_db(law, number)
+    if not article:
+        return JSONResponse(status_code=404, content={"error": f"Articulo {number} no encontrado"})
+    cross_refs = _get_cross_refs_db(law, number)
+    return {
+        "law": law,
+        "number": article["number"],
+        "title": article["title"],
+        "text": article["text"],
+        "cross_refs": cross_refs,
+    }
+
 
 @app.get("/api/indice")
 async def indice(law: str = "lisf"):
