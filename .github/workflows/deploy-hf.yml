@@ -1,0 +1,37 @@
+name: Deploy to HF Space
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hf-space/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install huggingface_hub CLI
+        run: pip install -q "huggingface_hub[cli]>=0.23"
+
+      - name: Upload hf-space/ to HF Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          hf upload \
+            --token "$HF_TOKEN" \
+            --repo-type space \
+            GonorAndres/lisf-agent \
+            hf-space .
